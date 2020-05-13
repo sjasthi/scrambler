@@ -1,0 +1,2 @@
+# Use PHP70 as default
+AddHandler application/x-httpd-ea-php70 .php

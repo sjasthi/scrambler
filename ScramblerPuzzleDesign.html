@@ -1,0 +1,745 @@
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN''http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<head>
+	
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    
+    <!-- Spectrum -->
+    <link rel="stylesheet" type="text/css" href="spectrum.css">
+    <script type="text/javascript" src="spectrum.js"></script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale = 1">
+    
+    <title>dabble Puzzle</title>
+	
+	<style>	
+		.jumbotron {
+			background-image: url("silcHeader.png");
+			-webkit-background-size: 100% 100%;
+			-moz-background-size: 100% 100%;
+			-o-background-size: 100% 100%;
+			background-size: 100% 100%;
+			height: 179px;
+		}
+		
+		table.dabble tr td {
+			width: 48px;
+			height: 48px;
+			font-size: 1.875em;
+			text-align: center;
+		}
+		
+		table.letters tr td {
+			width: 48px;
+			height: 48px;
+			font-size: 20px;
+			text-align: center;
+            border: 2px solid #000000;
+			background-color: #EEEEEE;
+		}
+        
+        table.puzzle tr td.filled {
+			width: 48px;
+			height: 48px;
+			font-size: 20px;
+			text-align: center;
+            border: 2px solid #000000;
+		}
+        
+        table.puzzle tr td.empty {
+			width: 48px;
+			height: 48px;
+			font-size: 20px;
+			text-align: center;
+            border: 0px solid #000000;
+            
+		}
+        
+        #offset{
+            width: 50px !important;
+        }
+
+        .words{
+            border: 2px solid #000000; 
+            overflow:auto;
+        }
+        
+        .testtable{
+            display: table;
+        }
+        
+        .testrow{
+            display: table-row;
+        }
+        
+        .testrowoffset{
+            display: table-row;
+            left:24px;
+        }
+        
+        .testcell{
+            display: table-cell;
+            width: 48px;
+			height: 48px;
+			font-size: 20px;
+            border: 2px solid #000000;
+			background-color: #EEEEEE;
+        }
+
+        .pyramid {
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        .pyramid .row {
+            font-size: 0px;
+            text-align: center;
+        }
+
+        .pyramid .row * {
+            font-size: 20px;
+        }
+
+        .pyramid .inside {
+            text-align: center;
+            display: inline-block;
+            width: 48px;
+            height: 48px; 
+            border-style: solid;
+            border-color: #000000;
+            border-width: 2px 0px 0px 2px;
+        }
+		
+		.pyramid .left{
+            text-align: center;
+            display: inline-block;
+            width: 48px;
+            height: 48px; 
+            border-style: solid;
+            border-color: #000000;
+            border-width: 2px 0px 0px 2px;
+        }
+		
+		.pyramid .right{
+            text-align: center;
+            display: inline-block;
+            width: 48px;
+            height: 48px; 
+            border-style: solid;
+            border-color: #000000;
+            border-width: 2px 2px 0px 2px;
+        }
+		
+		.pyramid .top{
+            text-align: center;
+            display: inline-block;
+            width: 48px;
+            height: 48px; 
+            border-style: solid;
+            border-color: #000000;
+            border-width: 2px 0px 0px 2px;
+        }
+        
+        .pyramid .topRight{
+            text-align: center;
+            display: inline-block;
+            width: 48px;
+            height: 48px; 
+            border-style: solid;
+            border-color: #000000;
+            border-width: 2px 2px 0px 2px;
+        }
+		
+		.pyramid .bottom{
+            text-align: center;
+            display: inline-block;
+            width: 48px;
+            height: 48px; 
+            border-style: solid;
+            border-color: #000000;
+            border-width: 2px 0px 2px 2px;
+        }
+        
+        .pyramid .bottomRight{
+            text-align: center;
+            display: inline-block;
+            width: 48px;
+            height: 48px; 
+            border-style: solid;
+            border-color: #000000;
+            border-width: 2px 2px 2px 2px;
+        }
+		
+	</style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="jumbotron" id="jumbos">
+        </div>
+		<br>
+        <div class="panel">
+            <div class="panel-group">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div align="center"><h2>Dabble Puzzle</h2></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div align="center">
+                            <h3><br />
+<font size='1'><table class='xdebug-error xe-notice' dir='ltr' border='1' cellspacing='0' cellpadding='1'>
+<tr><th align='left' bgcolor='#f57900' colspan="5"><span style='background-color: #cc0000; color: #fce94f; font-size: x-large;'>( ! )</span> Notice: Undefined variable: title in C:\wamp64\www\Dabble\DabblePuzzle.php on line <i>200</i></th></tr>
+<tr><th align='left' bgcolor='#e9b96e' colspan='5'>Call Stack</th></tr>
+<tr><th align='center' bgcolor='#eeeeec'>#</th><th align='left' bgcolor='#eeeeec'>Time</th><th align='left' bgcolor='#eeeeec'>Memory</th><th align='left' bgcolor='#eeeeec'>Function</th><th align='left' bgcolor='#eeeeec'>Location</th></tr>
+<tr><td bgcolor='#eeeeec' align='center'>1</td><td bgcolor='#eeeeec' align='center'>0.0021</td><td bgcolor='#eeeeec' align='right'>273960</td><td bgcolor='#eeeeec'>{main}(  )</td><td title='C:\wamp64\www\Dabble\DabblePuzzle.php' bgcolor='#eeeeec'>...\DabblePuzzle.php<b>:</b>0</td></tr>
+</table></font>
+</h3>
+                        </div>
+                        <div align="center">
+                            <h4><br />
+<font size='1'><table class='xdebug-error xe-notice' dir='ltr' border='1' cellspacing='0' cellpadding='1'>
+<tr><th align='left' bgcolor='#f57900' colspan="5"><span style='background-color: #cc0000; color: #fce94f; font-size: x-large;'>( ! )</span> Notice: Undefined variable: subtitle in C:\wamp64\www\Dabble\DabblePuzzle.php on line <i>203</i></th></tr>
+<tr><th align='left' bgcolor='#e9b96e' colspan='5'>Call Stack</th></tr>
+<tr><th align='center' bgcolor='#eeeeec'>#</th><th align='left' bgcolor='#eeeeec'>Time</th><th align='left' bgcolor='#eeeeec'>Memory</th><th align='left' bgcolor='#eeeeec'>Function</th><th align='left' bgcolor='#eeeeec'>Location</th></tr>
+<tr><td bgcolor='#eeeeec' align='center'>1</td><td bgcolor='#eeeeec' align='center'>0.0021</td><td bgcolor='#eeeeec' align='right'>273960</td><td bgcolor='#eeeeec'>{main}(  )</td><td title='C:\wamp64\www\Dabble\DabblePuzzle.php' bgcolor='#eeeeec'>...\DabblePuzzle.php<b>:</b>0</td></tr>
+</table></font>
+</h4>
+                        </div>
+                        <div align="center">
+                            <div class="col-sm-6">
+                                <div class="row"> Letters </div>
+								<table class="letters">
+                                <tr><td>u</td>
+												<td>f</td>
+												<td>d</td>
+												<td>a</td>
+												<td>e</td>
+												</tr><tr><td>o</td>
+												<td>p</td>
+												<td>o</td>
+												<td>e</td>
+												<td>r</td>
+												</tr><tr><td>r</td>
+												<td>h</td>
+												<td>i</td>
+												<td>s</td>
+												<td>p</td>
+												</tr><tr><td>h</td>
+												<td>c</td>
+												<td>t</td>
+												<td>g</td>
+												<td>f</td>
+												</tr><tr><td>b</td>
+												<td>d</td>
+												<td>e</td>
+												<td>n</td>
+												<td>d</td>
+												</tr><tr><td>g</td>
+												<td>u</td>
+												<td> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+												<td> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+												<td> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+												</tr>								</table>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row"> Step Up </div>
+                                <div class="row">
+                                    <table class="puzzle">
+                                    <tr>
+                                    <td class="empty"></td>
+                                    <td class="empty"></td>
+                                    <td class="empty"></td>
+                                    <td class="empty"></td>
+                                    <td class="filled"></td>
+                                    </tr>
+                                    <tr>
+                                    <td class="empty"></td>
+                                    <td class="empty"></td>
+                                    <td class="empty"></td>
+                                    <td class="filled"></td>
+                                    <td class="filled"></td>
+                                    </tr>
+                                    <tr>
+                                    <td class="empty"></td>
+                                    <td class="empty"></td>
+                                    <td class="filled"></td>
+                                    <td class="filled"></td>
+                                    <td class="filled"></td>
+                                    </tr>
+                                    <tr>
+                                    <td class="empty"></td>
+                                    <td class="filled"></td>
+                                    <td class="filled"></td>
+                                    <td class="filled"></td>
+                                    <td class="filled"></td>
+                                    </tr>
+                                    <tr>
+                                    <td class="filled"></td>
+                                    <td class="filled"></td>
+                                    <td class="filled"></td>
+                                    <td class="filled"></td>
+                                    <td class="filled"></td>
+                                    </tr>
+                                    </table>
+                                </div>
+
+                                <div class="row"> Step Down </div>
+                                <div class="row">
+                                    <table class="puzzle">
+                                    <tr>
+                                    <td class="filled"></td>
+                                    <td class="empty"></td>
+                                    <td class="empty"></td>
+                                    <td class="empty"></td>
+                                    <td class="empty"></td>
+                                    </tr>
+                                    <tr>
+                                    <td class="filled"></td>
+                                    <td class="filled"></td>
+                                    <td class="empty"></td>
+                                    <td class="empty"></td>
+                                    <td class="empty"></td>
+                                    </tr>
+                                    <tr>
+                                    <td class="filled"></td>
+                                    <td class="filled"></td>
+                                    <td class="filled"></td>
+                                    <td class="empty"></td>
+                                    <td class="empty"></td>
+                                    </tr>
+                                    <tr>
+                                    <td class="filled"></td>
+                                    <td class="filled"></td>
+                                    <td class="filled"></td>
+                                    <td class="filled"></td>
+                                    <td class="empty"></td>
+                                    </tr>
+                                    <tr>
+                                    <td class="filled"></td>
+                                    <td class="filled"></td>
+                                    <td class="filled"></td>
+                                    <td class="filled"></td>
+                                    <td class="filled"></td>
+                                    </tr>
+                                    </table>
+                                </div>
+                                <div class="row"> Pyramid </div>
+                                <div class="pyramid">
+                                    <div class="row">
+                                        <div class="inside"></div>
+                                        <div class="inside"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="inside"></div>
+                                        <div class="inside"></div>
+                                        <div class="inside"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="inside"></div>
+                                        <div class="inside"></div>
+                                        <div class="inside"></div>
+                                        <div class="inside"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="inside"></div>
+                                        <div class="inside"></div>
+                                        <div class="inside"></div>
+                                        <div class="inside"></div>
+                                        <div class="inside"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="inside"></div>
+                                        <div class="inside"></div>
+                                        <div class="inside"></div>
+                                        <div class="inside"></div>
+                                        <div class="inside"></div>
+                                        <div class="inside"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>               
+                    </div>
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div align="center"><h2>Dabble Options</h2></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-12" align="center">
+                                <div class="col-sm-6">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h3>Puzzle Options</h3>
+                                        </div>
+                                    </div>
+                                    <div align="left">
+                                        <div class="row">
+                                            <div class="col-sm-12" >
+                                                <input type="checkbox" class="showSolutionCheckbox" onchange="solutionCheckboxChange()" checked> Show Solution
+                                            </div>
+                                        </div>
+										<br>
+										<div class="row">
+											<div class="col-sm-3">
+												<select class="form-control" id="puzzletype" name="puzzletype" onchange="puzzleChange()">
+													<option value="pyramid" <br />
+<font size='1'><table class='xdebug-error xe-notice' dir='ltr' border='1' cellspacing='0' cellpadding='1'>
+<tr><th align='left' bgcolor='#f57900' colspan="5"><span style='background-color: #cc0000; color: #fce94f; font-size: x-large;'>( ! )</span> Notice: Undefined variable: puzzleType in C:\wamp64\www\Dabble\DabblePuzzle.php on line <i>371</i></th></tr>
+<tr><th align='left' bgcolor='#e9b96e' colspan='5'>Call Stack</th></tr>
+<tr><th align='center' bgcolor='#eeeeec'>#</th><th align='left' bgcolor='#eeeeec'>Time</th><th align='left' bgcolor='#eeeeec'>Memory</th><th align='left' bgcolor='#eeeeec'>Function</th><th align='left' bgcolor='#eeeeec'>Location</th></tr>
+<tr><td bgcolor='#eeeeec' align='center'>1</td><td bgcolor='#eeeeec' align='center'>0.0021</td><td bgcolor='#eeeeec' align='right'>273960</td><td bgcolor='#eeeeec'>{main}(  )</td><td title='C:\wamp64\www\Dabble\DabblePuzzle.php' bgcolor='#eeeeec'>...\DabblePuzzle.php<b>:</b>0</td></tr>
+</table></font>
+>Pyramid</option>
+													<option value="stepup" <br />
+<font size='1'><table class='xdebug-error xe-notice' dir='ltr' border='1' cellspacing='0' cellpadding='1'>
+<tr><th align='left' bgcolor='#f57900' colspan="5"><span style='background-color: #cc0000; color: #fce94f; font-size: x-large;'>( ! )</span> Notice: Undefined variable: puzzleType in C:\wamp64\www\Dabble\DabblePuzzle.php on line <i>372</i></th></tr>
+<tr><th align='left' bgcolor='#e9b96e' colspan='5'>Call Stack</th></tr>
+<tr><th align='center' bgcolor='#eeeeec'>#</th><th align='left' bgcolor='#eeeeec'>Time</th><th align='left' bgcolor='#eeeeec'>Memory</th><th align='left' bgcolor='#eeeeec'>Function</th><th align='left' bgcolor='#eeeeec'>Location</th></tr>
+<tr><td bgcolor='#eeeeec' align='center'>1</td><td bgcolor='#eeeeec' align='center'>0.0021</td><td bgcolor='#eeeeec' align='right'>273960</td><td bgcolor='#eeeeec'>{main}(  )</td><td title='C:\wamp64\www\Dabble\DabblePuzzle.php' bgcolor='#eeeeec'>...\DabblePuzzle.php<b>:</b>0</td></tr>
+</table></font>
+>Step Up</option>
+													<option value="stepdown" <br />
+<font size='1'><table class='xdebug-error xe-notice' dir='ltr' border='1' cellspacing='0' cellpadding='1'>
+<tr><th align='left' bgcolor='#f57900' colspan="5"><span style='background-color: #cc0000; color: #fce94f; font-size: x-large;'>( ! )</span> Notice: Undefined variable: puzzleType in C:\wamp64\www\Dabble\DabblePuzzle.php on line <i>373</i></th></tr>
+<tr><th align='left' bgcolor='#e9b96e' colspan='5'>Call Stack</th></tr>
+<tr><th align='center' bgcolor='#eeeeec'>#</th><th align='left' bgcolor='#eeeeec'>Time</th><th align='left' bgcolor='#eeeeec'>Memory</th><th align='left' bgcolor='#eeeeec'>Function</th><th align='left' bgcolor='#eeeeec'>Location</th></tr>
+<tr><td bgcolor='#eeeeec' align='center'>1</td><td bgcolor='#eeeeec' align='center'>0.0021</td><td bgcolor='#eeeeec' align='right'>273960</td><td bgcolor='#eeeeec'>{main}(  )</td><td title='C:\wamp64\www\Dabble\DabblePuzzle.php' bgcolor='#eeeeec'>...\DabblePuzzle.php<b>:</b>0</td></tr>
+</table></font>
+>Step Down</option>
+												</select>
+											</div>
+										</div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h3>Look Options</h3>
+                                        </div>
+                                    </div>
+                                    <div align="left" >
+                                        <div class="row">
+                                            <div class="col-sm-6" >
+                                                <label>Letter Square Color</label>
+                                            </div>
+                                            <div class="col-sm-6" >
+                                                <input type="text" class='letterSquareColor'/>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-sm-6" >
+                                                <label>Letter Color</label>
+                                            </div>
+                                            <div class="col-sm-6" >
+                                                <input type="text" class='letterColor'/>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-sm-6" >
+                                                <label>Line Color</label>
+                                            </div>
+                                            <div class="col-sm-6" >
+                                                <input type="text" class='lineColor'/>
+                                            </div>
+                                        </div>
+                                        <br>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+					<div class="panel panel-primary solutionSection">
+						<div class="panel-heading ">
+							<div class="row">
+								<div class="col-sm-12">
+									<div align="center"><h2>Dabble Solution</h2></div>
+								</div>
+							</div>
+						</div>
+						<div class="panel-body">
+							<div align="center">
+								<h3><br />
+<font size='1'><table class='xdebug-error xe-notice' dir='ltr' border='1' cellspacing='0' cellpadding='1'>
+<tr><th align='left' bgcolor='#f57900' colspan="5"><span style='background-color: #cc0000; color: #fce94f; font-size: x-large;'>( ! )</span> Notice: Undefined variable: title in C:\wamp64\www\Dabble\DabblePuzzle.php on line <i>429</i></th></tr>
+<tr><th align='left' bgcolor='#e9b96e' colspan='5'>Call Stack</th></tr>
+<tr><th align='center' bgcolor='#eeeeec'>#</th><th align='left' bgcolor='#eeeeec'>Time</th><th align='left' bgcolor='#eeeeec'>Memory</th><th align='left' bgcolor='#eeeeec'>Function</th><th align='left' bgcolor='#eeeeec'>Location</th></tr>
+<tr><td bgcolor='#eeeeec' align='center'>1</td><td bgcolor='#eeeeec' align='center'>0.0021</td><td bgcolor='#eeeeec' align='right'>273960</td><td bgcolor='#eeeeec'>{main}(  )</td><td title='C:\wamp64\www\Dabble\DabblePuzzle.php' bgcolor='#eeeeec'>...\DabblePuzzle.php<b>:</b>0</td></tr>
+</table></font>
+</h3>
+							</div>
+							<div align="center">
+								<h4><br />
+<font size='1'><table class='xdebug-error xe-notice' dir='ltr' border='1' cellspacing='0' cellpadding='1'>
+<tr><th align='left' bgcolor='#f57900' colspan="5"><span style='background-color: #cc0000; color: #fce94f; font-size: x-large;'>( ! )</span> Notice: Undefined variable: subtitle in C:\wamp64\www\Dabble\DabblePuzzle.php on line <i>432</i></th></tr>
+<tr><th align='left' bgcolor='#e9b96e' colspan='5'>Call Stack</th></tr>
+<tr><th align='center' bgcolor='#eeeeec'>#</th><th align='left' bgcolor='#eeeeec'>Time</th><th align='left' bgcolor='#eeeeec'>Memory</th><th align='left' bgcolor='#eeeeec'>Function</th><th align='left' bgcolor='#eeeeec'>Location</th></tr>
+<tr><td bgcolor='#eeeeec' align='center'>1</td><td bgcolor='#eeeeec' align='center'>0.0021</td><td bgcolor='#eeeeec' align='right'>273960</td><td bgcolor='#eeeeec'>{main}(  )</td><td title='C:\wamp64\www\Dabble\DabblePuzzle.php' bgcolor='#eeeeec'>...\DabblePuzzle.php<b>:</b>0</td></tr>
+</table></font>
+</h4>
+							</div>                        
+							<div align="center">
+								<div class="col-sm-6">
+									<div class="row"> Letters </div>
+									<div class="row">
+										<table id="grid" class="letters">
+											<tr><td>u</td>
+															<td>f</td>
+															<td>d</td>
+															<td>a</td>
+															<td>e</td>
+															</tr><tr><td>o</td>
+															<td>p</td>
+															<td>o</td>
+															<td>e</td>
+															<td>r</td>
+															</tr><tr><td>r</td>
+															<td>h</td>
+															<td>i</td>
+															<td>s</td>
+															<td>p</td>
+															</tr><tr><td>h</td>
+															<td>c</td>
+															<td>t</td>
+															<td>g</td>
+															<td>f</td>
+															</tr><tr><td>b</td>
+															<td>d</td>
+															<td>e</td>
+															<td>n</td>
+															<td>d</td>
+															</tr><tr><td>g</td>
+															<td>u</td>
+															<td> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															<td> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															<td> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															</tr>										</table>
+									</div>
+								</div>
+								<div class="col-sm-6">
+                                    <div class="row"> Step Up </div>
+                                    <div class="row">
+                                        <table class="puzzle">
+											<tr><td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															<td class="filled">h</td>
+															<td class="filled">i</td>
+															</tr><tr><td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															<td class="filled">d</td>
+															<td class="filled">o</td>
+															<td class="filled">g</td>
+															</tr><tr><td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															<td class="filled">d</td>
+															<td class="filled">u</td>
+															<td class="filled">n</td>
+															<td class="filled">e</td>
+															</tr><tr><td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															<td class="filled">f</td>
+															<td class="filled">o</td>
+															<td class="filled">r</td>
+															<td class="filled">t</td>
+															<td class="filled">h</td>
+															</tr><tr><td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															<td class="filled">s</td>
+															<td class="filled">u</td>
+															<td class="filled">p</td>
+															<td class="filled">p</td>
+															<td class="filled">e</td>
+															<td class="filled">r</td>
+															</tr><tr><td class="filled">a</td>
+															<td class="filled">b</td>
+															<td class="filled">c</td>
+															<td class="filled">d</td>
+															<td class="filled">e</td>
+															<td class="filled">f</td>
+															<td class="filled">g</td>
+															</tr>                                        </table>
+                                    </div>
+
+                                    <div class="row"> Step Down </div>
+                                    <div class="row">
+                                        <table class="puzzle">
+											<tr><td class="filled">h</td>
+															<td class="filled">i</td>
+															<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															</tr><tr><td class="filled">d</td>
+															<td class="filled">o</td>
+															<td class="filled">g</td>
+															<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															</tr><tr><td class="filled">d</td>
+															<td class="filled">u</td>
+															<td class="filled">n</td>
+															<td class="filled">e</td>
+															<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															</tr><tr><td class="filled">f</td>
+															<td class="filled">o</td>
+															<td class="filled">r</td>
+															<td class="filled">t</td>
+															<td class="filled">h</td>
+															<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															</tr><tr><td class="filled">s</td>
+															<td class="filled">u</td>
+															<td class="filled">p</td>
+															<td class="filled">p</td>
+															<td class="filled">e</td>
+															<td class="filled">r</td>
+															<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															</tr><tr><td class="filled">a</td>
+															<td class="filled">b</td>
+															<td class="filled">c</td>
+															<td class="filled">d</td>
+															<td class="filled">e</td>
+															<td class="filled">f</td>
+															<td class="filled">g</td>
+															</tr>                                        </table>
+                                    </div>
+                                    <div class="row"> Pyramid </div>
+                                    <div class="pyramid">
+                                        <div class="row">
+                                            <div class="top">a</div>
+                                            <div class="top">c</div>
+                                            <div class="topRight">b</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="left">c</div>
+                                            <div class="inside">d</div>
+                                            <div class="right">e</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="left">f</div>
+                                            <div class="inside">g</div>
+                                            <div class="inside">h</div>
+                                            <div class="right">i</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="left">j</div>
+                                            <div class="inside">k</div>
+                                            <div class="inside">l</div>
+                                            <div class="inside">m</div>
+                                            <div class="right">n</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="bottom">o</div>
+                                            <div class="bottom">p</div>
+                                            <div class="bottom">q</div>
+                                            <div class="bottom">r</div>
+                                            <div class="bottom">s</div>
+                                            <div class="bottomRight">t</div>
+                                        </div>
+                                    </div>
+                                </div>
+							</div>
+						</div>
+                        
+						<h2 align="center"> Words <h2>
+						<div align="center" class="words">
+							<div class="col-sm-6">
+
+								<div class="row">
+									<div class="col-sm-12" style="text-align:left;">
+										words
+									</div>
+								</div>
+							</div>
+						</div>
+						</div>
+					</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+	// Set default spectrum elements
+    
+    
+	$(".letterSquareColor").spectrum({
+		color: "#EEEEEE",
+		change: function(color) {
+			$("table.puzzle tr td.filled").css("background-color", color.toHexString());
+            $(".pyramid .cell").css("background-color", color.toHexString());
+		}
+	});
+	
+	$(".letterColor").spectrum({
+		color: "#000000",
+		change: function(color) {
+			$(".table.puzzle tr td.filled").css("color", color.toHexString());
+            $(".pyramid .cell").css("color", color.toHexString());
+		}
+	});
+	
+	$(".lineColor").spectrum({
+		color: "#000000",
+		change: function(color) {
+			$("table.puzzle tr td.filled").css("border", "2px solid " + color.toHexString());		
+            $(".pyramid .cell").css("border", "2px solid " + color.toHexString());	
+		}
+	});
+	
+	// Updates the solution section to hidden/visable on check box update
+	function solutionCheckboxChange(){
+		if($('.showSolutionCheckbox').is(":checked")){  
+			$(".solutionSection").show();
+		}
+		else{
+			$(".solutionSection").hide();
+		}
+	}
+	
+	// Updates puzzle to show solution or fill-in puzzle hints
+	function puzzleChange(){
+		if($('#puzzletype').val() == "pyramid"){  
+			$(".pyramidPuzzle").show();
+			$(".stepupuzzle").hide();
+			$(".stepdownHints").hide();
+		}
+		else if($('#puzzletype').val() == "stepup"){  
+			$(".pyramidPuzzle").hide();
+			$(".stepupuzzle").show();
+			$(".stepdownHints").hide();
+		}
+		else{
+			$(".pyramidPuzzle").hide();
+			$(".stepupuzzle").hide();
+			$(".stepdownPuzzle").show();
+		}
+	}
+</script>
+</html>
