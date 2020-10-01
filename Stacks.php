@@ -1,14 +1,14 @@
 <?php
 
 	/* Created by Stephen Schneider
-	 * Class for creating the three various Scrambler puzzles
+	 * Class for creating the Stacks puzzle
 	 * Takes in at least two words that go in sequential length order to generate step up, step down, and pyramid puzzles
 	 * Input is ordered by word length, checked for validation, then characters are obtained from the words and shuffled
 	 * letterList servers as the list of letters for the puzzles while the puzzles serve as solutions
 	 * Puzzles themselves are just blank solutions displayed on ScramblerPuzzle page
 	 * Scrambler will stop if there is an error detected with user input and raise the errorStatus flag
 	 */
-class Scrambler{
+class Stacks{
 	// Removed the global as max columns need to change with scrambler
 	// private $MAX_COLUMNS = 5;
 	private $wordList = [];
@@ -21,19 +21,22 @@ class Scrambler{
 	private $pyramidPuzzle = [];
 	private $stepUpPuzzle = [];
 	private $stepDownPuzzle = [];
+	private $stacksPuzzle = [];
 
 	private $rectangleLetterPuzzle =[];
 	private $stepDownLetterPuzzle = [];
 	private $stepUpLetterPuzzle = [];
 	private $pyramidLetterPuzzle =[];
+	private $stacksLetterPuzzle = [];
 
 	// Added max Columns for scrambler
 	private $maxColumns;
 	private $maxLength;
 	private $wordCount;
 
+
 	private $wordProcessor;
-	private $errorStatus;
+	//private $errorStatus;
 
 
 	public function __construct($wordList){
@@ -42,26 +45,34 @@ class Scrambler{
 
 
 
-		$this->orderWords();
+		//$this->orderWords();
 
-		if($this->validateInput()){
-			$this->maxLength = $this->getWordLength($this->wordList[(count($this->wordList) - 1)]);
+		//if($this->validateInput()){
+		$this->maxLength = 0;
+		
+		//find the maximum word length, which is also the maximum number of columns
+		foreach($this->wordList as $word) {
+			if (getWordLength($word) > $this->maxLength) {
+				$this->maxLength = getWordLength($word);
+			}
+		}
+			//$this->maxLength = $this->getWordLength($this->wordList[(count($this->wordList) - 1)]);
 			$this->wordCount = count($wordList);
 
 			// Only need the count of the first element for scrambler as they have to all be the same length
-			$this->maxColumns = getWordLength($this->wordList[0]);
+			$this->maxColumns = $this->maxLength;
 
 			$this->generateLetterList();
 
 			$this->generatePuzzles();
-		}
+		/**}
 		else{
 			$this->errorStatus = true;
-		}
+		}**/
 	}
 
 	/*
-	 * Orders input words by word length (not needed for scrambler)
+	 * Orders input words by word length (not needed for stacks)
 	 */
 	private function orderWords(){
 	 	usort($this->wordList, function($a, $b) {
@@ -70,11 +81,9 @@ class Scrambler{
 	 }
 
 	/*
-	 * Validates the user input
-	 * If words aren't in equal in length then return false
-	 * Return true if no issue with input words
+	 * SHOULD NOT NEED TO VALIDATE INPUT AS INPUT SHOULD BE ACCEPTED AT THIS POINT NO MATTER WHAT
 	 */
-	private function validateInput(){
+	/**private function validateInput(){
 		$len = $this->getWordLength($this->wordList[0]);
 
 		for($i = 1; $i < count($this->wordList); $i++){
@@ -88,12 +97,13 @@ class Scrambler{
 		}
 
 		return true;
-	}
+	}**/
 
 	/*
 	 * Generates the puzzle list of letters in grid format with columns equal to maxColumns variable
 	 * Takes all words from input, split into characters, shuffle the list, then save in letterList in grid format
 	 */
+	//THIS FUNCTION HAS NOT BEEN TOUCHED
 	private function generateLetterList(){
 
 

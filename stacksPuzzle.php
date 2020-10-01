@@ -1,9 +1,9 @@
 <?php
-	require("Scrambler.php");
+	require("Stacks.php");
 	require("word_processor.php");
 
 	// set the current page to one of the main buttons
-	$nav_selected = "SCRAMBLERPUZZLE";
+	$nav_selected = "STACKSPUZZLE";
 
 	// make the left menu buttons visible; options: YES, NO
 	$left_buttons = "NO";
@@ -19,7 +19,7 @@
 
 		// If variables are not set redirect to index page with empty error message
 		if(isset($_POST["wordInput"])) {
-			$puzzleType = 'rectangle';
+			$puzzleType = 'stacks';
 			// $puzzleType = $_POST["puzzletype"];
 			$wordInput = $_POST["wordInput"];
 
@@ -42,29 +42,29 @@
 			redirect("count");
 		}
 
-		// Create scrambler puzzle
-		$scrambler = new Scrambler($wordList);
+		// Create stacks puzzle
+		$stacks = new Stacks($wordList);
 
-		// If there was an error with input redirect with invalid input message
-		if($scrambler->getErrorStatus() == true){
-			print_r("asdfa:");
-			redirect("invalidinput");
-		}
-		else{
+		//If there was an error with input redirect with invalid input message
+		//if($stacks->getErrorStatus() == true){
+		//	print_r("asdfa:");
+		//	redirect("invalidinput");
+		//}
+		//else{
 			// Get lists and puzzles
-			$letterList = $scrambler->getLetterList();
-			$wordList = $scrambler->getWordList();
+			$letterList = $stacks->getLetterList();
+			$wordList = $stacks->getWordList();
 
-			$pyramidPuzzle = $scrambler->getPyramidPuzzle();
-			$stepUpPuzzle = $scrambler->getStepUpPuzzle();
-			$stepDownPuzzle = $scrambler->getStepDownPuzzle();
+			$pyramidPuzzle = $stacks->getPyramidPuzzle();
+			$stepUpPuzzle = $stacks->getStepUpPuzzle();
+			$stepDownPuzzle = $stacks->getStepDownPuzzle();
 
-			$pyramidLetterPuzzle = $scrambler->getPyramidLetterPuzzle();
-			$stepUpLetterPuzzle = $scrambler->getStepUpLetterPuzzle();
-			$stepDownLetterPuzzle = $scrambler->getStepDownLetterPuzzle();
+			$pyramidLetterPuzzle = $stacks->getPyramidLetterPuzzle();
+			$stepUpLetterPuzzle = $stacks->getStepUpLetterPuzzle();
+			$stepDownLetterPuzzle = $stacks->getStepDownLetterPuzzle();
 
-			$characterList = $scrambler->getCharacterList();
-		}
+			$characterList = $stacks->getCharacterList();
+		//}
 
 	}
 	else{
