@@ -145,7 +145,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale = 1">
 
-    <title>Scrambler Puzzle</title>
+    <title>Stacks Puzzle</title>
 </head>
 <body>
     <div class="container-fluid">
@@ -158,7 +158,7 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-sm-12">
-                                <div align="center"><h2>Squares Puzzle</h2></div>
+                                <div align="center"><h2>Stacks Puzzle</h2></div>
                             </div>
                         </div>
                     </div>
@@ -406,7 +406,7 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-sm-12">
-                                <div align="center"><h2>Squares Options</h2></div>
+                                <div align="center"><h2>Stacks Options</h2></div>
                             </div>
                         </div>
                     </div>
@@ -536,7 +536,7 @@
 						<div class="panel-heading ">
 							<div class="row">
 								<div class="col-sm-12">
-									<div align="center"><h2>Squares Solution</h2></div>
+									<div align="center"><h2>Stacks Solution</h2></div>
 								</div>
 							</div>
 						</div>
