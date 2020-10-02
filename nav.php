@@ -39,6 +39,12 @@
               <br/>Home</li>
             </a>
 
+            <a href="linesIndex.php">
+              <li <?php if($nav_selected == "LINES"){ echo 'class="current-page"'; } ?>>
+                <img src="./images/lines.png">
+                <br/>Lines</li>
+            </a>
+
             <a href="dabbleIndex.php">
               <li <?php if($nav_selected == "DABBLE"){ echo 'class="current-page"'; } ?>>
                 <img src="./images/pyramid.png">
@@ -51,7 +57,7 @@
               <br/>Squares</li>
             </a>
 
-            <a href="abc_scanner.php">
+            <a href="swimIndex.php">
               <li <?php if($nav_selected == "SWIMLANES"){ echo 'class="current-page"'; } ?>>
                 <img src="./images/swim.png">
                 <br/>SwimLanes</li>
@@ -61,6 +67,12 @@
               <li <?php if($nav_selected == "STACKS"){ echo 'class="current-page"'; } ?>>
                 <img src="./images/stack.png">
                 <br/>Stacks</li>
+            </a>
+
+            <a href="shapesIndex.php">
+              <li <?php if($nav_selected == "SHAPES"){ echo 'class="current-page"'; } ?>>
+                <img src="./images/shapes.png">
+                <br/>Shapes</li>
             </a>
 
             <a href="admin.php">

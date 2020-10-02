@@ -24,7 +24,14 @@ table.center {
 </head>
 
 <body>
-<h2 style = "color: #01B0F1;">Scrambler Puzzles</h3>
+<br>
+<h2 style = "text-align: center;">Welcome to the Scrambler Puzzles!</h3>
+<br>
+<p style = "text-align: center; font-size: 18px;">Please select a game from the options in the navigation bar at the top!
+<br>
+<br>
+Games can be played here on the website, or downloaded and printed to be played on paper
+</p>
 </body>
 
 </html>
