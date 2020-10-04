@@ -306,6 +306,7 @@
 										<table class="puzzle">
 											<?php
 												// Prints blank step up puzzle
+												
 												foreach($stepUpPuzzle as $row){
 													echo'<tr>';
 													foreach($row as $letter){
@@ -358,7 +359,6 @@
 											// Top cell, then final top right cell, left cells, inside cells, right cells,
 											// bottom cells, then final right cell
 											$wordCount = count($wordList);
-
 											for($i = 0; $i < $wordCount; $i++){
 												$word = $wordList[$i];
 												$charList = splitWord($word);

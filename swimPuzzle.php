@@ -52,16 +52,19 @@
 		//}
 		//else{
 			// Get lists and puzzles
+			$shuffledWords = $swim->getShuffledWords();
 			$letterList = $swim->getLetterList();
 			$wordList = $swim->getWordList();
 
 			$pyramidPuzzle = $swim->getPyramidPuzzle();
 			$stepUpPuzzle = $swim->getStepUpPuzzle();
 			$stepDownPuzzle = $swim->getStepDownPuzzle();
+			$swimPuzzle = $swim->getSwimlanesPuzzle();
 
 			$pyramidLetterPuzzle = $swim->getPyramidLetterPuzzle();
 			$stepUpLetterPuzzle = $swim->getStepUpLetterPuzzle();
 			$stepDownLetterPuzzle = $swim->getStepDownLetterPuzzle();
+			$swimLetterPuzzle = $swim->getSwimlanesLetterPuzzle();
 
 			$characterList = $swim->getCharacterList();
 		//}
@@ -174,8 +177,8 @@
                                 <div class="row letters rectangleLettersPuzzle"> <h3>Letters</h3>
 								<table class="puzzle">
                                 <?php
-									// Prints a grid with 5 square width with puzzle letters
-									foreach($letterList as $row){
+									// THIS PRINTS THE SCRAMBLED LETTERS FOR THE SWIMLANES PUZZLE
+									foreach($shuffledWords as $row){
 										echo'<tr>';
 										foreach($row as $letter){
 											if($letter != "0"){
@@ -305,8 +308,8 @@
 									<div class="row">
 										<table class="puzzle">
 											<?php
-												// Prints blank step up puzzle
-												foreach($stepUpPuzzle as $row){
+												// THIS WILL PRINT THE BLANK SQUARES FOR THE USER FILL
+												foreach($swimPuzzle as $row){
 													echo'<tr>';
 													foreach($row as $letter){
 														if($letter != "0"){
@@ -553,7 +556,7 @@
 										<table class="puzzle">
 																		<?php
 											// Prints a grid with 5 square width with puzzle letters
-											foreach($letterList as $row){
+											foreach($shuffledWords as $row){
 												echo'<tr>';
 												foreach($row as $letter){
 													if($letter != "0"){
@@ -681,8 +684,8 @@
 										<div class="row">
 											<table class="puzzle">
 												<?php
-													// Prints solution for step up
-													foreach($stepUpPuzzle as $row){
+													// THIS WILL PRINT THE SOLUTION FOR THE WHOLE PUZZLE
+													foreach($wordList as $row){
 														echo'<tr>';
 														foreach($row as $letter){
 															if($letter != "0"){
