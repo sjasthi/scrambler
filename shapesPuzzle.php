@@ -1,9 +1,9 @@
 <?php
-	require("Scrambler.php");
+	require("Shapes.php");
 	require("word_processor.php");
 
 	// set the current page to one of the main buttons
-	$nav_selected = "SCRAMBLERPUZZLE";
+	$nav_selected = "SHAPESPUZZLE";
 
 	// make the left menu buttons visible; options: YES, NO
 	$left_buttons = "NO";
@@ -19,7 +19,7 @@
 
 		// If variables are not set redirect to index page with empty error message
 		if(isset($_POST["wordInput"])) {
-			$puzzleType = 'rectangle';
+			$puzzleType = 'shapes';
 			// $puzzleType = $_POST["puzzletype"];
 			$wordInput = $_POST["wordInput"];
 
@@ -42,29 +42,29 @@
 			redirect("count");
 		}
 
-		// Create scrambler puzzle
-		$scrambler = new Scrambler($wordList);
+		// Create shapes puzzle
+		$shapes = new Shapes($wordList);
 
-		// If there was an error with input redirect with invalid input message
-		if($scrambler->getErrorStatus() == true){
-			print_r("asdfa:");
-			redirect("invalidinput");
-		}
-		else{
+		//If there was an error with input redirect with invalid input message
+		//if($swim->getErrorStatus() == true){
+		//	print_r("asdfa:");
+		//	redirect("invalidinput");
+		//}
+		//else{
 			// Get lists and puzzles
-			$letterList = $scrambler->getLetterList();
-			$wordList = $scrambler->getWordList();
+			$letterList = $shapes->getLetterList();
+			$wordList = $shapes->getWordList();
 
-			$pyramidPuzzle = $scrambler->getPyramidPuzzle();
-			$stepUpPuzzle = $scrambler->getStepUpPuzzle();
-			$stepDownPuzzle = $scrambler->getStepDownPuzzle();
+			$pyramidPuzzle = $shapes->getPyramidPuzzle();
+			$stepUpPuzzle = $shapes->getStepUpPuzzle();
+			$stepDownPuzzle = $shapes->getStepDownPuzzle();
 
-			$pyramidLetterPuzzle = $scrambler->getPyramidLetterPuzzle();
-			$stepUpLetterPuzzle = $scrambler->getStepUpLetterPuzzle();
-			$stepDownLetterPuzzle = $scrambler->getStepDownLetterPuzzle();
+			$pyramidLetterPuzzle = $shapes->getPyramidLetterPuzzle();
+			$stepUpLetterPuzzle = $shapes->getStepUpLetterPuzzle();
+			$stepDownLetterPuzzle = $shapes->getStepDownLetterPuzzle();
 
-			$characterList = $scrambler->getCharacterList();
-		}
+			$characterList = $shapes->getCharacterList();
+		//}
 
 	}
 	else{
@@ -145,7 +145,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale = 1">
 
-    <title>Scrambler Puzzle</title>
+    <title>Shapes Puzzle</title>
 </head>
 <body>
     <div class="container-fluid">
@@ -158,7 +158,7 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-sm-12">
-                                <div align="center"><h2>Squares Puzzle</h2></div>
+                                <div align="center"><h2>Shapes Puzzle</h2></div>
                             </div>
                         </div>
                     </div>
@@ -306,7 +306,6 @@
 										<table class="puzzle">
 											<?php
 												// Prints blank step up puzzle
-												
 												foreach($stepUpPuzzle as $row){
 													echo'<tr>';
 													foreach($row as $letter){
@@ -359,6 +358,7 @@
 											// Top cell, then final top right cell, left cells, inside cells, right cells,
 											// bottom cells, then final right cell
 											$wordCount = count($wordList);
+
 											for($i = 0; $i < $wordCount; $i++){
 												$word = $wordList[$i];
 												$charList = splitWord($word);
@@ -406,7 +406,7 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-sm-12">
-                                <div align="center"><h2>Squares Options</h2></div>
+                                <div align="center"><h2>Shapes Options</h2></div>
                             </div>
                         </div>
                     </div>
@@ -536,7 +536,7 @@
 						<div class="panel-heading ">
 							<div class="row">
 								<div class="col-sm-12">
-									<div align="center"><h2>Squares Solution</h2></div>
+									<div align="center"><h2>Shapes Solution</h2></div>
 								</div>
 							</div>
 						</div>

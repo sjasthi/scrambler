@@ -1,9 +1,9 @@
 <?php
-	require("Scrambler.php");
+	require("Swim.php");
 	require("word_processor.php");
 
 	// set the current page to one of the main buttons
-	$nav_selected = "SCRAMBLERPUZZLE";
+	$nav_selected = "SWIMPUZZLE";
 
 	// make the left menu buttons visible; options: YES, NO
 	$left_buttons = "NO";
@@ -19,7 +19,7 @@
 
 		// If variables are not set redirect to index page with empty error message
 		if(isset($_POST["wordInput"])) {
-			$puzzleType = 'rectangle';
+			$puzzleType = 'swim';
 			// $puzzleType = $_POST["puzzletype"];
 			$wordInput = $_POST["wordInput"];
 
@@ -42,29 +42,32 @@
 			redirect("count");
 		}
 
-		// Create scrambler puzzle
-		$scrambler = new Scrambler($wordList);
+		// Create swimlanes puzzle
+		$swim = new Swim($wordList);
 
-		// If there was an error with input redirect with invalid input message
-		if($scrambler->getErrorStatus() == true){
-			print_r("asdfa:");
-			redirect("invalidinput");
-		}
-		else{
+		//If there was an error with input redirect with invalid input message
+		//if($swim->getErrorStatus() == true){
+		//	print_r("asdfa:");
+		//	redirect("invalidinput");
+		//}
+		//else{
 			// Get lists and puzzles
-			$letterList = $scrambler->getLetterList();
-			$wordList = $scrambler->getWordList();
+			$shuffledWords = $swim->getShuffledWords();
+			$letterList = $swim->getLetterList();
+			$wordList = $swim->getWordList();
 
-			$pyramidPuzzle = $scrambler->getPyramidPuzzle();
-			$stepUpPuzzle = $scrambler->getStepUpPuzzle();
-			$stepDownPuzzle = $scrambler->getStepDownPuzzle();
+			$pyramidPuzzle = $swim->getPyramidPuzzle();
+			$stepUpPuzzle = $swim->getStepUpPuzzle();
+			$stepDownPuzzle = $swim->getStepDownPuzzle();
+			$swimPuzzle = $swim->getSwimlanesPuzzle();
 
-			$pyramidLetterPuzzle = $scrambler->getPyramidLetterPuzzle();
-			$stepUpLetterPuzzle = $scrambler->getStepUpLetterPuzzle();
-			$stepDownLetterPuzzle = $scrambler->getStepDownLetterPuzzle();
+			$pyramidLetterPuzzle = $swim->getPyramidLetterPuzzle();
+			$stepUpLetterPuzzle = $swim->getStepUpLetterPuzzle();
+			$stepDownLetterPuzzle = $swim->getStepDownLetterPuzzle();
+			$swimLetterPuzzle = $swim->getSwimlanesLetterPuzzle();
 
-			$characterList = $scrambler->getCharacterList();
-		}
+			$characterList = $swim->getCharacterList();
+		//}
 
 	}
 	else{
@@ -145,7 +148,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale = 1">
 
-    <title>Scrambler Puzzle</title>
+    <title>SwimLanes Puzzle</title>
 </head>
 <body>
     <div class="container-fluid">
@@ -158,7 +161,7 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-sm-12">
-                                <div align="center"><h2>Squares Puzzle</h2></div>
+                                <div align="center"><h2>SwimLanes Puzzle</h2></div>
                             </div>
                         </div>
                     </div>
@@ -174,8 +177,8 @@
                                 <div class="row letters rectangleLettersPuzzle"> <h3>Letters</h3>
 								<table class="puzzle">
                                 <?php
-									// Prints a grid with 5 square width with puzzle letters
-									foreach($letterList as $row){
+									// THIS PRINTS THE SCRAMBLED LETTERS FOR THE SWIMLANES PUZZLE
+									foreach($shuffledWords as $row){
 										echo'<tr>';
 										foreach($row as $letter){
 											if($letter != "0"){
@@ -305,9 +308,8 @@
 									<div class="row">
 										<table class="puzzle">
 											<?php
-												// Prints blank step up puzzle
-												
-												foreach($stepUpPuzzle as $row){
+												// THIS WILL PRINT THE BLANK SQUARES FOR THE USER FILL
+												foreach($swimPuzzle as $row){
 													echo'<tr>';
 													foreach($row as $letter){
 														if($letter != "0"){
@@ -359,6 +361,7 @@
 											// Top cell, then final top right cell, left cells, inside cells, right cells,
 											// bottom cells, then final right cell
 											$wordCount = count($wordList);
+
 											for($i = 0; $i < $wordCount; $i++){
 												$word = $wordList[$i];
 												$charList = splitWord($word);
@@ -406,7 +409,7 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-sm-12">
-                                <div align="center"><h2>Squares Options</h2></div>
+                                <div align="center"><h2>SwimLanes Options</h2></div>
                             </div>
                         </div>
                     </div>
@@ -536,7 +539,7 @@
 						<div class="panel-heading ">
 							<div class="row">
 								<div class="col-sm-12">
-									<div align="center"><h2>Squares Solution</h2></div>
+									<div align="center"><h2>SwimLanes Solution</h2></div>
 								</div>
 							</div>
 						</div>
@@ -553,7 +556,7 @@
 										<table class="puzzle">
 																		<?php
 											// Prints a grid with 5 square width with puzzle letters
-											foreach($letterList as $row){
+											foreach($shuffledWords as $row){
 												echo'<tr>';
 												foreach($row as $letter){
 													if($letter != "0"){
@@ -681,8 +684,8 @@
 										<div class="row">
 											<table class="puzzle">
 												<?php
-													// Prints solution for step up
-													foreach($stepUpPuzzle as $row){
+													// THIS WILL PRINT THE SOLUTION FOR THE WHOLE PUZZLE
+													foreach($wordList as $row){
 														echo'<tr>';
 														foreach($row as $letter){
 															if($letter != "0"){

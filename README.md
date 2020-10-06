@@ -1,2 +1,3 @@
-# scrambler
- For scrambling words of equal length into MxN matrix
+# abasiccomposer
+A Basic Composer (ABC)
+
