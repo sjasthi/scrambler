@@ -16,7 +16,7 @@ class Swim{
 	private $characterList = [];
 	private $letterList = [];
 	private $shuffledWords = [];
-	private $scrambled = false;
+	private $scrambled = true;
 	private $fixed = true;
 
 	private $rectanglePuzzle = [];
