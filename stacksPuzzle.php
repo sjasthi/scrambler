@@ -19,8 +19,8 @@
 
 		// If variables are not set redirect to index page with empty error message
 		if(isset($_POST["wordInput"])) {
-			$puzzleType = 'stacks';
-			// $puzzleType = $_POST["puzzletype"];
+			//$puzzleType = 'stacks';
+			$puzzleType = $_POST["puzzletype"];
 			$wordInput = $_POST["wordInput"];
 
 			// If input is blank redirect to Index with empty error message
@@ -55,13 +55,13 @@
 			$letterList = $stacks->getLetterList();
 			$wordList = $stacks->getWordList();
 
-			$pyramidPuzzle = $stacks->getPyramidPuzzle();
-			$stepUpPuzzle = $stacks->getStepUpPuzzle();
-			$stepDownPuzzle = $stacks->getStepDownPuzzle();
+			$pyramidPuzzle = $stacks->getStacksPyramidPuzzle();
+			$stepUpPuzzle = $stacks->getStacksStepUpPuzzle();
+			$stepDownPuzzle = $stacks->getStacksStepDownPuzzle();
 
-			$pyramidLetterPuzzle = $stacks->getPyramidLetterPuzzle();
-			$stepUpLetterPuzzle = $stacks->getStepUpLetterPuzzle();
-			$stepDownLetterPuzzle = $stacks->getStepDownLetterPuzzle();
+			$pyramidLetterPuzzle = $stacks->getStacksPyramidLetterPuzzle();
+			$stepUpLetterPuzzle = $stacks->getStacksStepUpLetterPuzzle();
+			$stepDownLetterPuzzle = $stacks->getStacksStepDownLetterPuzzle();
 
 			$characterList = $stacks->getCharacterList();
 		//}
@@ -193,7 +193,7 @@
 								</table>
 							</div>
 								<div class="letters stepupLettersPuzzle" style="display: none;">
-									<div class="row"> <h3>Step Up Letters</h3></div>
+									<div class="row"> <h3>Right Justified Letters</h3></div>
 									<div class="row">
 										<table class="puzzle">
 											<?php
@@ -216,22 +216,19 @@
 									</div>
 								</div>
 								<div class="letters stepdownLettersPuzzle" style="display: none;">
-									<div class="row"> <h3>Step Down Letters</h3> </div>
+									<div class="row"> <h3>Left Justified Letters</h3> </div>
 									<div class="row">
 										<table class="puzzle">
 											<?php
 												// Prints blank step down puzzle
-
 												foreach($stepDownLetterPuzzle as $row){
 													echo'<tr>';
 													foreach($row as $letter){
 														if($letter != "0"){
-															echo'<td class="filled">'.$letter.'</td>
-															';
+															echo'<td class="filled">'.$letter.'</td>';
 														}
 														else{
-															echo'<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
-															';
+															echo'<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>';
 														}
 													}
 													echo'</tr>';
@@ -240,9 +237,9 @@
 										</table>
 									</div>
 								</div>
-								<div class="letters rectangleLettersPuzzle" style="display: none;">
-									<div class="row"> <h3>Rectangle Letters</h3> </div>
-									<div class="rectangle">
+								<div class="letters pyramidLettersPuzzle" style="display: none;">
+									<div class="row"> <h3>Center Justified Letters</h3> </div>
+									<div class="pyramid">
 										<?php
 											// Prints blank rectangle puzzle
 											// Cells must be printed with correct styling
@@ -301,7 +298,7 @@
 							<?php //START OF WORDS PUZZLE *******************?>
               <div class="col-sm-6">
 								<div class="stepupPuzzle word">
-									<div class="row"> <h3>Words</h3></div>
+									<div class="row"> <h3>Right Justified</h3></div>
 									<div class="row">
 										<table class="puzzle">
 											<?php
@@ -325,7 +322,7 @@
 									</div>
 								</div>
 								<div class="stepdownPuzzle word">
-									<div class="row"> <h3> Step Down </h3> </div>
+									<div class="row"> <h3> Left Justified </h3> </div>
 									<div class="row">
 										<table class="puzzle">
 											<?php
@@ -350,7 +347,7 @@
 									</div>
 								</div>
 								<div class="pyramidPuzzle word">
-									<div class="row"> <h3> Words </h3> </div>
+									<div class="row"> <h3> Center Justified </h3> </div>
 									<div class="pyramid">
 										<?php
 											// Prints blank pyramid puzzle
@@ -464,31 +461,31 @@
                                             </div>
                                         </div>
 										<?php //addition of letters options ************************* ?>
-<!-- 										<br>
+ 										<br>
 										<div class="row">
 											<div class="col-sm-6">
 												<select class="form-control" id="puzzlelettertype" name="puzzlelettertype" onchange="lettersChange()">
 													<option value="rectangle">Rectangle</option>
-													<option value="pyramid" >Pyramid</option>
-													<option value="stepup" >Step Up</option>
-													<option value="stepdown" >Step Down</option>
+													<option value="pyramid" >Center Justified</option>
+													<option value="stepup" >Right Justified</option>
+													<option value="stepdown" >Left Justified</option>
 												</select>
 											</div>
 										<h4>Letters</h4>
 										</div>
- -->
-<!-- 										<br>
+
+										<br>
 										<div class="row">
 											<div class="col-sm-6">
 												<select class="form-control" id="puzzletype" name="puzzletype" onchange="puzzleChange()">
-													<option value="pyramid" <?php if($puzzleType == "pyramid"){echo('selected="selected"');} ?>>Pyramid</option>
-													<option value="stepup" <?php if($puzzleType == "stepup"){echo('selected="selected"');} ?>>Step Up</option>
-													<option value="stepdown" <?php if($puzzleType == "stepdown"){echo('selected="selected"');} ?>>Step Down</option>
+													<option value="pyramid" <?php if($puzzleType == "pyramid"){echo('selected="selected"');} ?>>Center Justified</option>
+													<option value="stepup" <?php if($puzzleType == "stepup"){echo('selected="selected"');} ?>>Right Justified</option>
+													<option value="stepdown" <?php if($puzzleType == "stepdown"){echo('selected="selected"');} ?>>Left Justified</option>
 												</select>
 											</div>
 										<h4>Words</h4>
 										</div>
- -->                                    </div>
+                                   </div>
                                 </div>
 
 																<?php // Words OPTIONS ********************************** ?>
@@ -618,9 +615,9 @@
 												</table>
 											</div>
 										</div>
-										<div class="letters rectangleLettersPuzzle" style="display: none;">
-											<div class="row"> <h3>Rectangle Letters</h3> </div>
-											<div class="rectangle">
+										<div class="letters pyramidLettersPuzzle" style="display: none;">
+											<div class="row"> <h3>Letters</h3> </div>
+											<div class="pyramid">
 												<?php
 													// Prints blank rectangle puzzle
 													// Cells must be printed with correct styling
@@ -724,9 +721,9 @@
 											</table>
 										</div>
 									</div>
-									<div class="rectangleSolution word">
+									<div class="pyramidSolution word">
 										<div class="row"> <h3> Words </h3> </div>
-										<div class="rectangle">
+										<div class="pyramid">
 											<?php
 												// Prints solution rectangle
 												// Cells must be printed with correct styling
@@ -906,14 +903,12 @@
 			echo('$(".stepdownSolution").show();');
 		}
 		else{
-			echo('$(".rectanglePuzzle").hide();');
-			echo('$(".pyramidPuzzle").hide();');
-			echo('$(".stepupPuzzle").show();');
+			echo('$(".pyramidPuzzle").show();');
+			echo('$(".stepupPuzzle").hide();');
 			echo('$(".stepdownPuzzle").hide();');
 
-			echo('$(".rectangleSolution").hide();');
 			echo('$(".pyramidSolution").show();');
-			echo('$(".stepupSolution").show();');
+			echo('$(".stepupSolution").hide();');
 			echo('$(".stepdownSolution").hide();');
 		}
 	?>
@@ -929,66 +924,83 @@
 	}
 
 	// Shows/hides puzzles and solutions when puzzle type is changed (not needed for scrambler)
-/*	function puzzleChange(){
-		if($('#puzzletype').val() == "rectangle"){
+function puzzleChange(){
+		if($('#puzzletype').val() == "pyramid"){
+			$(".pyramidPuzzle").show();
+			//$(".rectanglePuzzle").hide();
+			$(".stepupPuzzle").hide();
+			$(".stepdownPuzzle").hide();
+
+			$(".pyramidSolution").show();
+			//$(".rectangleSolution").hide();
+			$(".stepupSolution").hide();
+			$(".stepdownSolution").hide();
+		}
+		/*else if($('#puzzletype').val() == "rectangle"){
+			$(".pyramidPuzzle").hide();
 			$(".rectanglePuzzle").show();
 			$(".stepupPuzzle").hide();
 			$(".stepdownPuzzle").hide();
 
+			$(".pyramidSolution").hide();
 			$(".rectangleSolution").show();
 			$(".stepupSolution").hide();
 			$(".stepdownSolution").hide();
-		}
+		}*/
 		else if($('#puzzletype').val() == "stepup"){
-			$(".rectanglePuzzle").hide();
+			$(".pyramidPuzzle").hide();
+			//$(".rectanglePuzzle").hide();
 			$(".stepupPuzzle").show();
 			$(".stepdownPuzzle").hide();
 
-			$(".rectangleSolution").hide();
+			$(".pyramidSolution").hide();
+			//$(".rectangleSolution").hide();
 			$(".stepupSolution").show();
 			$(".stepdownSolution").hide();
 		}
 		else{
-			$(".rectanglePuzzle").hide();
+			$(".pyramidPuzzle").hide();
+			//$(".rectanglePuzzle").hide();
 			$(".stepupPuzzle").hide();
 			$(".stepdownPuzzle").show();
 
-			$(".rectangleSolution").hide();
+			$(".pyramidSolution").hide();
+			//$(".rectangleSolution").hide();
 			$(".stepupSolution").hide();
 			$(".stepdownSolution").show();
 		}
 	}
-*/
+
 	// 	Shows/hides letters when puzzle type is changed (not needed for scrambler)
-/*	function lettersChange(){
+function lettersChange(){
 			if($('#puzzlelettertype').val() == "rectangle"){
 				$(".rectangleLettersPuzzle").show();
-				$(".rectangleLettersPuzzle").show();
+				$(".pyramidLettersPuzzle").hide();
 				$(".stepupLettersPuzzle").hide();
 				$(".stepdownLettersPuzzle").hide();
 
 			}
 			else if($('#puzzlelettertype').val() == "pyramid"){
 				$(".rectangleLettersPuzzle").hide();
-				$(".rectangleLettersPuzzle").show();
+				$(".pyramidLettersPuzzle").show();
 				$(".stepupLettersPuzzle").hide();
 				$(".stepdownLettersPuzzle").hide();
 
 			}
 			else if($('#puzzlelettertype').val() == "stepup"){
 				$(".rectangleLettersPuzzle").hide();
-				$(".rectangleLettersPuzzle").hide();
+				$(".pyramidLettersPuzzle").hide();
 				$(".stepupLettersPuzzle").show();
 				$(".stepdownLettersPuzzle").hide();
 
 			}
 			else{
 				$(".rectangleLettersPuzzle").hide();
-				$(".rectangleLettersPuzzle").hide();
+				$(".pyramidLettersPuzzle").hide();
 				$(".stepupLettersPuzzle").hide();
 				$(".stepdownLettersPuzzle").show();
 
 			}
-		}*/
+		}
 </script>
 </html>

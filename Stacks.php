@@ -18,15 +18,15 @@ class Stacks{
 
 
 	private $rectanglePuzzle = [];
-	private $pyramidPuzzle = [];
-	private $stepUpPuzzle = [];
-	private $stepDownPuzzle = [];
+	private $stacksPyramidPuzzle = [];
+	private $stacksStepUpPuzzle = [];
+	private $stacksStepDownPuzzle = [];
 	private $stacksPuzzle = [];
 
 	private $rectangleLetterPuzzle =[];
-	private $stepDownLetterPuzzle = [];
-	private $stepUpLetterPuzzle = [];
-	private $pyramidLetterPuzzle =[];
+	private $stacksStepDownLetterPuzzle = [];
+	private $stacksStepUpLetterPuzzle = [];
+	private $stacksPyramidLetterPuzzle =[];
 	private $stacksLetterPuzzle = [];
 
 	// Added max Columns for scrambler
@@ -144,24 +144,24 @@ class Stacks{
 	 */
 	private function generatePuzzles(){
 		$this->rectanglePuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
-		$this->pyramidPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
-		$this->stepUpPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
-		$this->stepDownPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
+		$this->stacksPyramidPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
+		$this->stacksStepUpPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
+		$this->stacksStepDownPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
 
 		$this->generateRectanglePuzzle();
-		$this->generatePyramidPuzzle();
-		$this->generateStepUpPuzzle();
-		$this->generateStepDownPuzzle();
+		$this->generateStacksPyramidPuzzle();
+		$this->generateStacksStepUpPuzzle();
+		$this->generateStacksStepDownPuzzle();
 
 		$this->rectangleLetterPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
-		$this->pyramidLetterPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
-		$this->stepUpLetterPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
-		$this->stepDownLetterPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
+		$this->stacksPyramidLetterPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
+		$this->stacksStepUpLetterPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
+		$this->stacksStepDownLetterPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
 
 		$this->generateRectangleLetterPuzzle();
-		$this->generatePyramidLetterPuzzle();
-		$this->generateStepDownLetterPuzzle();
-		$this->generateStepUpLetterPuzzle();
+		$this->generateStacksPyramidLetterPuzzle();
+		$this->generateStacksStepDownLetterPuzzle();
+		$this->generateStacksStepUpLetterPuzzle();
 
 
 	}
@@ -240,7 +240,7 @@ class Stacks{
 	 *     a b c 0
 	 *     a b c d
 	 */
-	private function generatePyramidPuzzle(){
+	private function generateStacksPyramidPuzzle(){
 		$col = 0;
 		$row = 0;
 
@@ -249,7 +249,7 @@ class Stacks{
 			$col = 0;
 
 			foreach($chars as $char){
-				$this->pyramidPuzzle[$row][$col] = $char;
+				$this->stacksPyramidPuzzle[$row][$col] = $char;
 
 				$col++;
 			}
@@ -267,7 +267,7 @@ class Stacks{
 	 *     a b c 0
 	 *     a b c d
 	 */
-	private function generatePyramidLetterPuzzle(){
+	private function generateStacksPyramidLetterPuzzle(){
 		$col = 0;
 		$row = 0;
 		$count=0;
@@ -277,7 +277,7 @@ class Stacks{
 			$col = 0;
 
 			foreach($chars as $char){
-				$this->pyramidLetterPuzzle[$row][$col] = $this->characterList[$count++];
+				$this->stacksPyramidLetterPuzzle[$row][$col] = $this->characterList[$count++];
 
 				$col++;
 			}
@@ -296,7 +296,7 @@ class Stacks{
 	 *     a b c d
 	 */
 
-	private function generateStepUpPuzzle(){
+	private function generateStacksStepUpPuzzle(){
 		$maxColumn = $this->maxLength;
 		$col = 0;
 		$row = 0;
@@ -308,7 +308,7 @@ class Stacks{
 			$col = $maxColumn - $wordLength;
 
 			foreach($chars as $char){
-				$this->stepUpPuzzle[$row][$col] = $char;
+				$this->stacksStepUpPuzzle[$row][$col] = $char;
 
 				$col++;
 			}
@@ -326,7 +326,7 @@ class Stacks{
 	 *     0 a b c
 	 *     a b c d
 	 */
-	private function generateStepUpLetterPuzzle(){
+	private function generateStacksStepUpLetterPuzzle(){
 		$maxColumn = $this->maxLength;
 		$col = 0;
 		$row = 0;
@@ -339,7 +339,7 @@ class Stacks{
 			$col = $maxColumn - $wordLength;
 
 			foreach($chars as $char){
-				$this->stepUpLetterPuzzle[$row][$col] = $this->characterList[$count++];
+				$this->stacksStepUpLetterPuzzle[$row][$col] = $this->characterList[$count++];
 
 				$col++;
 			}
@@ -357,7 +357,7 @@ class Stacks{
 	 *     a b c 0
 	 *     a b c d
 	 */
-	private function generateStepDownPuzzle(){
+	private function generateStacksStepDownPuzzle(){
 		$col = 0;
 		$row = 0;
 
@@ -366,7 +366,7 @@ class Stacks{
 			$col = 0;
 
 			foreach($chars as $char){
-				$this->stepDownPuzzle[$row][$col] = $char;
+				$this->stacksStepDownPuzzle[$row][$col] = $char;
 
 				$col++;
 			}
@@ -384,7 +384,7 @@ class Stacks{
 	 *     a b c 0
 	 *     a b c d
 	 */
-	private function generateStepDownLetterPuzzle(){
+	private function generateStacksStepDownLetterPuzzle(){
 		$col = 0;
 		$row = 0;
 		$count = 0;
@@ -394,7 +394,7 @@ class Stacks{
 			$col = 0;
 
 			foreach($chars as $char){
-				$this->stepDownLetterPuzzle[$row][$col] = $this->characterList[$count++];
+				$this->stacksStepDownLetterPuzzle[$row][$col] = $this->characterList[$count++];
 
 				$col++;
 			}
@@ -422,31 +422,31 @@ class Stacks{
 	}
 
 	public function getRectangleLetterPuzzle(){
-		return $this->rectanglePuzzle;
+		return $this->rectangleLetterPuzzle;
 	}
 
-	public function getPyramidPuzzle(){
-		return $this->pyramidPuzzle;
+	public function getStacksPyramidPuzzle(){
+		return $this->stacksPyramidPuzzle;
 	}
 
-	public function getPyramidLetterPuzzle(){
-		return $this->pyramidPuzzle;
+	public function getStacksPyramidLetterPuzzle(){
+		return $this->stacksPyramidLetterPuzzle;
 	}
 
-	public function getStepUpPuzzle(){
-		return $this->stepUpPuzzle;
+	public function getStacksStepUpPuzzle(){
+		return $this->stacksStepUpPuzzle;
 	}
 
-	public function getStepUpLetterPuzzle(){
-		return $this->stepUpLetterPuzzle;
+	public function getStacksStepUpLetterPuzzle(){
+		return $this->stacksStepUpLetterPuzzle;
 	}
 
-	public function getStepDownPuzzle(){
-		return $this->stepDownPuzzle;
+	public function getStacksStepDownPuzzle(){
+		return $this->stacksStepDownPuzzle;
 	}
 
-	public function getStepDownLetterPuzzle(){
-		return $this->stepDownLetterPuzzle;
+	public function getStacksStepDownLetterPuzzle(){
+		return $this->stacksStepDownLetterPuzzle;
 	}
 
 	public function getErrorStatus(){
