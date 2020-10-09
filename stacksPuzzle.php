@@ -193,7 +193,7 @@
 								</table>
 							</div>
 								<div class="letters stepupLettersPuzzle" style="display: none;">
-									<div class="row"> <h3>Right Justified Letters</h3></div>
+									<div class="row"> <h3>Letters</h3></div>
 									<div class="row">
 										<table class="puzzle">
 											<?php
@@ -216,7 +216,7 @@
 									</div>
 								</div>
 								<div class="letters stepdownLettersPuzzle" style="display: none;">
-									<div class="row"> <h3>Left Justified Letters</h3> </div>
+									<div class="row"> <h3>Letters</h3> </div>
 									<div class="row">
 										<table class="puzzle">
 											<?php
@@ -238,7 +238,7 @@
 									</div>
 								</div>
 								<div class="letters pyramidLettersPuzzle" style="display: none;">
-									<div class="row"> <h3>Center Justified Letters</h3> </div>
+									<div class="row"> <h3>Letters</h3> </div>
 									<div class="pyramid">
 										<?php
 											// Prints blank rectangle puzzle
@@ -298,7 +298,7 @@
 							<?php //START OF WORDS PUZZLE *******************?>
               <div class="col-sm-6">
 								<div class="stepupPuzzle word">
-									<div class="row"> <h3>Right Justified</h3></div>
+									<div class="row"> <h3>Words</h3></div>
 									<div class="row">
 										<table class="puzzle">
 											<?php
@@ -322,7 +322,7 @@
 									</div>
 								</div>
 								<div class="stepdownPuzzle word">
-									<div class="row"> <h3> Left Justified </h3> </div>
+									<div class="row"> <h3> Words </h3> </div>
 									<div class="row">
 										<table class="puzzle">
 											<?php
@@ -347,7 +347,7 @@
 									</div>
 								</div>
 								<div class="pyramidPuzzle word">
-									<div class="row"> <h3> Center Justified </h3> </div>
+									<div class="row"> <h3>Words</h3> </div>
 									<div class="pyramid">
 										<?php
 											// Prints blank pyramid puzzle
@@ -568,7 +568,7 @@
 										</table>
 									</div>
 										<div class="letters stepupLettersPuzzle" style="display: none;">
-											<div class="row"> <h3>Step Up Letters</h3></div>
+											<div class="row"> <h3>Letters</h3></div>
 											<div class="row">
 												<table class="puzzle">
 													<?php
@@ -591,7 +591,7 @@
 											</div>
 										</div>
 										<div class="letters stepdownLettersPuzzle" style="display: none;">
-											<div class="row"> <h3>Step Down Letters</h3> </div>
+											<div class="row"> <h3>Letters</h3> </div>
 											<div class="row">
 												<table class="puzzle">
 													<?php
@@ -698,7 +698,7 @@
 										</div>
 									</div>
 									<div class="stepdownSolution word">
-										<div class="row"> <h3> Step Down </h3> </div>
+										<div class="row"> <h3> Words </h3> </div>
 										<div class="row">
 											<table class="puzzle">
 												<?php
@@ -927,45 +927,28 @@
 function puzzleChange(){
 		if($('#puzzletype').val() == "pyramid"){
 			$(".pyramidPuzzle").show();
-			//$(".rectanglePuzzle").hide();
 			$(".stepupPuzzle").hide();
 			$(".stepdownPuzzle").hide();
 
 			$(".pyramidSolution").show();
-			//$(".rectangleSolution").hide();
 			$(".stepupSolution").hide();
 			$(".stepdownSolution").hide();
 		}
-		/*else if($('#puzzletype').val() == "rectangle"){
-			$(".pyramidPuzzle").hide();
-			$(".rectanglePuzzle").show();
-			$(".stepupPuzzle").hide();
-			$(".stepdownPuzzle").hide();
-
-			$(".pyramidSolution").hide();
-			$(".rectangleSolution").show();
-			$(".stepupSolution").hide();
-			$(".stepdownSolution").hide();
-		}*/
 		else if($('#puzzletype').val() == "stepup"){
 			$(".pyramidPuzzle").hide();
-			//$(".rectanglePuzzle").hide();
 			$(".stepupPuzzle").show();
 			$(".stepdownPuzzle").hide();
 
 			$(".pyramidSolution").hide();
-			//$(".rectangleSolution").hide();
 			$(".stepupSolution").show();
 			$(".stepdownSolution").hide();
 		}
 		else{
 			$(".pyramidPuzzle").hide();
-			//$(".rectanglePuzzle").hide();
 			$(".stepupPuzzle").hide();
 			$(".stepdownPuzzle").show();
 
 			$(".pyramidSolution").hide();
-			//$(".rectangleSolution").hide();
 			$(".stepupSolution").hide();
 			$(".stepdownSolution").show();
 		}

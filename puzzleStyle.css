@@ -110,7 +110,7 @@ table.puzzle tr td.empty {
 	height: 48px; 
 	border-style: solid;
 	border-color: #000000;
-	border-width: 2px 0px 0px 2px;
+	border-width: 2px 2px 2px 2px;
 }
 
 .pyramid .left{
@@ -120,7 +120,7 @@ table.puzzle tr td.empty {
 	height: 48px; 
 	border-style: solid;
 	border-color: #000000;
-	border-width: 2px 0px 0px 2px;
+	border-width: 2px 2px 2px 2px;
 }
 
 .pyramid .right{
@@ -130,7 +130,7 @@ table.puzzle tr td.empty {
 	height: 48px; 
 	border-style: solid;
 	border-color: #000000;
-	border-width: 2px 2px 0px 2px;
+	border-width: 2px 2px 2px 2px;
 }
 
 .pyramid .top{
@@ -140,7 +140,7 @@ table.puzzle tr td.empty {
 	height: 48px; 
 	border-style: solid;
 	border-color: #000000;
-	border-width: 2px 0px 0px 2px;
+	border-width: 2px 2px 2px 2px;
 }
 
 .pyramid .topRight{
@@ -150,7 +150,7 @@ table.puzzle tr td.empty {
 	height: 48px; 
 	border-style: solid;
 	border-color: #000000;
-	border-width: 2px 2px 0px 2px;
+	border-width: 2px 2px 2px 2px;
 }
 
 .pyramid .bottom{
@@ -160,7 +160,7 @@ table.puzzle tr td.empty {
 	height: 48px; 
 	border-style: solid;
 	border-color: #000000;
-	border-width: 2px 0px 2px 2px;
+	border-width: 2px 2px 2px 2px;
 }
 
 .pyramid .bottomRight{

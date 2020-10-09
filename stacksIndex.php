@@ -3,7 +3,7 @@
 		$error = $_GET["error"];
 		
 		// Check to see if an error code was passed in
-		// Error get variable is passed through ScrablerPuzzle.php after an issue has been detected
+		// Error get variable is passed through ScramblerPuzzle.php after an issue has been detected
 		// Here the message will get displayed and prompt the user to try again
 		switch($error){
 			case "emptyinput":
@@ -98,9 +98,9 @@
                                 
                                 <div class="col-sm-3">
                                     <select class="form-control" id="puzzletype" name="puzzletype" onchange="sizeChange(this.value);">
-                                        <option value="pyramid" >Pyramid</option>
-                                        <option value="stepup" >Step Up</option>
-										<option value="stepdown" selected="selected">Step Down</option>
+                                        <option value="pyramid" >Center Justified</option>
+                                        <option value="stepup" >Right Justified</option>
+										<option value="stepdown" selected="selected">Left Justified</option>
                                     </select>
                                 </div>
                             </div>
