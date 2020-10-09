@@ -797,6 +797,15 @@
 			$(".word .rectangle .topRight").css("background-color", color.toHexString());
 			$(".word .rectangle .bottom").css("background-color", color.toHexString());
 			$(".word .rectangle .bottomRight").css("background-color", color.toHexString());
+			
+			$(".word table.puzzle tr td.filled").css("background-color", color.toHexString());
+            $(".word .pyramid .inside").css("background-color", color.toHexString());
+			$(".word .pyramid .left").css("background-color", color.toHexString());
+			$(".word .pyramid .right").css("background-color", color.toHexString());
+			$(".word .pyramid .top").css("background-color", color.toHexString());
+			$(".word .pyramid .topRight").css("background-color", color.toHexString());
+			$(".word .pyramid .bottom").css("background-color", color.toHexString());
+			$(".word .pyramid .bottomRight").css("background-color", color.toHexString());
 		}
 	});
 
@@ -814,6 +823,18 @@
 			$(".word .rectangle .topRight").css("color", color.toHexString());
 			$(".word .rectangle .bottom").css("color", color.toHexString());
 			$(".word .rectangle .bottomRight").css("color", color.toHexString());
+			
+			$(".word table.puzzle tr td.filled").css("color", color.toHexString());
+            $(".word .pyramid .cell").css("color", color.toHexString());
+
+			$(".word table.puzzle tr td.filled").css("color", color.toHexString());
+            $(".word .pyramid .inside").css("color", color.toHexString());
+			$(".word .pyramid .left").css("color", color.toHexString());
+			$(".word .pyramid .right").css("color", color.toHexString());
+			$(".word .pyramid .top").css("color", color.toHexString());
+			$(".word .pyramid .topRight").css("color", color.toHexString());
+			$(".word .pyramid .bottom").css("color", color.toHexString());
+			$(".word .pyramid .bottomRight").css("color", color.toHexString());
 		}
 	});
 
@@ -831,6 +852,18 @@
 			$(".word .rectangle .topRight").css("border-color", color.toHexString());
 			$(".word .rectangle .bottom").css("border-color", color.toHexString());
 			$(".word .rectangle .bottomRight").css("border-color", color.toHexString());
+
+			$(".word table.puzzle tr td.filled").css("border", "2px solid " + color.toHexString());
+            $(".word .pyramid .cell").css("border", "2px solid " + color.toHexString());
+
+			$(".word table.puzzle tr td.filled").css("border-color", color.toHexString());
+            $(".word .pyramid .inside").css("border-color", color.toHexString());
+			$(".word .pyramid .left").css("border-color", color.toHexString());
+			$(".word .pyramid .right").css("border-color", color.toHexString());
+			$(".word .pyramid .top").css("border-color", color.toHexString());
+			$(".word .pyramid .topRight").css("border-color", color.toHexString());
+			$(".word .pyramid .bottom").css("border-color", color.toHexString());
+			$(".word .pyramid .bottomRight").css("border-color", color.toHexString());
 		}
 	});
 
@@ -845,6 +878,15 @@
 			$(".letters .rectangle .topRight").css("background-color", color.toHexString());
 			$(".letters .rectangle .bottom").css("background-color", color.toHexString());
 			$(".letters .rectangle .bottomRight").css("background-color", color.toHexString());
+			
+			$(".letters table.puzzle tr td.filled").css("background-color", color.toHexString());
+						$(".letters .pyramid .inside").css("background-color", color.toHexString());
+			$(".letters .pyramid .left").css("background-color", color.toHexString());
+			$(".letters .pyramid .right").css("background-color", color.toHexString());
+			$(".letters .pyramid .top").css("background-color", color.toHexString());
+			$(".letters .pyramid .topRight").css("background-color", color.toHexString());
+			$(".letters .pyramid .bottom").css("background-color", color.toHexString());
+			$(".letters .pyramid .bottomRight").css("background-color", color.toHexString());
 		}
 	});
 
@@ -862,6 +904,19 @@
 			$(".letters .rectangle .topRight").css("color", color.toHexString());
 			$(".letters .rectangle .bottom").css("color", color.toHexString());
 			$(".letters .rectangle .bottomRight").css("color", color.toHexString());
+
+			$(".letters table.puzzle tr td.filled").css("color", color.toHexString());
+						$(".letters .pyramid .cell").css("color", color.toHexString());
+
+			$(".letters table.puzzle tr td.filled").css("color", color.toHexString());
+						$(".letters .pyramid .inside").css("color", color.toHexString());
+			$(".letters .pyramid .left").css("color", color.toHexString());
+			$(".letters .pyramid .right").css("color", color.toHexString());
+			$(".letters .pyramid .top").css("color", color.toHexString());
+			$(".letters .pyramid .topRight").css("color", color.toHexString());
+			$(".letters .pyramid .bottom").css("color", color.toHexString());
+			$(".letters .pyramid .bottomRight").css("color", color.toHexString());
+		
 		}
 	});
 
@@ -879,6 +934,19 @@
 			$(".letters .rectangle .topRight").css("border-color", color.toHexString());
 			$(".letters .rectangle .bottom").css("border-color", color.toHexString());
 			$(".letters .rectangle .bottomRight").css("border-color", color.toHexString());
+
+			$(".letters table.puzzle tr td.filled").css("border", "2px solid " + color.toHexString());
+						$(".letters .pyramid .cell").css("border", "2px solid " + color.toHexString());
+
+			$(".letters table.puzzle tr td.filled").css("border-color", color.toHexString());
+						$(".letters .pyramid .inside").css("border-color", color.toHexString());
+			$(".letters .pyramid .left").css("border-color", color.toHexString());
+			$(".letters .pyramid .right").css("border-color", color.toHexString());
+			$(".letters .pyramid .top").css("border-color", color.toHexString());
+			$(".letters .pyramid .topRight").css("border-color", color.toHexString());
+			$(".letters .pyramid .bottom").css("border-color", color.toHexString());
+			$(".letters .pyramid .bottomRight").css("border-color", color.toHexString());
+		
 		}
 	});
 
