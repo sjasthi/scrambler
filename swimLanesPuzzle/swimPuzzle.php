@@ -1,9 +1,7 @@
 <?php
-	require("Stacks.php");
-	require("word_processor.php");
 
 	// set the current page to one of the main buttons
-	$nav_selected = "STACKSPUZZLE";
+	$nav_selected = "SWIMPUZZLE";
 
 	// make the left menu buttons visible; options: YES, NO
 	$left_buttons = "NO";
@@ -11,7 +9,10 @@
 	// set the left menu button selected; options will change based on the main selection
 	$left_selected = "";
 
-	include("nav.php");
+	include("../includes/innerNav.php");
+
+	require("Swim.php");
+	require(ROOT_PATH."indic-wp/word_processor.php");
 
 	if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		$title = $_POST["title"];
@@ -19,7 +20,7 @@
 
 		// If variables are not set redirect to index page with empty error message
 		if(isset($_POST["wordInput"])) {
-			$puzzleType = 'stacks';
+			$puzzleType = 'swim';
 			// $puzzleType = $_POST["puzzletype"];
 			$wordInput = $_POST["wordInput"];
 
@@ -42,28 +43,31 @@
 			redirect("count");
 		}
 
-		// Create stacks puzzle
-		$stacks = new Stacks($wordList);
+		// Create swimlanes puzzle
+		$swim = new Swim($wordList);
 
 		//If there was an error with input redirect with invalid input message
-		//if($stacks->getErrorStatus() == true){
+		//if($swim->getErrorStatus() == true){
 		//	print_r("asdfa:");
 		//	redirect("invalidinput");
 		//}
 		//else{
 			// Get lists and puzzles
-			$letterList = $stacks->getLetterList();
-			$wordList = $stacks->getWordList();
+			$shuffledWords = $swim->getShuffledWords();
+			$letterList = $swim->getLetterList();
+			$wordList = $swim->getWordList();
 
-			$pyramidPuzzle = $stacks->getPyramidPuzzle();
-			$stepUpPuzzle = $stacks->getStepUpPuzzle();
-			$stepDownPuzzle = $stacks->getStepDownPuzzle();
+			$pyramidPuzzle = $swim->getPyramidPuzzle();
+			$stepUpPuzzle = $swim->getStepUpPuzzle();
+			$stepDownPuzzle = $swim->getStepDownPuzzle();
+			$swimPuzzle = $swim->getSwimlanesPuzzle();
 
-			$pyramidLetterPuzzle = $stacks->getPyramidLetterPuzzle();
-			$stepUpLetterPuzzle = $stacks->getStepUpLetterPuzzle();
-			$stepDownLetterPuzzle = $stacks->getStepDownLetterPuzzle();
+			$pyramidLetterPuzzle = $swim->getPyramidLetterPuzzle();
+			$stepUpLetterPuzzle = $swim->getStepUpLetterPuzzle();
+			$stepDownLetterPuzzle = $swim->getStepDownLetterPuzzle();
+			$swimLetterPuzzle = $swim->getSwimlanesLetterPuzzle();
 
-			$characterList = $stacks->getCharacterList();
+			$characterList = $swim->getCharacterList();
 		//}
 
 	}
@@ -76,10 +80,10 @@
 	 */
 	function redirect($error){
 		if($error != " "){
-			$url = "index.php?error=".$error;
+			$url = "../index.php?error=".$error;
 		}
 		else{
-			$url = "index.php";
+			$url = "../index.php";
 		}
 
 		header("Location: ".$url);
@@ -136,21 +140,19 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
     <!-- Spectrum -->
-    <link rel="stylesheet" type="text/css" href="spectrum.css">
-    <script type="text/javascript" src="spectrum.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/spectrum.css">
+    <script type="text/javascript" src="../js/spectrum.js"></script>
 
 	<!-- CSS -->
-	<link rel="stylesheet" type="text/css" href="puzzleStyle.css">
+	<link rel="stylesheet" type="text/css" href="../css/puzzleStyle.css">
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale = 1">
 
-    <title>Stacks Puzzle</title>
+    <title>SwimLanes Puzzle</title>
 </head>
 <body>
     <div class="container-fluid">
-        <!--<div class="jumbotron" id="jumbos">
-        </div>-->
 		<br>
         <div class="panel">
             <div class="panel-group">
@@ -158,7 +160,7 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-sm-12">
-                                <div align="center"><h2>Stacks Puzzle</h2></div>
+                                <div align="center"><h2>SwimLanes Puzzle</h2></div>
                             </div>
                         </div>
                     </div>
@@ -174,8 +176,8 @@
                                 <div class="row letters rectangleLettersPuzzle"> <h3>Letters</h3>
 								<table class="puzzle">
                                 <?php
-									// Prints a grid with 5 square width with puzzle letters
-									foreach($letterList as $row){
+									// THIS PRINTS THE SCRAMBLED LETTERS FOR THE SWIMLANES PUZZLE
+									foreach($shuffledWords as $row){
 										echo'<tr>';
 										foreach($row as $letter){
 											if($letter != "0"){
@@ -305,8 +307,8 @@
 									<div class="row">
 										<table class="puzzle">
 											<?php
-												// Prints blank step up puzzle
-												foreach($stepUpPuzzle as $row){
+												// THIS WILL PRINT THE BLANK SQUARES FOR THE USER FILL
+												foreach($swimPuzzle as $row){
 													echo'<tr>';
 													foreach($row as $letter){
 														if($letter != "0"){
@@ -406,7 +408,7 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-sm-12">
-                                <div align="center"><h2>Stacks Options</h2></div>
+                                <div align="center"><h2>SwimLanes Options</h2></div>
                             </div>
                         </div>
                     </div>
@@ -536,7 +538,7 @@
 						<div class="panel-heading ">
 							<div class="row">
 								<div class="col-sm-12">
-									<div align="center"><h2>Stacks Solution</h2></div>
+									<div align="center"><h2>SwimLanes Solution</h2></div>
 								</div>
 							</div>
 						</div>
@@ -553,7 +555,7 @@
 										<table class="puzzle">
 																		<?php
 											// Prints a grid with 5 square width with puzzle letters
-											foreach($letterList as $row){
+											foreach($shuffledWords as $row){
 												echo'<tr>';
 												foreach($row as $letter){
 													if($letter != "0"){
@@ -681,8 +683,8 @@
 										<div class="row">
 											<table class="puzzle">
 												<?php
-													// Prints solution for step up
-													foreach($stepUpPuzzle as $row){
+													// THIS WILL PRINT THE SOLUTION FOR THE WHOLE PUZZLE
+													foreach($wordList as $row){
 														echo'<tr>';
 														foreach($row as $letter){
 															if($letter != "0"){

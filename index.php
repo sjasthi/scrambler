@@ -9,7 +9,7 @@
   // set the left menu button selected; options will change based on the main selection
   $left_selected = "";
 
-  include("./nav.php");
+  include("./includes/nav.php");
 ?>
 
 <html>

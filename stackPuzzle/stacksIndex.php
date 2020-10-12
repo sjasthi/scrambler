@@ -3,7 +3,7 @@
 		$error = $_GET["error"];
 		
 		// Check to see if an error code was passed in
-		// Error get variable is passed through ScrablerPuzzle.php after an issue has been detected
+		// Error get variable is passed through ScramblerPuzzle.php after an issue has been detected
 		// Here the message will get displayed and prompt the user to try again
 		switch($error){
 			case "emptyinput":
@@ -30,14 +30,14 @@
     // set the left menu button selected; options will change based on the main selection
     $left_selected = "";
 
-    include("nav.php");
+    include("../includes/innerNav.php");
 ?>
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN''http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
 <head>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="puzzleStyle.css">
+    <link rel="stylesheet" href="../css/puzzleStyle.css">
 
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
@@ -49,22 +49,10 @@
     <meta name="viewport" content="width=device-width, initial-scale = 1">
     <title>Stacks Puzzle</title>
 	
-	<style>	
-		.jumbotron {
-			background-image: url("silcHeader.png");
-			-webkit-background-size: 100% 100%;
-			-moz-background-size: 100% 100%;
-			-o-background-size: 100% 100%;
-			background-size: 100% 100%;
-			height: 179px;
-		}
-	</style>
 </head>
 <body>
     <form action="stacksPuzzle.php" method="post" class="form-horizontal">
         <div class="container-fluid">
-            <!--<div class="jumbotron" id="jumbos">
-            </div>-->
             <div class="panel">
                 <div class="panel-group">
                     <div class="panel panel-primary">
@@ -92,20 +80,19 @@
                                     <input class="form-control" id="subtitle" name="subtitle" value="Subtitle">
                                 </div>
                             </div>
-<!--                             <div class="form-group">
+                            <div class="form-group">
                                 <div class="col-sm-1"></div>
                                 <label class="control-label col-sm-1" style="text-align: left;">Puzzle Mode</label>
                                 
                                 <div class="col-sm-3">
                                     <select class="form-control" id="puzzletype" name="puzzletype" onchange="sizeChange(this.value);">
-                                        <option value="rectangle" selected="selected">Rectangle</option>
-                                        <option value="pyramid" >Pyramid</option>
-                                        <option value="stepup" >Step Up</option>
-										<option value="stepdown" >Step Down</option>
+                                        <option value="pyramid" >Center Justified</option>
+                                        <option value="stepup" >Right Justified</option>
+										<option value="stepdown" selected="selected">Left Justified</option>
                                     </select>
                                 </div>
                             </div>
- -->                            <div class="form-group">
+                            <div class="form-group">
                                 <div class="col-sm-1"></div>
                                 <label class="control-label col-sm-9" style="text-align: left;">Enter multiple words each on a new line.
                                 <br>Words can be any variety of lengths.

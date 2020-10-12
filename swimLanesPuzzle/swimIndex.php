@@ -22,7 +22,7 @@
     }
     
     // set the current page to one of the main buttons
-    $nav_selected = "STACKS";
+    $nav_selected = "SWIM";
 
     // make the left menu buttons visible; options: YES, NO
     $left_buttons = "NO";
@@ -30,14 +30,14 @@
     // set the left menu button selected; options will change based on the main selection
     $left_selected = "";
 
-    include("nav.php");
+    include("../includes/innerNav.php");
 ?>
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN''http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
 <head>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="puzzleStyle.css">
+    <link rel="stylesheet" href="../css/puzzleStyle.css">
 
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
@@ -47,7 +47,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale = 1">
-    <title>Stacks Puzzle</title>
+    <title>SwimLanes Puzzle</title>
 	
 	<style>	
 		.jumbotron {
@@ -61,7 +61,7 @@
 	</style>
 </head>
 <body>
-    <form action="stacksPuzzle.php" method="post" class="form-horizontal">
+    <form action="swimPuzzle.php" method="post" class="form-horizontal">
         <div class="container-fluid">
             <!--<div class="jumbotron" id="jumbos">
             </div>-->
@@ -71,7 +71,7 @@
                         <div class="panel-heading">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <div align="center"><h2>Stacks Puzzle Maker</h2></div>
+                                    <div align="center"><h2>SwimLanes Puzzle Maker</h2></div>
                                 </div>
                             </div>
                         </div>
@@ -108,7 +108,7 @@
  -->                            <div class="form-group">
                                 <div class="col-sm-1"></div>
                                 <label class="control-label col-sm-9" style="text-align: left;">Enter multiple words each on a new line.
-                                <br>Words can be any variety of lengths.
+                                <br>All words should be equal in length.
                                 </label>
                             </div>
                             <div class="form-group">

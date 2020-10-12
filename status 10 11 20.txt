@@ -1,0 +1,9 @@
+reorganized directory structure and edited files to make then point to correct locations
+
+started creating batch version of shapes puzzle, did not get super far
+
+went back to implement javascript side of stacks puzzle (fully implement it outside of  DB stuff)
+	working on logic for generating/updating arrays on JS side
+		need to determine logic for moving eltters from letterList to organized arrays
+	need to find way to dynamically update arrays on PHP side from JS
+
