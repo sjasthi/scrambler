@@ -8,7 +8,7 @@
 	 * Puzzles themselves are just blank solutions displayed on ScramblerPuzzle page
 	 * Scrambler will stop if there is an error detected with user input and raise the errorStatus flag
 	 */
-class Stacks{
+class Lines{
 	// Removed the global as max columns need to change with scrambler
 	// private $MAX_COLUMNS = 5;
 	private $wordList = [];

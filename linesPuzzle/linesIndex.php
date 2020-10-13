@@ -12,9 +12,9 @@
 			case "count":
 				$errorMessage = "Only one word was entered.  Please enter more than one word.";
 				break;
-			/**case "invalidinput":
+			case "invalidinput":
 				$errorMessage = "Input was invalid. Enter words with identical word lengths.";
-				break;**/
+				break;
 			default:
 				$errorMessage = "Unknown error - try again";
 		}
@@ -22,7 +22,7 @@
     }
     
     // set the current page to one of the main buttons
-    $nav_selected = "SHAPES";
+    $nav_selected = "LINES";
 
     // make the left menu buttons visible; options: YES, NO
     $left_buttons = "NO";
@@ -47,11 +47,11 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale = 1">
-    <title>Shapes Puzzle</title>
+    <title>Lines Puzzle</title>
 	
 </head>
 <body>
-    <form action="shapesPuzzle.php" method="post" class="form-horizontal">
+    <form action="LinesPuzzle.php" method="post" class="form-horizontal">
         <div class="container-fluid">
             <div class="panel">
                 <div class="panel-group">
@@ -59,7 +59,7 @@
                         <div class="panel-heading">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <div align="center"><h2>Shapes Puzzle Maker</h2></div>
+                                    <div align="center"><h2>Lines Puzzle Maker</h2></div>
                                 </div>
                             </div>
                         </div>
@@ -96,7 +96,7 @@
  -->                            <div class="form-group">
                                 <div class="col-sm-1"></div>
                                 <label class="control-label col-sm-9" style="text-align: left;">Enter multiple words each on a new line.
-                                <br>Words must be the same length.
+                                <br>Words can be any variety of lengths.
                                 </label>
                             </div>
                             <div class="form-group">

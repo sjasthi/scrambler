@@ -30,14 +30,14 @@
     // set the left menu button selected; options will change based on the main selection
     $left_selected = "";
 
-    include("nav.php");
+    include("../includes/innerNav.php");
 ?>
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN''http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
 <head>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="puzzleStyle.css">
+    <link rel="stylesheet" href="../css/puzzleStyle.css">
 
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
@@ -49,22 +49,10 @@
     <meta name="viewport" content="width=device-width, initial-scale = 1">
     <title>Scrambler Puzzle</title>
 	
-	<style>	
-		.jumbotron {
-			background-image: url("silcHeader.png");
-			-webkit-background-size: 100% 100%;
-			-moz-background-size: 100% 100%;
-			-o-background-size: 100% 100%;
-			background-size: 100% 100%;
-			height: 179px;
-		}
-	</style>
 </head>
 <body>
     <form action="ScramblerPuzzle.php" method="post" class="form-horizontal">
         <div class="container-fluid">
-            <!--<div class="jumbotron" id="jumbos">
-            </div>-->
             <div class="panel">
                 <div class="panel-group">
                     <div class="panel panel-primary">

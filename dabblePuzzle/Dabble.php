@@ -1,15 +1,6 @@
 <?php
 
-  // set the current page to one of the main buttons
-  $nav_selected = "DABBLE";
-
-  // make the left menu buttons visible; options: YES, NO
-  $left_buttons = "NO";
-
-  // set the left menu button selected; options will change based on the main selection
-  $left_selected = "";
-
-include("./abasiccomposer/nav.php");
+  
 
 	/* Created by Stephen Schneider
 	 * Class for creating the three various Dabble puzzles

@@ -1,6 +1,4 @@
 <?php
-	require("Stacks.php");
-	require("word_processor.php");
 
 	// set the current page to one of the main buttons
 	$nav_selected = "STACKSPUZZLE";
@@ -11,7 +9,10 @@
 	// set the left menu button selected; options will change based on the main selection
 	$left_selected = "";
 
-	include("nav.php");
+	include("../includes/innerNav.php");
+
+	require("Stacks.php");
+	require(ROOT_PATH."indic-wp/word_processor.php");
 
 	if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		$title = $_POST["title"];
@@ -19,8 +20,8 @@
 
 		// If variables are not set redirect to index page with empty error message
 		if(isset($_POST["wordInput"])) {
-			$puzzleType = 'stacks';
-			// $puzzleType = $_POST["puzzletype"];
+			//$puzzleType = 'stacks';
+			$puzzleType = $_POST["puzzletype"];
 			$wordInput = $_POST["wordInput"];
 
 			// If input is blank redirect to Index with empty error message
@@ -55,15 +56,22 @@
 			$letterList = $stacks->getLetterList();
 			$wordList = $stacks->getWordList();
 
-			$pyramidPuzzle = $stacks->getPyramidPuzzle();
-			$stepUpPuzzle = $stacks->getStepUpPuzzle();
-			$stepDownPuzzle = $stacks->getStepDownPuzzle();
+			$pyramidPuzzle = $stacks->getStacksPyramidPuzzle();
+			$stepUpPuzzle = $stacks->getStacksStepUpPuzzle();
+			$stepDownPuzzle = $stacks->getStacksStepDownPuzzle();
 
-			$pyramidLetterPuzzle = $stacks->getPyramidLetterPuzzle();
-			$stepUpLetterPuzzle = $stacks->getStepUpLetterPuzzle();
-			$stepDownLetterPuzzle = $stacks->getStepDownLetterPuzzle();
+			$pyramidLetterPuzzle = $stacks->getStacksPyramidLetterPuzzle();
+			$stepUpLetterPuzzle = $stacks->getStacksStepUpLetterPuzzle();
+			$stepDownLetterPuzzle = $stacks->getStacksStepDownLetterPuzzle();
 
 			$characterList = $stacks->getCharacterList();
+
+			$lettersPuzzleType = 'rectangle';
+			?><script>
+			var lettersPuzzleType = <?php echo json_encode($lettersPuzzleType) ?>;
+			
+			var puzzleType = <?php echo json_encode($puzzleType) ?>;
+			</script><?php
 		//}
 
 	}
@@ -76,10 +84,10 @@
 	 */
 	function redirect($error){
 		if($error != " "){
-			$url = "index.php?error=".$error;
+			$url = "../index.php?error=".$error;
 		}
 		else{
-			$url = "index.php";
+			$url = "../index.php";
 		}
 
 		header("Location: ".$url);
@@ -136,21 +144,23 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
     <!-- Spectrum -->
-    <link rel="stylesheet" type="text/css" href="spectrum.css">
-    <script type="text/javascript" src="spectrum.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/spectrum.css">
+    <script type="text/javascript" src="../js/spectrum.js"></script>
 
 	<!-- CSS -->
-	<link rel="stylesheet" type="text/css" href="puzzleStyle.css">
+	<link rel="stylesheet" type="text/css" href="../css/puzzleStyle.css">
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale = 1">
 
     <title>Stacks Puzzle</title>
 </head>
+<style>
+	.puzzleLetter{}
+	.guess{}
+</style>
 <body>
     <div class="container-fluid">
-        <!--<div class="jumbotron" id="jumbos">
-        </div>-->
 		<br>
         <div class="panel">
             <div class="panel-group">
@@ -179,7 +189,7 @@
 										echo'<tr>';
 										foreach($row as $letter){
 											if($letter != "0"){
-												echo'<td class="filled">'.$letter.'</td>
+												echo'<td class="filled puzzleLetter" draggable="true">'.$letter.'</td>
 												';
 											}
 											else{
@@ -193,7 +203,7 @@
 								</table>
 							</div>
 								<div class="letters stepupLettersPuzzle" style="display: none;">
-									<div class="row"> <h3>Step Up Letters</h3></div>
+									<div class="row"> <h3>Letters</h3></div>
 									<div class="row">
 										<table class="puzzle">
 											<?php
@@ -202,7 +212,7 @@
 													echo'<tr>';
 													foreach($row as $letter){
 														if($letter != "0"){
-															echo'<td class="filled">'.$letter.'</td>';
+															echo'<td class="filled puzzleLetter" draggable="true">'.$letter.'</td>';
 														}
 														else{
 															echo'<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
@@ -216,22 +226,19 @@
 									</div>
 								</div>
 								<div class="letters stepdownLettersPuzzle" style="display: none;">
-									<div class="row"> <h3>Step Down Letters</h3> </div>
+									<div class="row"> <h3>Letters</h3> </div>
 									<div class="row">
 										<table class="puzzle">
 											<?php
 												// Prints blank step down puzzle
-
 												foreach($stepDownLetterPuzzle as $row){
 													echo'<tr>';
 													foreach($row as $letter){
 														if($letter != "0"){
-															echo'<td class="filled">'.$letter.'</td>
-															';
+															echo'<td class="filled puzzleLetter" draggable="true">'.$letter.'</td>';
 														}
 														else{
-															echo'<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
-															';
+															echo'<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>';
 														}
 													}
 													echo'</tr>';
@@ -240,9 +247,9 @@
 										</table>
 									</div>
 								</div>
-								<div class="letters rectangleLettersPuzzle" style="display: none;">
-									<div class="row"> <h3>Rectangle Letters</h3> </div>
-									<div class="rectangle">
+								<div class="letters pyramidLettersPuzzle" style="display: none;">
+									<div class="row"> <h3>Letters</h3> </div>
+									<div class="pyramid">
 										<?php
 											// Prints blank rectangle puzzle
 											// Cells must be printed with correct styling
@@ -261,32 +268,32 @@
 												for($j = 0; $j < $length; $j++){
 													if($i == 0){
 														if($j < $length - 1){
-															echo'<div class="top">'.$characterList[$count++].'</div>';
+															echo'<div id="row'.$i.'column'.$j.'" class="top puzzleLetter" draggable="true">'.$characterList[$count++].'</div>';
 														}
 														else{
-															echo'<div class="topRight">'.$characterList[$count++].'</div>';
+															echo'<div id="row'.$i.'column'.$j.'" class="topRight puzzleLetter" draggable="true">'.$characterList[$count++].'</div>';
 														}
 													}
 													else if($i < $wordCount - 1){
 														if($j == 0){
-															echo'<div class="left">'.$characterList[$count++].'</div>';
+															echo'<div id="row'.$i.'column'.$j.'" class="left puzzleLetter" draggable="true">'.$characterList[$count++].'</div>';
 														}
 														else if($j < ($length - 1)){
-															echo'<div class="inside">'.$characterList[$count++].'</div>';
+															echo'<div id="row'.$i.'column'.$j.'" class="inside puzzleLetter" draggable="true">'.$characterList[$count++].'</div>';
 
 														}
 														else{
-															echo'<div class="right">'.$characterList[$count++].'</div>';
+															echo'<div id="row'.$i.'column'.$j.'" class="right puzzleLetter" draggable="true">'.$characterList[$count++].'</div>';
 
 														}
 													}
 													else{
 														if($j < ($length - 1)){
-															echo'<div class="bottom">'.$characterList[$count++].'</div>';
+															echo'<div id="row'.$i.'column'.$j.'" class="bottom puzzleLetter" draggable="true">'.$characterList[$count++].'</div>';
 
 														}
 														else{
-															echo'<div class="bottomRight">'.$characterList[$count++].'</div>';
+															echo'<div id="row'.$i.'column'.$j.'" class="bottomRight puzzleLetter" draggable="true">'.$characterList[$count++].'</div>';
 
 														}
 													}
@@ -310,7 +317,7 @@
 													echo'<tr>';
 													foreach($row as $letter){
 														if($letter != "0"){
-															echo'<td class="filled">&nbsp;&nbsp;&nbsp;&nbsp;</td>
+															echo'<td class="filled guess" draggable="true">&nbsp;&nbsp;&nbsp;&nbsp;</td>
 															';
 														}
 														else{
@@ -325,7 +332,7 @@
 									</div>
 								</div>
 								<div class="stepdownPuzzle word">
-									<div class="row"> <h3> Step Down </h3> </div>
+									<div class="row"> <h3> Words </h3> </div>
 									<div class="row">
 										<table class="puzzle">
 											<?php
@@ -335,7 +342,7 @@
 													echo'<tr>';
 													foreach($row as $letter){
 														if($letter != "0"){
-															echo'<td class="filled">&nbsp;&nbsp;&nbsp;&nbsp;</td>
+															echo'<td class="filled guess" draggable="true">&nbsp;&nbsp;&nbsp;&nbsp;</td>
 															';
 														}
 														else{
@@ -350,7 +357,7 @@
 									</div>
 								</div>
 								<div class="pyramidPuzzle word">
-									<div class="row"> <h3> Words </h3> </div>
+									<div class="row"> <h3>Words</h3> </div>
 									<div class="pyramid">
 										<?php
 											// Prints blank pyramid puzzle
@@ -369,29 +376,29 @@
 												for($j = 0; $j < $length; $j++){
 													if($i == 0){
 														if($j < $length - 1){
-															echo'<div class="top">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+															echo'<div id="row'.$i.'column'.$j.'" class="top guess" draggable="true">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
 														}
 														else{
-															echo'<div class="topRight">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+															echo'<div id="row'.$i.'column'.$j.'" class="topRight guess" draggable="true">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
 														}
 													}
 													else if($i < $wordCount - 1){
 														if($j == 0){
-															echo'<div class="left">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+															echo'<div id="row'.$i.'column'.$j.'" class="left guess" draggable="true">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
 														}
 														else if($j < ($length - 1)){
-															echo'<div class="inside">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+															echo'<div id="row'.$i.'column'.$j.'" class="inside guess" draggable="true">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
 														}
 														else{
-															echo'<div class="right">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+															echo'<div id="row'.$i.'column'.$j.'" class="right guess" draggable="true">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
 														}
 													}
 													else{
 														if($j < ($length - 1)){
-															echo'<div class="bottom">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+															echo'<div id="row'.$i.'column'.$j.'" class="bottom guess" draggable="true">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
 														}
 														else{
-															echo'<div class="bottomRight">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+															echo'<div id="row'.$i.'column'.$j.'" class="bottomRight guess" draggable="true">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
 														}
 													}
 												}
@@ -464,31 +471,31 @@
                                             </div>
                                         </div>
 										<?php //addition of letters options ************************* ?>
-<!-- 										<br>
+ 										<br>
 										<div class="row">
 											<div class="col-sm-6">
-												<select class="form-control" id="puzzlelettertype" name="puzzlelettertype" onchange="lettersChange()">
+												<select class="form-control" id="puzzlelettertype" name="puzzlelettertype" onchange="lettersChange(); changeLetterType($('#puzzlelettertype').val())">
 													<option value="rectangle">Rectangle</option>
-													<option value="pyramid" >Pyramid</option>
-													<option value="stepup" >Step Up</option>
-													<option value="stepdown" >Step Down</option>
+													<option value="pyramid" >Center Justified</option>
+													<option value="stepup" >Right Justified</option>
+													<option value="stepdown" >Left Justified</option>
 												</select>
 											</div>
 										<h4>Letters</h4>
 										</div>
- -->
-<!-- 										<br>
+
+										<br>
 										<div class="row">
 											<div class="col-sm-6">
-												<select class="form-control" id="puzzletype" name="puzzletype" onchange="puzzleChange()">
-													<option value="pyramid" <?php if($puzzleType == "pyramid"){echo('selected="selected"');} ?>>Pyramid</option>
-													<option value="stepup" <?php if($puzzleType == "stepup"){echo('selected="selected"');} ?>>Step Up</option>
-													<option value="stepdown" <?php if($puzzleType == "stepdown"){echo('selected="selected"');} ?>>Step Down</option>
+												<select class="form-control" id="puzzletype" name="puzzletype" onchange="puzzleChange(); changePuzzleType($('#puzzletype').val())">
+													<option value="pyramid" <?php if($puzzleType == "pyramid"){echo('selected="selected"');} ?>>Center Justified</option>
+													<option value="stepup" <?php if($puzzleType == "stepup"){echo('selected="selected"');} ?>>Right Justified</option>
+													<option value="stepdown" <?php if($puzzleType == "stepdown"){echo('selected="selected"');} ?>>Left Justified</option>
 												</select>
 											</div>
 										<h4>Words</h4>
 										</div>
- -->                                    </div>
+                                   </div>
                                 </div>
 
 																<?php // Words OPTIONS ********************************** ?>
@@ -571,7 +578,7 @@
 										</table>
 									</div>
 										<div class="letters stepupLettersPuzzle" style="display: none;">
-											<div class="row"> <h3>Step Up Letters</h3></div>
+											<div class="row"> <h3>Letters</h3></div>
 											<div class="row">
 												<table class="puzzle">
 													<?php
@@ -594,7 +601,7 @@
 											</div>
 										</div>
 										<div class="letters stepdownLettersPuzzle" style="display: none;">
-											<div class="row"> <h3>Step Down Letters</h3> </div>
+											<div class="row"> <h3>Letters</h3> </div>
 											<div class="row">
 												<table class="puzzle">
 													<?php
@@ -618,9 +625,9 @@
 												</table>
 											</div>
 										</div>
-										<div class="letters rectangleLettersPuzzle" style="display: none;">
-											<div class="row"> <h3>Rectangle Letters</h3> </div>
-											<div class="rectangle">
+										<div class="letters pyramidLettersPuzzle" style="display: none;">
+											<div class="row"> <h3>Letters</h3> </div>
+											<div class="pyramid">
 												<?php
 													// Prints blank rectangle puzzle
 													// Cells must be printed with correct styling
@@ -701,7 +708,7 @@
 										</div>
 									</div>
 									<div class="stepdownSolution word">
-										<div class="row"> <h3> Step Down </h3> </div>
+										<div class="row"> <h3> Words </h3> </div>
 										<div class="row">
 											<table class="puzzle">
 												<?php
@@ -724,9 +731,9 @@
 											</table>
 										</div>
 									</div>
-									<div class="rectangleSolution word">
+									<div class="pyramidSolution word">
 										<div class="row"> <h3> Words </h3> </div>
-										<div class="rectangle">
+										<div class="pyramid">
 											<?php
 												// Prints solution rectangle
 												// Cells must be printed with correct styling
@@ -787,6 +794,8 @@
     </div>
 </body>
 </html>
+
+
 <script>
 	// Set default spectrum elements
 	$(".letterSquareColor").spectrum({
@@ -800,6 +809,15 @@
 			$(".word .rectangle .topRight").css("background-color", color.toHexString());
 			$(".word .rectangle .bottom").css("background-color", color.toHexString());
 			$(".word .rectangle .bottomRight").css("background-color", color.toHexString());
+			
+			$(".word table.puzzle tr td.filled").css("background-color", color.toHexString());
+            $(".word .pyramid .inside").css("background-color", color.toHexString());
+			$(".word .pyramid .left").css("background-color", color.toHexString());
+			$(".word .pyramid .right").css("background-color", color.toHexString());
+			$(".word .pyramid .top").css("background-color", color.toHexString());
+			$(".word .pyramid .topRight").css("background-color", color.toHexString());
+			$(".word .pyramid .bottom").css("background-color", color.toHexString());
+			$(".word .pyramid .bottomRight").css("background-color", color.toHexString());
 		}
 	});
 
@@ -817,6 +835,18 @@
 			$(".word .rectangle .topRight").css("color", color.toHexString());
 			$(".word .rectangle .bottom").css("color", color.toHexString());
 			$(".word .rectangle .bottomRight").css("color", color.toHexString());
+			
+			$(".word table.puzzle tr td.filled").css("color", color.toHexString());
+            $(".word .pyramid .cell").css("color", color.toHexString());
+
+			$(".word table.puzzle tr td.filled").css("color", color.toHexString());
+            $(".word .pyramid .inside").css("color", color.toHexString());
+			$(".word .pyramid .left").css("color", color.toHexString());
+			$(".word .pyramid .right").css("color", color.toHexString());
+			$(".word .pyramid .top").css("color", color.toHexString());
+			$(".word .pyramid .topRight").css("color", color.toHexString());
+			$(".word .pyramid .bottom").css("color", color.toHexString());
+			$(".word .pyramid .bottomRight").css("color", color.toHexString());
 		}
 	});
 
@@ -834,6 +864,18 @@
 			$(".word .rectangle .topRight").css("border-color", color.toHexString());
 			$(".word .rectangle .bottom").css("border-color", color.toHexString());
 			$(".word .rectangle .bottomRight").css("border-color", color.toHexString());
+
+			$(".word table.puzzle tr td.filled").css("border", "2px solid " + color.toHexString());
+            $(".word .pyramid .cell").css("border", "2px solid " + color.toHexString());
+
+			$(".word table.puzzle tr td.filled").css("border-color", color.toHexString());
+            $(".word .pyramid .inside").css("border-color", color.toHexString());
+			$(".word .pyramid .left").css("border-color", color.toHexString());
+			$(".word .pyramid .right").css("border-color", color.toHexString());
+			$(".word .pyramid .top").css("border-color", color.toHexString());
+			$(".word .pyramid .topRight").css("border-color", color.toHexString());
+			$(".word .pyramid .bottom").css("border-color", color.toHexString());
+			$(".word .pyramid .bottomRight").css("border-color", color.toHexString());
 		}
 	});
 
@@ -848,6 +890,15 @@
 			$(".letters .rectangle .topRight").css("background-color", color.toHexString());
 			$(".letters .rectangle .bottom").css("background-color", color.toHexString());
 			$(".letters .rectangle .bottomRight").css("background-color", color.toHexString());
+			
+			$(".letters table.puzzle tr td.filled").css("background-color", color.toHexString());
+						$(".letters .pyramid .inside").css("background-color", color.toHexString());
+			$(".letters .pyramid .left").css("background-color", color.toHexString());
+			$(".letters .pyramid .right").css("background-color", color.toHexString());
+			$(".letters .pyramid .top").css("background-color", color.toHexString());
+			$(".letters .pyramid .topRight").css("background-color", color.toHexString());
+			$(".letters .pyramid .bottom").css("background-color", color.toHexString());
+			$(".letters .pyramid .bottomRight").css("background-color", color.toHexString());
 		}
 	});
 
@@ -865,6 +916,19 @@
 			$(".letters .rectangle .topRight").css("color", color.toHexString());
 			$(".letters .rectangle .bottom").css("color", color.toHexString());
 			$(".letters .rectangle .bottomRight").css("color", color.toHexString());
+
+			$(".letters table.puzzle tr td.filled").css("color", color.toHexString());
+						$(".letters .pyramid .cell").css("color", color.toHexString());
+
+			$(".letters table.puzzle tr td.filled").css("color", color.toHexString());
+						$(".letters .pyramid .inside").css("color", color.toHexString());
+			$(".letters .pyramid .left").css("color", color.toHexString());
+			$(".letters .pyramid .right").css("color", color.toHexString());
+			$(".letters .pyramid .top").css("color", color.toHexString());
+			$(".letters .pyramid .topRight").css("color", color.toHexString());
+			$(".letters .pyramid .bottom").css("color", color.toHexString());
+			$(".letters .pyramid .bottomRight").css("color", color.toHexString());
+		
 		}
 	});
 
@@ -882,6 +946,19 @@
 			$(".letters .rectangle .topRight").css("border-color", color.toHexString());
 			$(".letters .rectangle .bottom").css("border-color", color.toHexString());
 			$(".letters .rectangle .bottomRight").css("border-color", color.toHexString());
+
+			$(".letters table.puzzle tr td.filled").css("border", "2px solid " + color.toHexString());
+						$(".letters .pyramid .cell").css("border", "2px solid " + color.toHexString());
+
+			$(".letters table.puzzle tr td.filled").css("border-color", color.toHexString());
+						$(".letters .pyramid .inside").css("border-color", color.toHexString());
+			$(".letters .pyramid .left").css("border-color", color.toHexString());
+			$(".letters .pyramid .right").css("border-color", color.toHexString());
+			$(".letters .pyramid .top").css("border-color", color.toHexString());
+			$(".letters .pyramid .topRight").css("border-color", color.toHexString());
+			$(".letters .pyramid .bottom").css("border-color", color.toHexString());
+			$(".letters .pyramid .bottomRight").css("border-color", color.toHexString());
+		
 		}
 	});
 
@@ -906,14 +983,12 @@
 			echo('$(".stepdownSolution").show();');
 		}
 		else{
-			echo('$(".rectanglePuzzle").hide();');
-			echo('$(".pyramidPuzzle").hide();');
-			echo('$(".stepupPuzzle").show();');
+			echo('$(".pyramidPuzzle").show();');
+			echo('$(".stepupPuzzle").hide();');
 			echo('$(".stepdownPuzzle").hide();');
 
-			echo('$(".rectangleSolution").hide();');
 			echo('$(".pyramidSolution").show();');
-			echo('$(".stepupSolution").show();');
+			echo('$(".stepupSolution").hide();');
 			echo('$(".stepdownSolution").hide();');
 		}
 	?>
@@ -929,66 +1004,114 @@
 	}
 
 	// Shows/hides puzzles and solutions when puzzle type is changed (not needed for scrambler)
-/*	function puzzleChange(){
-		if($('#puzzletype').val() == "rectangle"){
-			$(".rectanglePuzzle").show();
+function puzzleChange(){
+
+		if($('#puzzletype').val() == "pyramid"){
+			$(".pyramidPuzzle").show();
 			$(".stepupPuzzle").hide();
 			$(".stepdownPuzzle").hide();
 
-			$(".rectangleSolution").show();
+			$(".pyramidSolution").show();
 			$(".stepupSolution").hide();
 			$(".stepdownSolution").hide();
 		}
 		else if($('#puzzletype').val() == "stepup"){
-			$(".rectanglePuzzle").hide();
+			$(".pyramidPuzzle").hide();
 			$(".stepupPuzzle").show();
 			$(".stepdownPuzzle").hide();
 
-			$(".rectangleSolution").hide();
+			$(".pyramidSolution").hide();
 			$(".stepupSolution").show();
 			$(".stepdownSolution").hide();
 		}
 		else{
-			$(".rectanglePuzzle").hide();
+			$(".pyramidPuzzle").hide();
 			$(".stepupPuzzle").hide();
 			$(".stepdownPuzzle").show();
 
-			$(".rectangleSolution").hide();
+			$(".pyramidSolution").hide();
 			$(".stepupSolution").hide();
 			$(".stepdownSolution").show();
 		}
 	}
-*/
+
 	// 	Shows/hides letters when puzzle type is changed (not needed for scrambler)
-/*	function lettersChange(){
+function lettersChange(){
+		
 			if($('#puzzlelettertype').val() == "rectangle"){
 				$(".rectangleLettersPuzzle").show();
-				$(".rectangleLettersPuzzle").show();
+				$(".pyramidLettersPuzzle").hide();
 				$(".stepupLettersPuzzle").hide();
 				$(".stepdownLettersPuzzle").hide();
 
 			}
 			else if($('#puzzlelettertype').val() == "pyramid"){
 				$(".rectangleLettersPuzzle").hide();
-				$(".rectangleLettersPuzzle").show();
+				$(".pyramidLettersPuzzle").show();
 				$(".stepupLettersPuzzle").hide();
 				$(".stepdownLettersPuzzle").hide();
 
 			}
 			else if($('#puzzlelettertype').val() == "stepup"){
 				$(".rectangleLettersPuzzle").hide();
-				$(".rectangleLettersPuzzle").hide();
+				$(".pyramidLettersPuzzle").hide();
 				$(".stepupLettersPuzzle").show();
 				$(".stepdownLettersPuzzle").hide();
 
 			}
 			else{
 				$(".rectangleLettersPuzzle").hide();
-				$(".rectangleLettersPuzzle").hide();
+				$(".pyramidLettersPuzzle").hide();
 				$(".stepupLettersPuzzle").hide();
 				$(".stepdownLettersPuzzle").show();
 
 			}
-		}*/
+		}
+</script>
+
+
+<script type="text/javascript">
+		var pyramidArray = <?php echo json_encode($pyramidPuzzle) ?>;
+		
+		var pyramidPuzzleArray = <?php echo json_encode($pyramidLetterPuzzle) ?>;
+		
+		var stepUpArray = <?php echo json_encode($stepUpPuzzle) ?>;
+		
+		var stepUpPuzzleArray = <?php echo json_encode($stepUpLetterPuzzle) ?>;
+		
+		var stepDownArray = <?php echo json_encode($stepDownPuzzle) ?>;
+		
+		var stepDownPuzzleArray = <?php echo json_encode($stepDownLetterPuzzle) ?>;
+		
+		var characterList = <?php echo json_encode($characterList) ?>;
+		
+		var wordList = <?php echo json_encode($wordList) ?>;
+		
+		var letterList = <?php echo json_encode($letterList) ?>;
+
+	</script>
+
+	<script type="text/javascript" src="../js/stacks.js"></script>
+<script>
+	function dragStart(event) {
+		dropped = false;
+		event.preventDefault();
+		//event.dataTransfer.dropEffect("move");
+		event.dataTransfer.setData("text", event.target.innerHTML);
+	}
+
+	function dragEnter(event) {
+		event.preventDefault();
+	}
+
+	function dragLeave(event) {
+		event.preventDefault();
+	}
+
+	function dragDrop(event) {
+		event.preventDefault();
+		var setHTML = event.dataTransfer.getData("text");
+		event.target.innerHTML = setHTML;
+	}
 </script>
 </html>

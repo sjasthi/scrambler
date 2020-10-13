@@ -1,17 +1,17 @@
 <?php
+
+	// set the current page to one of the main buttons
+	$nav_selected = "DABBLE";
+
+	// make the left menu buttons visible; options: YES, NO
+	$left_buttons = "NO";
+  
+	// set the left menu button selected; options will change based on the main selection
+	$left_selected = "";
+
+	include("../includes/innerNav.php");
 	require("Dabble.php");
-	require("word_processor.php");
-
-	  // set the current page to one of the main buttons
-	  $nav_selected = "DABBLEPUZZLE";
-
-	  // make the left menu buttons visible; options: YES, NO
-	  $left_buttons = "NO";
-	
-	  // set the left menu button selected; options will change based on the main selection
-	  $left_selected = "";
-
-	include("./abasiccomposer/nav.php");
+	require(ROOT_PATH."indic-wp/word_processor.php");
 
 	if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		$title = $_POST["title"];
@@ -75,10 +75,10 @@
 	 */
 	function redirect($error){
 		if($error != " "){
-			$url = "index.php?error=".$error;
+			$url = "../index.php?error=".$error;
 		}
 		else{
-			$url = "index.php";
+			$url = "../index.php";
 		}
 
 		header("Location: ".$url);
@@ -135,11 +135,11 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
     <!-- Spectrum -->
-    <link rel="stylesheet" type="text/css" href="spectrum.css">
-    <script type="text/javascript" src="spectrum.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/spectrum.css">
+    <script type="text/javascript" src="../js/spectrum.js"></script>
 
 	<!-- CSS -->
-	<link rel="stylesheet" type="text/css" href="dabblestyle.css">
+	<link rel="stylesheet" type="text/css" href="../css/puzzleStyle.css">
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale = 1">
@@ -148,8 +148,8 @@
 </head>
 <body>
     <div class="container-fluid">
-        <div class="jumbotron" id="jumbos">
-        </div>
+        <!--<div class="jumbotron" id="jumbos">
+        </div>-->
 		<br>
         <div class="panel">
             <div class="panel-group">
