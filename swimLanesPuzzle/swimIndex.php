@@ -3,7 +3,7 @@
 		$error = $_GET["error"];
 		
 		// Check to see if an error code was passed in
-		// Error get variable is passed through ScrablerPuzzle.php after an issue has been detected
+		// Error get variable is passed through swimPuzzle.php after an issue has been detected
 		// Here the message will get displayed and prompt the user to try again
 		switch($error){
 			case "emptyinput":
@@ -12,9 +12,9 @@
 			case "count":
 				$errorMessage = "Only one word was entered.  Please enter more than one word.";
 				break;
-			/**case "invalidinput":
+			case "invalidinput":
 				$errorMessage = "Input was invalid. Enter words with identical word lengths.";
-				break;**/
+				break;
 			default:
 				$errorMessage = "Unknown error - try again";
 		}
@@ -48,23 +48,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale = 1">
     <title>SwimLanes Puzzle</title>
-	
-	<style>	
-		.jumbotron {
-			background-image: url("silcHeader.png");
-			-webkit-background-size: 100% 100%;
-			-moz-background-size: 100% 100%;
-			-o-background-size: 100% 100%;
-			background-size: 100% 100%;
-			height: 179px;
-		}
-	</style>
 </head>
 <body>
     <form action="swimPuzzle.php" method="post" class="form-horizontal">
         <div class="container-fluid">
-            <!--<div class="jumbotron" id="jumbos">
-            </div>-->
             <div class="panel">
                 <div class="panel-group">
                     <div class="panel panel-primary">
@@ -92,20 +79,32 @@
                                     <input class="form-control" id="subtitle" name="subtitle" value="Subtitle">
                                 </div>
                             </div>
-<!--                             <div class="form-group">
+                            <div class="form-group">
                                 <div class="col-sm-1"></div>
-                                <label class="control-label col-sm-1" style="text-align: left;">Puzzle Mode</label>
-                                
+                                <label class="control-label col-sm-1" style="text-align: left;">Fixed or Scrambled </label>
+
                                 <div class="col-sm-3">
-                                    <select class="form-control" id="puzzletype" name="puzzletype" onchange="sizeChange(this.value);">
-                                        <option value="rectangle" selected="selected">Rectangle</option>
-                                        <option value="pyramid" >Pyramid</option>
-                                        <option value="stepup" >Step Up</option>
-										<option value="stepdown" >Step Down</option>
+                                    <form action="swimPuzzle.php" method="post">
+                                    <select class="form-control" id="scrambled" name="scrambled">
+                                        <option value="fixed" selected="selected">Fixed</option>
+                                        <option value="scrambled">Scrambled</option>
                                     </select>
                                 </div>
                             </div>
- -->                            <div class="form-group">
+                            <div class="form-group">
+                                <div class="col-sm-1"></div>
+                                <label class="control-label col-sm-1" style="text-align: left;">Full or Sparse </label>
+                                
+                                <div class="col-sm-3">
+                                    <select class="form-control" id="puzzletype" name="puzzletype">
+                                        <option value="full" selected="selected">Full</option>
+                                        <option value="sparse">Sparse</option>
+                                    </select>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                            <div class="form-group">
                                 <div class="col-sm-1"></div>
                                 <label class="control-label col-sm-9" style="text-align: left;">Enter multiple words each on a new line.
                                 <br>All words should be equal in length.

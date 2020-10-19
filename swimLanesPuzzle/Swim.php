@@ -15,9 +15,10 @@ class Swim{
 	private $puzzleList = [];
 	private $characterList = [];
 	private $letterList = [];
-	private $shuffledWords = [];
-	private $scrambled = true;
-	private $fixed = true;
+	private $fullWords = [];
+	private $sparseWords = [];
+	private $scrambledSparseWords = [];
+	private $scrambledFullWords = [];
 
 	private $rectanglePuzzle = [];
 	private $pyramidPuzzle = [];
@@ -32,6 +33,7 @@ class Swim{
 	private $pyramidLetterPuzzle =[];
 	private $stacksLetterPuzzle = [];
 	private $swimLetterPuzzle = [];
+	private $swimSparseLetterPuzzle = [];
 
 	// Added max Columns for swimlanes
 	private $maxColumns;
@@ -119,34 +121,71 @@ class Swim{
 			$chars = $this->splitWord($word);
 
 			$this->wordList[$i] = $chars;
-			/*print_r($this->wordList[$i]);
-			echo "<br>";*/
-			array_push($this->shuffledWords, $this->wordList[$i]);
-			//if the columns and rows are both randomized based on user input, shuffle the arrays
-			if ($this->scrambled) {
-				shuffle($this->shuffledWords[$i]);
-				/*print_r($this->shuffledWords[$i]);
-				echo "<br>";
-				for($j = 0; $j < count($this->shuffledWords[$i]); $j++) {
-					print_r($this->shuffledWords[$i][$j]);
-					echo "<br>";
-				}
-				echo "<br>";*/
-			}
+
+			array_push($this->fullWords, $this->wordList[$i]);
+			array_push($this->scrambledFullWords, $this->wordList[$i]);
+			
+			shuffle($this->scrambledFullWords[$i]);
+
 			$i = $i + 1;
 		}
 		
+		for ($i = 0; $i < $this->wordCount; $i++) {
+			$this->sparseWords[$i] = [];
+			$this->scrambledSparseWords[$i] = [];
+		}
+
 		for($i = 0; $i < $this->maxLength; $i++) {
 			$indexShuffle = null;
 			$indexShuffle = [];
+			$testArray = null;
+			$testArray = [];
 			for($j = 0; $j < $this->wordCount; $j++) {
-				array_push($indexShuffle, $this->shuffledWords[$j][$i]);
+				array_push($indexShuffle, $this->fullWords[$j][$i]);				
 			}
 
 			shuffle($indexShuffle);
 
 			for($j = 0; $j < $this->wordCount; $j++) {
-				$this->shuffledWords[$j][$i] = $indexShuffle[$j];
+				$this->fullWords[$j][$i] = $indexShuffle[$j];
+				if(!in_array($indexShuffle[$j], $testArray)){
+					array_push($testArray, $indexShuffle[$j]);
+				}
+			}
+
+			for($j = 0; $j < $this->wordCount; $j++) {
+				if($j < count($testArray)) {
+					$this->sparseWords[$j][$i] = $testArray[$j];
+				} else {
+					$this->sparseWords[$j][$i] = 0;
+				}
+			}
+		}
+
+		for($i = 0; $i < $this->maxLength; $i++) {
+			$indexShuffle = null;
+			$indexShuffle = [];
+			$testArray = null;
+			$testArray = [];
+			for($j = 0; $j < $this->wordCount; $j++) {
+				array_push($indexShuffle, $this->scrambledFullWords[$j][$i]);				
+			}
+
+			shuffle($indexShuffle);
+
+			for($j = 0; $j < $this->wordCount; $j++) {
+				$this->scrambledFullWords[$j][$i] = $indexShuffle[$j];
+				if(!in_array($indexShuffle[$j], $testArray)){
+					array_push($testArray, $indexShuffle[$j]);
+				}
+			}
+
+			for($j = 0; $j < $this->wordCount; $j++) {
+				if($j < count($testArray)) {
+					$this->scrambledSparseWords[$j][$i] = $testArray[$j];
+				} else {
+					$this->scrambledSparseWords[$j][$i] = 0;
+				}
 			}
 		}
 	}
@@ -204,6 +243,10 @@ class Swim{
 
 		$this->generateSwimlanesLetterPuzzle();
 
+		$this->swimSparseLetterPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
+
+		$this->generateSparseLetterPuzzle();
+
 		/*$this->rectanglePuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
 		$this->pyramidPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
 		$this->stepUpPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
@@ -231,7 +274,7 @@ class Swim{
 		$col = 0;
 		$row = 0;
 
-		foreach($this->shuffledWords as $word){
+		foreach($this->fullWords as $word){
 			$chars = $this->splitWord($word);
 			$col = 0;
 
@@ -246,6 +289,25 @@ class Swim{
 	}
 
 	private function generateSwimlanesLetterPuzzle(){
+		$col = 0;
+		$row = 0;
+		$count=0;
+
+		foreach($this->wordList as $word){
+			$chars = $this->splitWord($word);
+			$col = 0;
+
+			foreach($chars as $char){
+				$this->swimLetterPuzzle[$row][$col] = '';
+
+				$col++;
+			}
+
+			$row++;
+		}
+	}
+
+	private function generateSparseLetterPuzzle(){
 		$col = 0;
 		$row = 0;
 		$count=0;
@@ -563,8 +625,20 @@ class Swim{
 		return $this->characterList;
 	}
 
-	public function getShuffledWords() {
-		return $this->shuffledWords;
+	public function getFullWords() {
+		return $this->fullWords;
+	}
+
+	public function getSparseWords(){
+		return $this->sparseWords;
+	}
+
+	public function getScrambledSparseWords() {
+		return $this->scrambledSparseWords;
+	}
+
+	public function getScrambledFullWords() {
+		return $this->scrambledFullWords;
 	}
 
 	/*** Word Processor Functions ***/

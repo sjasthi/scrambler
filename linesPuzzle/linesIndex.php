@@ -80,20 +80,7 @@
                                     <input class="form-control" id="subtitle" name="subtitle" value="Subtitle">
                                 </div>
                             </div>
-<!--                             <div class="form-group">
-                                <div class="col-sm-1"></div>
-                                <label class="control-label col-sm-1" style="text-align: left;">Puzzle Mode</label>
-                                
-                                <div class="col-sm-3">
-                                    <select class="form-control" id="puzzletype" name="puzzletype" onchange="sizeChange(this.value);">
-                                        <option value="rectangle" selected="selected">Rectangle</option>
-                                        <option value="pyramid" >Pyramid</option>
-                                        <option value="stepup" >Step Up</option>
-										<option value="stepdown" >Step Down</option>
-                                    </select>
-                                </div>
-                            </div>
- -->                            <div class="form-group">
+                            <div class="form-group">
                                 <div class="col-sm-1"></div>
                                 <label class="control-label col-sm-9" style="text-align: left;">Enter multiple words each on a new line.
                                 <br>Words can be any variety of lengths.

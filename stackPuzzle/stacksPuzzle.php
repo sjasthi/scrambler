@@ -1037,7 +1037,17 @@ function puzzleChange(){
 
 	// 	Shows/hides letters when puzzle type is changed (not needed for scrambler)
 function lettersChange(){
-		
+
+			// sendPyramid();
+			// sendLetterList();
+			// sendStepUp();
+			// sendStepDown();
+
+			// $pyramidLetterPuzzle = json_decode(stripslashes($_POST['pyramid']));
+			// $stepUpLetterPuzzle = json_decode(stripslashes($_POST['stepUp']));
+			// $stepDownLetterPuzzle = json_decode(stripslashes($_POST['stepDown']));
+			// $letterList = json_decode(stripslashes($_POST['letter']));
+
 			if($('#puzzlelettertype').val() == "rectangle"){
 				$(".rectangleLettersPuzzle").show();
 				$(".pyramidLettersPuzzle").hide();
