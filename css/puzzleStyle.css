@@ -19,6 +19,7 @@ table.letters tr td.filled {
 	height: 48px;
 	font-size: 20px;
 	text-align: center;
+	border-radius: 50%;
 	border: 2px solid #000000;
 	background-color: #EEEEEE;
 }

@@ -49,6 +49,13 @@
 			print_r("asdfa:");
 			redirect("invalidinput");
 		}
+
+		if(isset($_POST['puzzletype'])){
+			$puzzleType = $_POST['puzzletype'];
+		} else {
+			$puzzleType = 'circles';
+		}
+
 		//else{
 			// Get lists and puzzles
 			//$letterList = $shapes->getLetterList();
@@ -307,26 +314,24 @@
                                             </div>
                                         </div>
 										<?php //addition of letters options ************************* ?>
-<!-- 										<br>
+										<br>
 										<div class="row">
 											<div class="col-sm-6">
-												<select class="form-control" id="puzzlelettertype" name="puzzlelettertype" onchange="lettersChange()">
-													<option value="rectangle">Rectangle</option>
-													<option value="pyramid" >Pyramid</option>
-													<option value="stepup" >Step Up</option>
-													<option value="stepdown" >Step Down</option>
+												<select class="form-control" id="puzzletype" name="puzzletype" onchange="lettersChange()">
+													<option value="circles" >Circles</option>
+                                        			<option value="rectangles" >Rectangles</option>
 												</select>
 											</div>
-										<h4>Letters</h4>
+										<h4>Puzzle Type</h4>
 										</div>
- -->
+
 <!-- 										<br>
 										<div class="row">
 											<div class="col-sm-6">
 												<select class="form-control" id="puzzletype" name="puzzletype" onchange="puzzleChange()">
-													<option value="pyramid" <?php if($puzzleType == "pyramid"){echo('selected="selected"');} ?>>Pyramid</option>
-													<option value="stepup" <?php if($puzzleType == "stepup"){echo('selected="selected"');} ?>>Step Up</option>
-													<option value="stepdown" <?php if($puzzleType == "stepdown"){echo('selected="selected"');} ?>>Step Down</option>
+													<option value="pyramid">Pyramid</option>
+													<option value="stepup">Step Up</option>
+													<option value="stepdown">Step Down</option>
 												</select>
 											</div>
 										<h4>Words</h4>
@@ -637,7 +642,9 @@
 		
         var letterPuzzle = <?php echo json_encode($letterPuzzle) ?>;
 		
-        var shapesPuzzle = <?php echo json_encode($shapesPuzzle) ?>;
+		var shapesPuzzle = <?php echo json_encode($shapesPuzzle) ?>;
+		
+		var puzzleType = <?php echo $puzzleType ?>;
     </script>
     <script type="text/javascript" src="../js/shapes.js"></script>
 </html>
