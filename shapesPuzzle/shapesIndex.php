@@ -12,9 +12,9 @@
 			case "count":
 				$errorMessage = "Only one word was entered.  Please enter more than one word.";
 				break;
-			/**case "invalidinput":
+			case "invalidinput":
 				$errorMessage = "Input was invalid. Enter words with identical word lengths.";
-				break;**/
+				break;
 			default:
 				$errorMessage = "Unknown error - try again";
 		}
@@ -80,20 +80,18 @@
                                     <input class="form-control" id="subtitle" name="subtitle" value="Subtitle">
                                 </div>
                             </div>
-<!--                             <div class="form-group">
+                            <div class="form-group">
                                 <div class="col-sm-1"></div>
                                 <label class="control-label col-sm-1" style="text-align: left;">Puzzle Mode</label>
                                 
                                 <div class="col-sm-3">
                                     <select class="form-control" id="puzzletype" name="puzzletype" onchange="sizeChange(this.value);">
-                                        <option value="rectangle" selected="selected">Rectangle</option>
-                                        <option value="pyramid" >Pyramid</option>
-                                        <option value="stepup" >Step Up</option>
-										<option value="stepdown" >Step Down</option>
+                                        <option value="circles" selected="selected">Circles</option>
+                                        <option value="rectangles" >Rectangles</option>
                                     </select>
                                 </div>
                             </div>
- -->                            <div class="form-group">
+                            <div class="form-group">
                                 <div class="col-sm-1"></div>
                                 <label class="control-label col-sm-9" style="text-align: left;">Enter multiple words each on a new line.
                                 <br>Words must be the same length.

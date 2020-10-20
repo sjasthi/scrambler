@@ -1,5 +1,5 @@
 <?php
-  define("ROOT_PATH", 'C:\xampp\htdocs\scrambler\\');
+  define("ROOT_PATH", $_SERVER['DOCUMENT_ROOT'].'\scrambler\\');
   require_once(ROOT_PATH.'functions/initialize.php');
 ?>
 

@@ -15,14 +15,16 @@ class Lines{
 	private $puzzleList = [];
 	private $characterList = [];
 	private $letterList = [];
+	private $shuffledWordList = [];
 
-
+	private $linesPuzzle = [];
 	private $rectanglePuzzle = [];
 	private $stacksPyramidPuzzle = [];
 	private $stacksStepUpPuzzle = [];
 	private $stacksStepDownPuzzle = [];
 	private $stacksPuzzle = [];
 
+	private $linesLetterPuzzle = [];
 	private $rectangleLetterPuzzle =[];
 	private $stacksStepDownLetterPuzzle = [];
 	private $stacksStepUpLetterPuzzle = [];
@@ -63,7 +65,7 @@ class Lines{
 			$this->maxColumns = $this->maxLength;
 
 			$this->generateLetterList();
-
+			$this->generateShuffledWordList();
 			$this->generatePuzzles();
 		/**}
 		else{
@@ -138,30 +140,50 @@ class Lines{
 		}
 	}
 
+	private function generateShuffledWordList() {
+		
+		$count = 0;
+		
+		foreach($this->wordList as $word) {
+			$chars = splitWord($word);
+			$this->shuffledWordList[$count] = $chars;
+			shuffle($this->shuffledWordList[$count]);
+			$count++;
+		}
+	}
+
 	/*
 	 * Generates the 3 types of puzzles for Scrambler
 	 * Fills each puzzle with blank values and then calls individual generation methods
 	 */
 	private function generatePuzzles(){
-		$this->rectanglePuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
-		$this->stacksPyramidPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
-		$this->stacksStepUpPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
-		$this->stacksStepDownPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
+		$this->linesPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
+		
+		$this->generateLinesPuzzle();
+		
+		$this->linesLetterPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
 
-		$this->generateRectanglePuzzle();
-		$this->generateStacksPyramidPuzzle();
-		$this->generateStacksStepUpPuzzle();
-		$this->generateStacksStepDownPuzzle();
+		$this->generateLinesLetterPuzzle();
 
-		$this->rectangleLetterPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
-		$this->stacksPyramidLetterPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
-		$this->stacksStepUpLetterPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
-		$this->stacksStepDownLetterPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
+		// $this->rectanglePuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
+		// $this->stacksPyramidPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
+		// $this->stacksStepUpPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
+		// $this->stacksStepDownPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
 
-		$this->generateRectangleLetterPuzzle();
-		$this->generateStacksPyramidLetterPuzzle();
-		$this->generateStacksStepDownLetterPuzzle();
-		$this->generateStacksStepUpLetterPuzzle();
+		// $this->generateRectanglePuzzle();
+		// $this->generateStacksPyramidPuzzle();
+		// $this->generateStacksStepUpPuzzle();
+		// $this->generateStacksStepDownPuzzle();
+
+		// $this->rectangleLetterPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
+		// $this->stacksPyramidLetterPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
+		// $this->stacksStepUpLetterPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
+		// $this->stacksStepDownLetterPuzzle = array_fill(0, $this->wordCount, array_fill(0, $this->maxLength, 0));
+
+		// $this->generateRectangleLetterPuzzle();
+		// $this->generateStacksPyramidLetterPuzzle();
+		// $this->generateStacksStepDownLetterPuzzle();
+		// $this->generateStacksStepUpLetterPuzzle();
 
 
 	}
@@ -175,6 +197,42 @@ class Lines{
 	 *     a b c 0
 	 *     a b c d
 	 */
+
+	private function generateLinesPuzzle(){
+		$col = 0;
+		$row = 0;
+
+		foreach($this->wordList as $word){
+			$chars = $this->splitWord($word);
+			$col = 0;
+
+			foreach($chars as $char){
+				$this->linesPuzzle[$row][$col] = $char;
+
+				$col++;
+			}
+
+			$row++;
+		}
+	}
+
+	private function generateLinesLetterPuzzle(){
+		$col = 0;
+		$row = 0;
+		$count=0;
+
+		foreach($this->shuffledWordList as $word){
+			$col = 0;
+
+			foreach($word as $char){
+				$this->linesLetterPuzzle[$row][$col] = $char;
+
+				$col++;
+			}
+			$row++;
+		}
+	}
+
 	private function generateRectanglePuzzle(){
 		$col = 0;
 		$row = 0;
@@ -447,6 +505,18 @@ class Lines{
 
 	public function getStacksStepDownLetterPuzzle(){
 		return $this->stacksStepDownLetterPuzzle;
+	}
+
+	public function getLinesPuzzle(){
+		return $this->linesPuzzle;
+	}
+
+	public function getLinesLetterPuzzle(){
+		return $this->linesLetterPuzzle;
+	}
+
+	public function getShuffledWordList(){
+		return $this->shuffledWordList;
 	}
 
 	public function getErrorStatus(){

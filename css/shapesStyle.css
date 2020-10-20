@@ -1,0 +1,122 @@
+.circle{
+	position: absolute;
+    height: 200px;
+    width: 200px;
+    background-color: white;
+    border-radius: 50%;
+    border: 5px solid black;
+    text-align: center;
+    font-size: 20px;
+	font-weight: bold;
+}
+
+.main {
+	padding: 10px;
+}
+
+svg {fill:black; float:left}
+
+.rectangle{
+	/* position:absolute; */
+	height:200px;
+	width: 200px;
+    background-color: white;
+	border: 5px solid black;
+    /* text-align: center;
+    font-size: 20px;
+	font-weight: bold; */
+}
+
+.square {
+    height: 150px;
+    width: 150px;
+    background-color: white;
+    border: 5px solid black;
+    text-align: center;
+}
+
+.shapesArea {
+	position: relative;
+    width: 750px;
+    height: 750px;
+    border: 5px solid black;
+    background-color: white;
+}
+
+.letter {
+    font-size: 20px;
+    font-weight: bold;
+    
+}
+
+.line {
+
+}
+
+.jumbotron {
+	background-image: url("silcHeader.png");
+	-webkit-background-size: 100% 100%;
+	-moz-background-size: 100% 100%;
+	-o-background-size: 100% 100%;
+	background-size: 100% 100%;
+	height: 179px;
+}
+
+table.dabble tr td {
+	width: 40px;
+	height: 40px;
+	font-size: 1.875em;
+	text-align: center;
+}
+
+table.letters tr td.filled {
+	width: 40px;
+	height: 40px;
+	font-size: 20px;
+	text-align: center;
+	border: 2px solid #000000;
+	background-color: #EEEEEE;
+}
+
+table.letters tr td.empty {
+	width: 40px;
+	height: 40px;
+	font-size: 20px;
+	text-align: center;
+	border: 2px solid #FFFFFF;
+	background-color: #FFFFFF;
+}
+
+table.puzzle {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+table.puzzle tr td.filled {
+	width: 40px;
+	height: 40px;
+	font-size: 20px;
+	text-align: center;
+	border: 2px solid #000000;
+}
+
+table.puzzle tr td.empty {
+	width: 40px;
+	height: 40px;
+	font-size: 20px;
+	text-align: center;
+	border: 0px solid #000000;
+}
+
+table.puzzle tr td.empty:hover {
+    color: red;
+}
+
+#offset{
+	width: 50px !important;
+}
+
+.words{
+	border: 2px solid #000000; 
+	overflow:auto;
+}

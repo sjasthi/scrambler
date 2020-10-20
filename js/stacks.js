@@ -1,4 +1,4 @@
-console.log(letterList);
+//console.log(letterList);
 
 //function for testing contents of arrays after moving characters
 function printArrays() {
@@ -229,11 +229,68 @@ function updateArrays(setHTML, placeholder, target) {
     }
 }
 
-function sendArrays() {
+function sendPyramidArray() {
     //this function will update the arrays in PHP to draw them correctly upon switching puzzle orientations
+    var sendPyramid = JSON.stringify(pyramidPuzzleArray);
+   $.ajax({
+        type: "POST",
+        url: "stacksPuzzle.php",
+        data: {pyramid : sendPyramid}, 
+        cache: false,
+
+        success: function(){
+            alert("OK");
+        }
+    });
+}
+
+function sendLetterArray() {
+    var sendLetterList = JSON.stringify(letterList);
+    $.ajax({
+         type: "POST",
+         url: "stacksPuzzle.php",
+         data: {letter : sendLetterList}, 
+         cache: false,
+ 
+         success: function(){
+             alert("OK");
+         }
+     });
+}
+
+function sendStepUpArray() {
+     var sendStepUp = JSON.stringify(stepUpPuzzleArray);
+     $.ajax({
+          type: "POST",
+          url: "stacksPuzzle.php",
+          data: {stepUp : sendStepUp}, 
+          cache: false,
+  
+          success: function(){
+              alert("OK");
+          }
+      });
+}
+
+function sendStepDownArray() {
+      var sendStepDown = JSON.stringify(stepDownPuzzleArray);
+      $.ajax({
+           type: "POST",
+           url: "stacksPuzzle.php",
+           data: {stepDown : sendStepDown}, 
+           cache: false,
+   
+           success: function(){
+               alert("OK");
+           }
+       });
 }
 
 function changeLetterType(type) {
+    // sendPyramidArray();
+    // sendStepDownArray()
+    // sendStepUpArray();
+    // sendLetterList();
     lettersPuzzleType = type;
     // types are:
     // pyramid
@@ -267,6 +324,16 @@ function genericDetermineIndex(targetCell) {
     return [cellRow, cellColumn];
 }
 
+function determineIndexOfRectangle(row, column) {
+    var count = 0;
+    if(row == 0) {
+        if(column < wordList[0].length) {
+            return [row, column];
+        }
+
+    }
+}
+
 function updatePyramidPuzzleArrayIndex(row, column, letter) {
     pyramidPuzzleArray[row][column] = letter;
 }
@@ -296,7 +363,6 @@ function updateLetterListIndexFromLetters(row, column, letter) {
     } else {
         letterRow = row;
         letterColumn = column;
-
     }
     console.log("row: " + letterRow + " column: " + letterColumn);
     letterList[letterRow][letterColumn] = letter;
