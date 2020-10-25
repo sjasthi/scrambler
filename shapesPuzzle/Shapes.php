@@ -58,12 +58,14 @@ class Shapes{
 		}
 		$len = $this->getWordLength($this->wordList[0]);
 
-		for($i = 1; $i < count($this->wordList); $i++){
+		for($i = 0; $i < count($this->wordList); $i++){
 			$nextLen = $this->getWordLength($this->wordList[$i]);
 
 			if(($len) != $nextLen){
 				return false;
-			} else if ($nextLen > $this->MAX_COLUMNS){
+			}
+			
+			if ($nextLen > $this->MAX_COLUMNS){
 				return false;
 			}
 		}
@@ -87,21 +89,24 @@ class Shapes{
 			$i = $i + 1;
 		}
 
-		for($i = 0; $i < $this->maxLength; $i++) {
-			$indexShuffle = null;
-			$indexShuffle = [];
-			$testArray = null;
-			$testArray = [];
-			for($j = 0; $j < $this->wordCount; $j++) {
-				array_push($indexShuffle, $this->shapesPuzzle[$j][$i]);				
-			}
-
-			shuffle($indexShuffle);
-
-			for($j = 0; $j < $this->wordCount; $j++) {
-				$this->shapesPuzzle[$j][$i] = $indexShuffle[$j];
-			}
+		for($i = 0; $i < count($this->shapesPuzzle); $i++){
+			shuffle($this->shapesPuzzle[$i]);
 		}
+		// for($i = 0; $i < $this->maxLength; $i++) {
+		// 	$indexShuffle = null;
+		// 	$indexShuffle = [];
+		// 	$testArray = null;
+		// 	$testArray = [];
+		// 	for($j = 0; $j < $this->wordCount; $j++) {
+		// 		array_push($indexShuffle, $this->shapesPuzzle[$j][$i]);				
+		// 	}
+
+		// 	shuffle($indexShuffle);
+
+		// 	for($j = 0; $j < $this->wordCount; $j++) {
+		// 		$this->shapesPuzzle[$j][$i] = $indexShuffle[$j];
+		// 	}
+		// }
 	}
 	
 	private function generateLetterList(){

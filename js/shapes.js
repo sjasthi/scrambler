@@ -1,27 +1,5 @@
-            // var tableString = '<table class="puzzle">';
-            // tableString = tableString + '<tr><td>&nbsp</td></tr>';
-            // tableString = tableString + '<tr><td>&nbsp</td></tr>';
-            // tableString = tableString + '<tr><td>&nbsp</td></tr>';
-            // tableString = tableString + '<tr>';
-            // tableString = tableString + '<td class="empty">T</td>';
-            // tableString = tableString + '<td class="empty">E</td>';
-            // tableString = tableString + '<td class="empty">S</td>';
-            // tableString = tableString + '<td class="empty">T</td>';
-            // tableString = tableString + '</tr>';
-            // tableString = tableString + '</table>';
-
-            console.log("shapesPuzzle");
-            console.log(shapesPuzzle);
-            console.log("wordList");
-            console.log(wordList);
-            console.log("wordPuzzle");
-            console.log(wordPuzzle);
-            console.log("letterPuzzle");
-            console.log(letterPuzzle);
-
-            var stringArray = new Array(5);
+            var stringArray = new Array(wordList.length);
             generateTableStrings();
-            console.log(stringArray);
             for(var i = 0; i < xyCoords.length; i++) {
                 drawShape(xyCoords[i][0], xyCoords[i][1], stringArray[i]);
             }
@@ -38,43 +16,39 @@
             }
             
             function drawShape(currentX, currentY, tableString) {
-                console.log("in draw shape function");
-                console.log(currentX);
-                console.log(currentY);
-                    var child = document.createElement('div');
-                //if(shape == 'circle') {
-                    child.className = 'circle';
-                //} else if (shape == 'rectangle') {
-                // child.className = 'rectangle';
-                //}
-                    var canvas = document.getElementsByClassName('shapesArea');
-                    child.style.position = 'absolute';
-                    child.style.left = (currentX/7.5) +'%';
-                    child.style.top = (currentY/7.5) + '%';
-                    child.innerHTML = tableString;
-                    canvas[0].appendChild(child);
-                }
+                var circleChild = document.createElement('div');
+                
+                var rectangleChild = document.createElement('div');
+                circleChild.className = 'circleShape';
+                rectangleChild.className = 'rectangleShape';
+                var circleCanvas = document.getElementsByClassName('circlesPuzzle');
+                
+                var rectangleCanvas = document.getElementsByClassName('rectanglesPuzzle');
 
-                // for(var i = 0; i < xyCoords.length; i++) {
-                //     drawShape(xyCoords[i][0], xyCoords[i][1], stringArray[i]);
-                // }
+                circleChild.style.position = 'absolute';
+                circleChild.style.left = (currentX/7.5) +'%';
+                circleChild.style.top = (currentY/7.5) + '%';
+                circleChild.innerHTML = tableString;
+                circleCanvas[0].appendChild(circleChild);
+
+                rectangleChild.style.position = 'absolute';
+                rectangleChild.style.left = (currentX/7.5) +'%';
+                rectangleChild.style.top = (currentY/7.5) + '%';
+                rectangleChild.innerHTML = tableString;
+                rectangleCanvas[0].appendChild(rectangleChild);
+            }
 
                 function generateTableStrings(){
-                    for(i = 0; i < wordList.length; i++){
+                    for(i = 0; i < wordList[0].length; i++){
                         var tableString = '<table class="puzzle">';
-                        tableString = tableString + '<tr><td>&nbsp</td></tr>';
-                        tableString = tableString + '<tr><td>&nbsp</td></tr>';
-                        tableString = tableString + '<tr><td>&nbsp</td></tr>';
                         tableString = tableString + '<tr>';
-                        for(j = 0; j < wordList[0].length; j++){
-                            tableString = tableString + '<td class="empty">' + shapesPuzzle[i][j] + '</td>';
+                        for(j = 0; j < wordList.length; j++){
+                            tableString = tableString + '<td class="empty">' + shapesPuzzle[j][i] + '</td>';
                         }
                         tableString = tableString + '</tr>';
                         tableString = tableString + '</table>';
-                        console.log(tableString)
                         stringArray[i] = tableString;
                     }
                     tableString = tableString + '</table>';
-                    console.log(tableString)
                     stringArray[i] = tableString;
                 }

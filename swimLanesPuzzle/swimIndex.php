@@ -50,7 +50,7 @@
     <title>SwimLanes Puzzle</title>
 </head>
 <body>
-    <form action="swimPuzzle.php" method="post" class="form-horizontal">
+    <form action="SwimPuzzle.php" method="post" name="shapesForm" class="form-horizontal" onsubmit='return checkform()'>
         <div class="container-fluid">
             <div class="panel">
                 <div class="panel-group">
@@ -141,4 +141,47 @@
         </div>
     </form>
 </body>
+<script type="text/javascript">
+
+    function isLetter(c) {
+        return c.toLowerCase() != c.toUpperCase();
+    }
+
+    function checkform() {
+        var inputString = document.forms["shapesForm"]["wordInput"].value;
+        var wordList = inputString.split("\n");
+        console.log(wordList);
+        var duplicates = new Array(0);
+        var noDuplicates = true;
+        var errorString = 'You cannot have duplicate words in your input. Please resolve.\n\nDuplicates found are:\n';
+            
+        for(i = 0; i < wordList.length; i++) {
+            for(j = 0; j < wordList[i].length; j++) {
+                if(!isLetter(wordList[i].charAt(j))) {
+                    alert('The only characters permitted are letters. Please resolve.');
+                    console.log('word ' + i + ' character ' + j + ' letter is ' + wordList[i].charAt(j));
+                    return false;
+                } else if(j == i){}
+                else if (wordList[i] == wordList[j]) { 
+                    if(!duplicates.includes(wordList[j])) {
+                        duplicates.push(wordList[j]);
+                    }
+                    noDuplicates = false;
+                }
+            }
+        }
+        if(!noDuplicates) {
+            for (i = 0; i < duplicates.length; i++) {
+                if(duplicates[i] == null) {
+                    break;
+                }
+                errorString += duplicates[i] + '\n';
+            }
+            alert(errorString);
+        }
+
+        return noDuplicates;
+    }
+
+</script>
 </html>
