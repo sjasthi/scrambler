@@ -52,6 +52,7 @@
 
 		if(isset($_POST['puzzletype'])){
 			$puzzleType = $_POST['puzzletype'];
+			// print_r($puzzleType);
 		} else {
 			$puzzleType = 'circles';
 		}
@@ -164,94 +165,151 @@
                     <div class="panel-body">
                         <div align="center">
                             <h3><?php echo($title);?></h3>
-                        </div>
-                        <div align="center">
-                            <h4><?php echo($subtitle);?></h4>
-                        </div>
-                        <div align="center">
-							<div class="main">
-								<div class="shapesArea">
-									<?php
+						</div>
+						<div align="center">
+							<h4><?php echo($subtitle);?></h4>
+						</div>
+						<div align="center">
+								
+							<div class="col-sm-6">
+								<div class="main">
+									<div class="shapesArea rectanglesPuzzle" style='display:none'>
+										<?php
+										// print_r(count($wordList[0]));
+										$numWords = count($wordList[0]);
+										//determines the location of the shapes around the circle based on the angle in radians
+										$rad = ((2 * pi())/$numWords);
 
-									$numWords = count($wordList);
-									//determines the location of the shapes around the circle based on the angle in radians
-									$rad = ((2 * pi())/$numWords);
+										//sets the radius of the entire circle, ending at the center of the word circles
+										$radius = 200;
 
-									//sets the radius of the entire circle, ending at the center of the word circles
-									$radius = 200;
+										//start at 0 radians
+										$currentRad = 0;
 
-									//start at 0 radians
-									$currentRad = 0;
+										$xyCoords = [];
 
-									$xyCoords = [];
+										$hypotenuse = 75 * sqrt(2);
 
-									$hypotenuse = 75 * sqrt(2);
+										//determine the origin of the image
+										$middleX = 375 - $hypotenuse;
+										$middleY = 375 - $hypotenuse;
 
-									//determine the origin of the image
-									$middleX = 375 - $hypotenuse;
-									$middleY = 375 - $hypotenuse;
+										//set the initial x and y values to the origin
+										$currentX = 375;
+										$currentY = 375;
 
-									//set the initial x and y values to the origin
-									$currentX = 375;
-									$currentY = 375;
+										//placeholders used for drawing the lines between circles
+										$lastX = 0;
+										$lastY = 0;
+										
+										$firstX = $middleX + ($radius * cos(pi()/2 + ($rad))) + $hypotenuse - 10;
+										$firstY = $middleY + ($radius * sin(pi()/2 + ($rad))) + $hypotenuse - 10;
 
-									//placeholders used for drawing the lines between circles
-									$lastX = 0;
-									$lastY = 0;
-									
-									$firstX = $middleX + ($radius * cos(pi()/2 + ($rad))) + $hypotenuse;
-									$firstY = $middleY + ($radius * sin(pi()/2 + ($rad))) + $hypotenuse;
+										for($i = 1; $i <= count($wordList[0]); $i++){
 
-									for($i = 1; $i <= $numWords; $i++){
+											$currentRad = pi()/2 + ($i * $rad);
 
-										$currentRad = pi()/2 + ($i * $rad);
+											$currentX = $middleX + ($radius * cos($currentRad));
+											$currentY = $middleY + ($radius * sin($currentRad));
 
-										$currentX = $middleX + ($radius * cos($currentRad));
-										$currentY = $middleY + ($radius * sin($currentRad));
+											$xyCoords[$i - 1] = [$currentX, $currentY]; 
+										}
 
-										$xyCoords[$i - 1] = [$currentX, $currentY]; 
-									}
+										echo '<svg height="740" width="740" style="position:relative">';
+										echo '<polyline points ="';
+										for($i = 0; $i < count($xyCoords); $i++) {
+											$x = $xyCoords[$i][0] + $hypotenuse - 10;
+											$y = $xyCoords[$i][1] + $hypotenuse - 10;
+											echo ''.$x.','.$y.' ';
+										}
+										echo ''.$firstX.','.$firstY.'" " style="fill:none;stroke:black;stroke-width:3" /></svg>';
+										?> 
+									</div>
+									<div class="shapesArea circlesPuzzle">
+										<?php
+										$numWords = count($wordList[0]);
+										//determines the location of the shapes around the circle based on the angle in radians
+										$rad = ((2 * pi())/$numWords);
 
-									echo '<svg height="750" width="750" style="position:relative">';
-									echo '<polyline points ="';
-									for($i = 0; $i < count($xyCoords); $i++) {
-										$x = $xyCoords[$i][0] + $hypotenuse;
-										$y = $xyCoords[$i][1] + $hypotenuse;
-										echo ''.$x.','.$y.' ';
-									}
-									echo ''.$firstX.','.$firstY.'" " style="fill:none;stroke:black;stroke-width:3" /></svg>';
-									?> 
-								</div>
-								</div>
-                                
+										//sets the radius of the entire circle, ending at the center of the word circles
+										$radius = 200;
 
-							<?php //START OF WORDS PUZZLE *******************?>
-								<div class="wordPuzzle word">
-									<div class="row"> <h3> Step Down </h3> </div>
-									<div class="row">
-										<table class="puzzle">
-											<?php
-												// Prints blank step down puzzle
+										//start at 0 radians
+										$currentRad = 0;
 
-												foreach($wordPuzzle as $row){
-													echo'<tr>';
-													foreach($row as $letter){
-														if($letter != "0"){
-															echo'<td class="filled">&nbsp;&nbsp;&nbsp;&nbsp;</td>
-															';
-														}
-														else{
-															echo'<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
-															';
-														}
-													}
-													echo'</tr>';
-												}
-											?>
-										</table>
+										$xyCoords = [];
+
+										$hypotenuse = 75 * sqrt(2);
+
+										//determine the origin of the image
+										$middleX = 375 - $hypotenuse;
+										$middleY = 375 - $hypotenuse;
+
+										//set the initial x and y values to the origin
+										$currentX = 375;
+										$currentY = 375;
+
+										//placeholders used for drawing the lines between circles
+										$lastX = 0;
+										$lastY = 0;
+										
+										$firstX = $middleX + ($radius * cos(pi()/2 + ($rad))) + $hypotenuse - 10;
+										$firstY = $middleY + ($radius * sin(pi()/2 + ($rad))) + $hypotenuse - 10;
+
+										for($i = 1; $i <= count($wordList[0]); $i++){
+
+											$currentRad = pi()/2 + ($i * $rad);
+
+											$currentX = $middleX + ($radius * cos($currentRad));
+											$currentY = $middleY + ($radius * sin($currentRad));
+
+											$xyCoords[$i - 1] = [$currentX, $currentY]; 
+										}
+
+										echo '<svg height="740" width="740" style="position:relative">';
+										echo '<polyline points ="';
+										for($i = 0; $i < count($xyCoords); $i++) {
+											$x = $xyCoords[$i][0] + $hypotenuse - 10;
+											$y = $xyCoords[$i][1] + $hypotenuse - 10;
+											echo ''.$x.','.$y.' ';
+										}
+										echo ''.$firstX.','.$firstY.'" " style="fill:none;stroke:black;stroke-width:3" /></svg>';
+										?> 
 									</div>
 								</div>
-                            </div>
+							</div>
+									
+								
+							<?php //START OF WORDS PUZZLE *******************?>
+								
+							<div class="col-sm-6">
+								<div class="wordPuzzle word">
+									<div class="row"> <h3> Step Down </h3> </div>
+										<div class="row">
+											<table class="puzzle">
+												<?php
+													// Prints blank step down puzzle
+
+													foreach($wordPuzzle as $row){
+														echo'<tr>';
+														foreach($row as $letter){
+															if($letter != "0"){
+																echo'<td class="filled">&nbsp;&nbsp;&nbsp;&nbsp;</td>
+																';
+															}
+															else{
+																echo'<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+																';
+															}
+														}
+														echo'</tr>';
+													}
+												?>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
                         </div>
                     <div class="panel-heading">
                         <div class="row">
@@ -267,12 +325,12 @@
 															<div class="col-sm-4">
 																	<div class="row">
 																			<div class="col-sm-8">
-																					<h3>Letters</h3>
+																					<h3>Shapes</h3>
 																			</div>
 																			<div align="left" >
 	                                        <div class="row">
 	                                            <div class="col-sm-6" >
-	                                                <label>Letter Square Color</label>
+	                                                <label>Shape Background Color</label>
 	                                            </div>
 	                                            <div class="col-sm-6" >
 	                                                <input type="text" class='letterSquareColorLetters'/>
@@ -281,7 +339,7 @@
 	                                        <br>
 	                                        <div class="row">
 	                                            <div class="col-sm-6" >
-	                                                <label>Letter Color</label>
+	                                                <label>Shape Letter Color</label>
 	                                            </div>
 	                                            <div class="col-sm-6" >
 	                                                <input type="text" class='letterColorLetters'/>
@@ -290,7 +348,7 @@
 	                                        <br>
 	                                        <div class="row">
 	                                            <div class="col-sm-6" >
-	                                                <label>Line Color</label>
+	                                                <label>Shape Border Color</label>
 	                                            </div>
 	                                            <div class="col-sm-6" >
 	                                                <input type="text" class='lineColorLetters'/>
@@ -317,7 +375,7 @@
 										<br>
 										<div class="row">
 											<div class="col-sm-6">
-												<select class="form-control" id="puzzletype" name="puzzletype" onchange="lettersChange()">
+												<select class="form-control" id="puzzletype" name="puzzletype" onchange="puzzleChange()">
 													<option value="circles" >Circles</option>
                                         			<option value="rectangles" >Rectangles</option>
 												</select>
@@ -482,48 +540,45 @@
 	$(".letterSquareColorLetters").spectrum({
 		color: "#EEEEEE",
 		change: function(color) {
-			$(".letters table.puzzle tr td.filled").css("background-color", color.toHexString());
-						$(".letters .rectangle .inside").css("background-color", color.toHexString());
-			$(".letters .rectangle .left").css("background-color", color.toHexString());
-			$(".letters .rectangle .right").css("background-color", color.toHexString());
-			$(".letters .rectangle .top").css("background-color", color.toHexString());
-			$(".letters .rectangle .topRight").css("background-color", color.toHexString());
-			$(".letters .rectangle .bottom").css("background-color", color.toHexString());
-			$(".letters .rectangle .bottomRight").css("background-color", color.toHexString());
+			// $(".letters table.puzzle tr td.filled").css("background-color", color.toHexString());
+			// 			$(".letters .rectangle .inside").css("background-color", color.toHexString());
+			// $(".letters .rectangle .left").css("background-color", color.toHexString());
+			// $(".letters .rectangle .right").css("background-color", color.toHexString());
+			// $(".letters .rectangle .top").css("background-color", color.toHexString());
+			// $(".letters .rectangle .topRight").css("background-color", color.toHexString());
+			// $(".letters .rectangle .bottom").css("background-color", color.toHexString());
+			// $(".letters .rectangle .bottomRight").css("background-color", color.toHexString());
+			$(".circleShape").css("background-color", color.toHexString());
+			$(".rectangleShape").css("background-color", color.toHexString());
 		}
 	});
 
 	$(".letterColorLetters").spectrum({
 		color: "#000000",
 		change: function(color) {
-			$(".letters table.puzzle tr td.filled").css("color", color.toHexString());
-						$(".letters .rectangle .cell").css("color", color.toHexString());
-
-			$(".letters table.puzzle tr td.filled").css("color", color.toHexString());
-						$(".letters .rectangle .inside").css("color", color.toHexString());
-			$(".letters .rectangle .left").css("color", color.toHexString());
-			$(".letters .rectangle .right").css("color", color.toHexString());
-			$(".letters .rectangle .top").css("color", color.toHexString());
-			$(".letters .rectangle .topRight").css("color", color.toHexString());
-			$(".letters .rectangle .bottom").css("color", color.toHexString());
-			$(".letters .rectangle .bottomRight").css("color", color.toHexString());
+			$(".circleShape table.puzzle tr td.empty").css("color", color.toHexString());
+			$(".circleShape table.puzzle tr td.empty").css("color", color.toHexString());
+			$(".rectangleShape table.puzzle tr td.empty").css("color", color.toHexString());
+			$(".rectangleShape table.puzzle tr td.empty").css("color", color.toHexString());
 		}
 	});
 
 	$(".lineColorLetters").spectrum({
 		color: "#000000",
 		change: function(color) {
-			$(".letters table.puzzle tr td.filled").css("border", "2px solid " + color.toHexString());
-						$(".letters .rectangle .cell").css("border", "2px solid " + color.toHexString());
+			// $(".letters table.puzzle tr td.filled").css("border", "2px solid " + color.toHexString());
+			// 			$(".letters .rectangle .cell").css("border", "2px solid " + color.toHexString());
 
-			$(".letters table.puzzle tr td.filled").css("border-color", color.toHexString());
-						$(".letters .rectangle .inside").css("border-color", color.toHexString());
-			$(".letters .rectangle .left").css("border-color", color.toHexString());
-			$(".letters .rectangle .right").css("border-color", color.toHexString());
-			$(".letters .rectangle .top").css("border-color", color.toHexString());
-			$(".letters .rectangle .topRight").css("border-color", color.toHexString());
-			$(".letters .rectangle .bottom").css("border-color", color.toHexString());
-			$(".letters .rectangle .bottomRight").css("border-color", color.toHexString());
+			// $(".letters table.puzzle tr td.filled").css("border-color", color.toHexString());
+			// 			$(".letters .rectangle .inside").css("border-color", color.toHexString());
+			// $(".letters .rectangle .left").css("border-color", color.toHexString());
+			// $(".letters .rectangle .right").css("border-color", color.toHexString());
+			// $(".letters .rectangle .top").css("border-color", color.toHexString());
+			// $(".letters .rectangle .topRight").css("border-color", color.toHexString());
+			// $(".letters .rectangle .bottom").css("border-color", color.toHexString());
+			// $(".letters .rectangle .bottomRight").css("border-color", color.toHexString());
+			$(".circleShape").css("border-color", color.toHexString());
+			$(".rectangleShape").css("border-color", color.toHexString());
 		}
 	});
 
@@ -571,36 +626,17 @@
 	}
 
 	// Shows/hides puzzles and solutions when puzzle type is changed (not needed for scrambler)
-/*	function puzzleChange(){
-		if($('#puzzletype').val() == "rectangle"){
-			$(".rectanglePuzzle").show();
-			$(".stepupPuzzle").hide();
-			$(".stepdownPuzzle").hide();
-
-			$(".rectangleSolution").show();
-			$(".stepupSolution").hide();
-			$(".stepdownSolution").hide();
+function puzzleChange(){
+		if($('#puzzletype').val() == "rectangles"){
+			$(".rectanglesPuzzle").show();
+			$(".circlesPuzzle").hide();
 		}
-		else if($('#puzzletype').val() == "stepup"){
-			$(".rectanglePuzzle").hide();
-			$(".stepupPuzzle").show();
-			$(".stepdownPuzzle").hide();
-
-			$(".rectangleSolution").hide();
-			$(".stepupSolution").show();
-			$(".stepdownSolution").hide();
-		}
-		else{
-			$(".rectanglePuzzle").hide();
-			$(".stepupPuzzle").hide();
-			$(".stepdownPuzzle").show();
-
-			$(".rectangleSolution").hide();
-			$(".stepupSolution").hide();
-			$(".stepdownSolution").show();
+		else if($('#puzzletype').val() == "circles"){
+			$(".rectanglesPuzzle").hide();
+			$(".circlesPuzzle").show();
 		}
 	}
-*/
+
 	// 	Shows/hides letters when puzzle type is changed (not needed for scrambler)
 /*	function lettersChange(){
 			if($('#puzzlelettertype').val() == "rectangle"){
@@ -644,7 +680,7 @@
 		
 		var shapesPuzzle = <?php echo json_encode($shapesPuzzle) ?>;
 		
-		var puzzleType = <?php echo $puzzleType ?>;
+		var puzzleType = <?php echo "'".$puzzleType."'" ?>;
     </script>
     <script type="text/javascript" src="../js/shapes.js"></script>
 </html>

@@ -1,4 +1,6 @@
 <?php
+
+
 	if(isset($_GET["error"])){
 		$error = $_GET["error"];
 		
@@ -51,7 +53,7 @@
 	
 </head>
 <body>
-    <form action="shapesPuzzle.php" method="post" class="form-horizontal">
+    <form method="post" class="form-horizontal" name="shapesForm" action="shapesPuzzle.php" onsubmit="return checkform()">
         <div class="container-fluid">
             <div class="panel">
                 <div class="panel-group">
@@ -95,12 +97,14 @@
                                 <div class="col-sm-1"></div>
                                 <label class="control-label col-sm-9" style="text-align: left;">Enter multiple words each on a new line.
                                 <br>Words must be the same length.
+                                <br>Maximum of 5 words with maximum length of 5 letters
                                 </label>
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-1"></div>
                                 <div class="col-sm-10">
                                     <textarea class="form-control" rows="10" id="input" name="wordInput"></textarea>
+                                    
                                 </div>
                             </div> 
 							<div class="form-group">
@@ -128,4 +132,47 @@
         </div>
     </form>
 </body>
+
+    <script type="text/javascript">
+
+        function isLetter(c) {
+            return c.toLowerCase() != c.toUpperCase();
+        }
+
+        function checkform() {
+            var inputString = document.forms["shapesForm"]["wordInput"].value;
+            var wordList = inputString.split("\n");
+            var duplicates = new Array(0);
+            var noDuplicates = true;
+            var errorString = 'You cannot have duplicate words in your input. Please resolve.\n\nDuplicates found are:\n';
+                
+            for(i = 0; i < wordList.length; i++) {
+                for(j = 0; j < wordList.length; j++) {
+                    if(!isLetter(wordList[i].charAt(j))) {
+                        alert('The only characters permitted are letters. Please resolve.');
+                        return false;
+                    } else if(j == i){}
+                    else if (wordList[i] == wordList[j]) { 
+                        if(!duplicates.includes(wordList[j])) {
+                            duplicates.push(wordList[j]);
+                        }
+                        noDuplicates = false;
+                    }
+                }
+            }
+            if(!noDuplicates) {
+                for (i = 0; i < duplicates.length; i++) {
+                    if(duplicates[i] == null) {
+                        break;
+                    }
+                    errorString += duplicates[i] + '\n';
+                }
+                alert(errorString);
+            }
+
+            return noDuplicates;
+        }
+
+    </script>
+
 </html>

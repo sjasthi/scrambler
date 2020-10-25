@@ -1,5 +1,9 @@
 <?php
 
+	if(session_id() == '' || !isset($_SESSION)){
+		session_start();
+	}
+	
 	// set the current page to one of the main buttons
 	$nav_selected = "LINESPUZZLE";
 
@@ -43,32 +47,19 @@
 			redirect("count");
 		}
 
-		// Create stacks puzzle
-		$lines = new Lines($wordList);
+			$lines = new Lines($wordList);
 
-		//If there was an error with input redirect with invalid input message
-		//if($stacks->getErrorStatus() == true){
-		//	print_r("asdfa:");
-		//	redirect("invalidinput");
-		//}
-		//else{
-			// Get lists and puzzles
 			$letterList = $lines->getLetterList();
 			$wordList = $lines->getWordList();
 			$linesPuzzle = $lines->getLinesPuzzle();
 			$linesLetterPuzzle = $lines->getLinesLetterPuzzle();
 			$shuffledWordList = $lines->getShuffledWordList();
-
-			/*$pyramidPuzzle = $lines->getStacksPyramidPuzzle();
-			$stepUpPuzzle = $lines->getStacksStepUpPuzzle();
-			$stepDownPuzzle = $lines->getStacksStepDownPuzzle();
-
-			$pyramidLetterPuzzle = $lines->getStacksPyramidLetterPuzzle();
-			$stepUpLetterPuzzle = $lines->getStacksStepUpLetterPuzzle();
-			$stepDownLetterPuzzle = $lines->getStacksStepDownLetterPuzzle();*/
-
 			$characterList = $lines->getCharacterList();
-		//}
+
+		$_SESSION['linesWordList'] = $wordList;
+		$_SESSION['linesLetterPuzzle'] = $linesLetterPuzzle;
+		$_SESSION['linesTitle'] = $title;
+		$_SESSION['linesSubtitle'] = $subtitle;
 
 	}
 	else{
@@ -198,14 +189,13 @@
 										
 									</div>
 								</div>
-								</div>
-              <!--</div>-->
+							</div>
 
 							<?php //START OF WORDS PUZZLE *******************?>
-              <div class="col-sm-6">
+              				<div class="col-sm-6">
 								<div class="linesPuzzle word">
 									<div class="row"> <h3> Words </h3> </div>
-									<div class="row">
+										<div class="row">
 										
 											<?php
 												// Prints blank step down puzzle
@@ -228,107 +218,116 @@
 													<br>';
 												}
 											?>	
+										</div>
 									</div>
+                            	</div>
+                        	</div>
+                    	</div>
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-sm-12">
+									<div align="center"><h2>Lines Options</h2></div>
 								</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div align="center"><h2>Lines Options</h2></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-sm-12" align="center">
-															<?php // adding word options here **************************?>
-															<div class="col-sm-4">
-																	<div class="row">
-																			<div class="col-sm-8">
-																					<h3>Letters</h3>
-																			</div>
-																			<div align="left" >
-	                                        <div class="row">
-	                                            <div class="col-sm-6" >
-	                                                <label>Letter Square Color</label>
-	                                            </div>
-	                                            <div class="col-sm-6" >
-	                                                <input type="text" class='letterSquareColorLetters'/>
-	                                            </div>
-	                                        </div>
-	                                        <br>
-	                                        <div class="row">
-	                                            <div class="col-sm-6" >
-	                                                <label>Letter Color</label>
-	                                            </div>
-	                                            <div class="col-sm-6" >
-	                                                <input type="text" class='letterColorLetters'/>
-	                                            </div>
-	                                        </div>
-	                                        <br>
-	                                        <div class="row">
-	                                            <div class="col-sm-6" >
-	                                                <label>Line Color</label>
-	                                            </div>
-	                                            <div class="col-sm-6" >
-	                                                <input type="text" class='lineColorLetters'/>
-	                                            </div>
-	                                        </div>
-	                                        <br>
-	                                    </div>
-																		</div>
-																	</div>
-                                <div class="col-sm-4">
-                                    <div class="row">
-                                        <div class="col-sm-8">
-                                            <h3>Puzzle Options</h3>
-                                        </div>
-                                    </div>
+							</div>
+						</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-sm-12" align="center">
+									<?php // adding word options here **************************?>
+									<div class="col-sm-4">
+										<div class="row">
+											<div class="col-sm-8">
+												<h3>Letters</h3>
+											</div>
+											<div align="left" >
+	                                        	<div class="row">
+	                                            	<div class="col-sm-6" >
+	                                                	<label>Letter Square Color</label>
+	                                            	</div>
+	                                            	<div class="col-sm-6" >
+	                                                	<input type="text" class='letterSquareColorLetters'/>
+	                                            	</div>
+	                                        	</div>
+	                                        	<br>
+	                                        	<div class="row">
+	                                            	<div class="col-sm-6" >
+	                                                	<label>Letter Color</label>
+	                                            	</div>
+	                                            	<div class="col-sm-6" >
+	                                                	<input type="text" class='letterColorLetters'/>
+	                                            	</div>
+	                                        	</div>
+	                                        	<br>
+	                                        	<div class="row">
+	                                            	<div class="col-sm-6" >
+	                                                	<label>Line Color</label>
+	                                            	</div>
+	                                            	<div class="col-sm-6" >
+	                                                	<input type="text" class='lineColorLetters'/>
+	                                            	</div>
+	                                        	</div>
+	                                        	<br>
+	                                    	</div>
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="row">
+											<div class="col-sm-8">
+												<h3>Puzzle Options</h3>
+											</div>
+										</div>
 
-																		<div align="left">
-                                        <div class="row">
-                                            <div class="col-sm-12" >
-                                                <input type="checkbox" class="showSolutionCheckbox" onchange="solutionCheckboxChange()" checked> Show Solution
-                                            </div>
-                                        </div>
-                                   </div>
-                                </div>
+										<div align="left">
+                                        	<div class="row">
+                                            	<div class="col-sm-12" >
+                                                	<input type="checkbox" class="showSolutionCheckbox" onchange="solutionCheckboxChange()" checked> Show Solution
+                                            	</div>
+                                        	</div>
+											<br>
+											<div class="row">
+												<div class="col-sm-6">
+													<form method="post" action="linesPuzzleImage.php" onsubmit="return checkInput()">
+														<button type="submit" value="Submit">Generate</button>
+													</form>
+												</div>
+												<h4>Generate Image</h4>
+                                			</div>
+                                		</div>
+									</div>
 
-																<?php // Words OPTIONS ********************************** ?>
-                                <div class="col-sm-4">
-                                    <div class="row">
-                                        <div class="col-sm-8">
-                                            <h3>Words</h3>
-                                        </div>
-                                    </div>
-                                    <div align="left" >
-                                        <div class="row">
-                                            <div class="col-sm-6" >
-                                                <label>Word Square Color</label>
-                                            </div>
-                                            <div class="col-sm-6" >
-                                                <input type="text" class='letterSquareColor'/>
-                                            </div>
-                                        </div>
-                                        <br>
-                                        <div class="row">
-                                            <div class="col-sm-6" >
-                                                <label>Word Letter Color</label>
-                                            </div>
-                                            <div class="col-sm-6" >
-                                                <input type="text" class='letterColor'/>
-                                            </div>
-                                        </div>
-                                        <br>
-                                        <div class="row">
-                                            <div class="col-sm-6" >
-                                                <label>Line Color</label>
-                                            </div>
-                                            <div class="col-sm-6" >
-                                                <input type="text" class='lineColor'/>
-                                            </div>
+									<?php // Words OPTIONS ********************************** ?>
+                                	<div class="col-sm-4">
+                                    	<div class="row">
+                                        	<div class="col-sm-8">
+                                            	<h3>Words</h3>
+                                        	</div>
+                                    	</div>
+										<div align="left" >
+											<div class="row">
+												<div class="col-sm-6" >
+													<label>Word Square Color</label>
+												</div>
+												<div class="col-sm-6" >
+													<input type="text" class='letterSquareColor'/>
+												</div>
+											</div>
+											<br>
+											<div class="row">
+												<div class="col-sm-6" >
+													<label>Word Letter Color</label>
+												</div>
+												<div class="col-sm-6" >
+													<input type="text" class='letterColor'/>
+												</div>
+											</div>
+											<br>
+											<div class="row">
+												<div class="col-sm-6" >
+													<label>Line Color</label>
+												</div>
+												<div class="col-sm-6" >
+													<input type="text" class='lineColor'/>
+												</div>
                                         </div>
                                         <br>
                                     </div>
@@ -354,12 +353,37 @@
 							</div>
 							<div align="center">
 								<div class="col-sm-6">
-										<div class="letters linesLettersPuzzle">
-											<div class="row"> <h3>Letters</h3> </div>
-											<div class="row">
+									<div class="letters linesLettersPuzzle">
+										<div class="row"> <h3>Letters</h3> </div>
+										<div class="row">
+										<?php
+											// Prints blank step down puzzle
+											foreach($linesLetterPuzzle as $row){
+												echo'<table class="puzzle">
+												<tr>';
+												foreach($row as $letter){
+													if($letter != "0"){
+														echo'<td class="filled">'.$letter.'</td>';
+													}
+													else{
+														echo'<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>';
+													}
+												}
+												echo'</tr>
+												</table>
+												<br>';
+											}
+										?>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="linesSolution word">
+										<div class="row"> <h3> Words </h3> </div>
+										<div class="row">
 											<?php
-												// Prints blank step down puzzle
-												foreach($linesLetterPuzzle as $row){
+												// Prints solution for step down
+												foreach($linesPuzzle as $row){
 													echo'<table class="puzzle">
 													<tr>';
 													foreach($row as $letter){
@@ -375,43 +399,40 @@
 													<br>';
 												}
 											?>
-									</div>
-								</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="linesSolution word">
-										<div class="row"> <h3> Words </h3> </div>
-										<div class="row">
-												<?php
-													// Prints solution for step down
-													foreach($linesPuzzle as $row){
-														echo'<table class="puzzle">
-														<tr>';
-														foreach($row as $letter){
-															if($letter != "0"){
-																echo'<td class="filled">'.$letter.'</td>';
-															}
-															else{
-																echo'<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>';
-															}
-														}
-														echo'</tr>
-														</table>
-														<br>';
-													}
-												?>
 										</div>
 									</div>
-                                </div>
+								</div>
 							</div>
 						</div>
 					</div>
-                </div>
-            </div>
-        </div>
-    </div>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
+
+<script type="text/javascript">
+
+	function checkInput() {
+		var maxLength = 0;
+		var array = <?php echo json_encode($wordList) ?>;
+		for (var i = 0, length = array.length; i < length; i++) {
+		maxLength = Math.max(maxLength, array[i].length);
+		};
+
+		if(maxLength > 10) {
+			alert("Cannot generate images with words longer than ten characters due to size limitations");
+			return false;
+		}
+
+		if(array.length > 10)
+			{
+			alert("Cannot generate images with more than ten words due to size limitations");
+			return false;
+		}
+	}
+</script>
 <script>
 	// Set default spectrum elements
 	$(".letterSquareColor").spectrum({
@@ -577,37 +598,6 @@
 		
 		}
 	});
-
-	// <?php
-	// 	// Hide/Show starting puzzles/solutions based off input from Index page
-	// 	if($puzzleType == "stepup"){
-	// 		echo('$(".pyramidPuzzle").hide();');
-	// 		echo('$(".stepupPuzzle").show();');
-	// 		echo('$(".stepdownPuzzle").hide();');
-
-	// 		echo('$(".pyramidSolution").hide();');
-	// 		echo('$(".stepupSolution").show();');
-	// 		echo('$(".stepdownSolution").hide();');
-	// 	}
-	// 	else if($puzzleType == "stepdown"){
-	// 		echo('$(".pyramidPuzzle").hide();');
-	// 		echo('$(".stepupPuzzle").hide();');
-	// 		echo('$(".stepdownPuzzle").show();');
-
-	// 		echo('$(".pyramidSolution").hide();');
-	// 		echo('$(".stepupSolution").hide();');
-	// 		echo('$(".stepdownSolution").show();');
-	// 	}
-	// 	else{
-	// 		echo('$(".pyramidPuzzle").show();');
-	// 		echo('$(".stepupPuzzle").hide();');
-	// 		echo('$(".stepdownPuzzle").hide();');
-
-	// 		echo('$(".pyramidSolution").show();');
-	// 		echo('$(".stepupSolution").hide();');
-	// 		echo('$(".stepdownSolution").hide();');
-	// 	}
-	// ?>
 
 	// Updates the solution section to hidden/visable on check box update
 	function solutionCheckboxChange(){

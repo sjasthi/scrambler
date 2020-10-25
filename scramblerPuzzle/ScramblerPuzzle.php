@@ -1,4 +1,9 @@
 <?php
+
+	if(session_id() == '' || !isset($_SESSION)){
+		session_start();
+	}
+
 	// set the current page to one of the main buttons
 	$nav_selected = "SCRAMBLERPUZZLE";
 
@@ -64,6 +69,11 @@
 
 			$characterList = $scrambler->getCharacterList();
 		}
+
+		$_SESSION['scramblerWordList'] = $wordList;
+		$_SESSION['scramblerLetterPuzzle'] = $stepUpLetterPuzzle;
+		$_SESSION['scramblerTitle'] = $title;
+		$_SESSION['scramblerSubtitle'] = $subtitle;
 
 	}
 	else{
@@ -456,38 +466,22 @@
                                         </div>
                                     </div>
 
-																		<div align="left">
+									<div align="left">
                                         <div class="row">
                                             <div class="col-sm-12" >
                                                 <input type="checkbox" class="showSolutionCheckbox" onchange="solutionCheckboxChange()" checked> Show Solution
                                             </div>
                                         </div>
-										<?php //addition of letters options ************************* ?>
-<!-- 										<br>
+										<br>
 										<div class="row">
 											<div class="col-sm-6">
-												<select class="form-control" id="puzzlelettertype" name="puzzlelettertype" onchange="lettersChange()">
-													<option value="rectangle">Rectangle</option>
-													<option value="pyramid" >Pyramid</option>
-													<option value="stepup" >Step Up</option>
-													<option value="stepdown" >Step Down</option>
-												</select>
+												<form method="post" action="scramblerPuzzleImage.php" onsubmit="return checkInput()">
+													<button type="submit" value="Submit">Generate</button>
+												</form>
 											</div>
-										<h4>Letters</h4>
-										</div>
- -->
-<!-- 										<br>
-										<div class="row">
-											<div class="col-sm-6">
-												<select class="form-control" id="puzzletype" name="puzzletype" onchange="puzzleChange()">
-													<option value="pyramid" <?php if($puzzleType == "pyramid"){echo('selected="selected"');} ?>>Pyramid</option>
-													<option value="stepup" <?php if($puzzleType == "stepup"){echo('selected="selected"');} ?>>Step Up</option>
-													<option value="stepdown" <?php if($puzzleType == "stepdown"){echo('selected="selected"');} ?>>Step Down</option>
-												</select>
-											</div>
-										<h4>Words</h4>
-										</div>
- -->                                    </div>
+												<h4>Generate Image</h4>
+                                		</div>
+		                            </div>
                                 </div>
 
 																<?php // Words OPTIONS ********************************** ?>
@@ -989,5 +983,26 @@
 
 			}
 		}*/
+</script>
+<script type="text/javascript">
+
+	function checkInput() {
+		var maxLength = 0;
+		var array = <?php echo json_encode($wordList) ?>;
+		for (var i = 0, length = array.length; i < length; i++) {
+		maxLength = Math.max(maxLength, array[i].length);
+		};
+
+		if(maxLength > 10) {
+			alert("Cannot generate images with words longer than ten characters due to size limitations");
+			return false;
+		}
+
+		if(array.length > 10)
+			{
+			alert("Cannot generate images with more than ten words due to size limitations");
+			return false;
+		}
+	}
 </script>
 </html>

@@ -1,4 +1,4 @@
-.circle{
+.circleShape{
 	position: absolute;
     height: 200px;
     width: 200px;
@@ -16,15 +16,15 @@
 
 svg {fill:black; float:left}
 
-.rectangle{
-	/* position:absolute; */
-	height:200px;
-	width: 200px;
+.rectangleShape{
+	position: absolute;
+    height: 200px;
+    width: 200px;
     background-color: white;
-	border: 5px solid black;
-    /* text-align: center;
+    border: 5px solid black;
+    text-align: center;
     font-size: 20px;
-	font-weight: bold; */
+	font-weight: bold;
 }
 
 .square {
@@ -88,8 +88,11 @@ table.letters tr td.empty {
 }
 
 table.puzzle {
-    margin-left: auto;
-    margin-right: auto;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	width:190px;
+	height:190px;
 }
 
 table.puzzle tr td.filled {
@@ -106,10 +109,6 @@ table.puzzle tr td.empty {
 	font-size: 20px;
 	text-align: center;
 	border: 0px solid #000000;
-}
-
-table.puzzle tr td.empty:hover {
-    color: red;
 }
 
 #offset{
