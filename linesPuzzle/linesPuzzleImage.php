@@ -1,5 +1,6 @@
 <?php
-
+// define("ROOT_PATH", $_SERVER['DOCUMENT_ROOT'].'\scrambler\\');
+// include(ROOT_PATH."indic-wp/word_processor.php");
 
 header("Content-type: image/png");
 if(session_id() == '' || !isset($_SESSION)){
@@ -10,6 +11,14 @@ $wordList = $_SESSION['linesWordList'];
 $puzzle = $_SESSION['linesLetterPuzzle'];
 $title = $_SESSION['linesTitle'];
 $subtitle = $_SESSION['linesSubtitle'];
+
+// for($i = 0; $i < count($wordList); $i++) {
+//     for($j = 0; $j < strlen($wordList[$i]); $j++) {
+//         if($puzzle[$i][$j] == 0) {
+//             $puzzle[$i][$j] == null;
+//         }
+//     }
+// }
 
 $img_width = 3508;
 $img_height = 2480;
@@ -127,13 +136,12 @@ $maxlen = max(array_map('strlen', $wordList));
 $startingX = $img_width - 300 - (140 * $maxlen);
 $startingY = 700;
 
-
 imagettftext($image, 100, 0, $img_width - 845, $startingY - 120, $black, realpath('./arlrdbd.ttf'), 'Solution');
 
 for($i = 0; $i < count($puzzle); $i++){
     $startingY += 40;
     for($j = 0; $j < count($puzzle[$i]); $j++) {
-        if(ctype_alpha($puzzle[$i][$j])) {
+        if($puzzle[$i][$j] != '0') {
         imagefilledrectangle($image, $startingX - 25 + (140 * $j), $startingY - 105 + (140 * $i), $startingX + 115 + (140 * $j), $startingY + 35 + (140 * $i), $white);
         imagerectangle($image, $startingX - 25 + (140 * $j), $startingY - 105 + (140 * $i), $startingX + 115 + (140 * $j), $startingY + 35 + (140 * $i), $black);
         }
@@ -143,13 +151,12 @@ for($i = 0; $i < count($puzzle); $i++){
 $startingX = 300;
 $startingY = 700;
 
-
 imagettftext($image, 100, 0, $startingX - 35, $startingY - 120, $black, realpath('./arlrdbd.ttf'), 'Puzzle');
 
 for($i = 0; $i < count($puzzle); $i++){
     $startingY += 40;
     for($j = 0; $j < count($puzzle[$i]); $j++) {
-        if(ctype_alpha($puzzle[$i][$j])) {
+        if($puzzle[$i][$j] != '0') {
         imagefilledrectangle($image, $startingX - 25 + (140 * $j), $startingY - 105 + (140 * $i), $startingX + 115 + (140 * $j), $startingY + 35 + (140 * $i), $white);
         imagerectangle($image, $startingX - 25 + (140 * $j), $startingY - 105 + (140 * $i), $startingX + 115 + (140 * $j), $startingY + 35 + (140 * $i), $black);
         imagettftext($image, 75, 0, $startingX + (140 * $j) + 5, $startingY + (140 * $i), $black, realpath('./arlrdbd.ttf'), $puzzle[$i][$j]);
@@ -196,14 +203,3 @@ imagepng($image);
 
 
 ?>
-
-<script type='text/javascript'>
-    function consoleDisplay(){
-        var textBoundArray = <?php echo json_encode($text_bound) ?>;
-        console.log(<?php echo $start_x_offset ?>);
-        console.log(<?php echo $start_y_offset ?>);
-        for(i = 0; i < 7; i++){
-            console.log(textBoundArray[i]);
-        }
-    }
-</script> 

@@ -141,47 +141,43 @@
         </div>
     </form>
 </body>
-<script type="text/javascript">
+    <script type="text/javascript">
 
-    function isLetter(c) {
-        return c.toLowerCase() != c.toUpperCase();
-    }
-
-    function checkform() {
-        var inputString = document.forms["shapesForm"]["wordInput"].value;
-        var wordList = inputString.split("\n");
-        console.log(wordList);
-        var duplicates = new Array(0);
-        var noDuplicates = true;
-        var errorString = 'You cannot have duplicate words in your input. Please resolve.\n\nDuplicates found are:\n';
-            
-        for(i = 0; i < wordList.length; i++) {
-            for(j = 0; j < wordList[i].length; j++) {
-                if(!isLetter(wordList[i].charAt(j))) {
-                    alert('The only characters permitted are letters. Please resolve.');
-                    console.log('word ' + i + ' character ' + j + ' letter is ' + wordList[i].charAt(j));
-                    return false;
-                } else if(j == i){}
-                else if (wordList[i] == wordList[j]) { 
-                    if(!duplicates.includes(wordList[j])) {
-                        duplicates.push(wordList[j]);
+        function checkform() {
+            var inputString = document.forms["shapesForm"]["wordInput"].value;
+            var wordList = inputString.split("\n");
+            console.log(wordList);
+            var duplicates = new Array(0);
+            var noDuplicates = true;
+            var errorString = 'You cannot have duplicate words in your input. Please resolve.\n\nDuplicates found are:\n';
+                
+            for(i = 0; i < wordList.length; i++) {
+                for(j = 0; j < wordList[i].length; j++) {
+                    if(!isNaN(parseInt(wordList[i].charAt(j), 10))) {
+                        alert('Numbers are not permitted in the input. Please resolve.');
+                        console.log('word ' + i + ' character ' + j + ' letter is ' + wordList[i].charAt(j));
+                        return false;
+                    } else if(j == i){}
+                    else if (wordList[i] == wordList[j]) { 
+                        if(!duplicates.includes(wordList[j])) {
+                            duplicates.push(wordList[j]);
+                        }
+                        noDuplicates = false;
                     }
-                    noDuplicates = false;
                 }
             }
-        }
-        if(!noDuplicates) {
-            for (i = 0; i < duplicates.length; i++) {
-                if(duplicates[i] == null) {
-                    break;
+            if(!noDuplicates) {
+                for (i = 0; i < duplicates.length; i++) {
+                    if(duplicates[i] == null) {
+                        break;
+                    }
+                    errorString += duplicates[i] + '\n';
                 }
-                errorString += duplicates[i] + '\n';
+                alert(errorString);
             }
-            alert(errorString);
+
+            return noDuplicates;
         }
 
-        return noDuplicates;
-    }
-
-</script>
+    </script>
 </html>
