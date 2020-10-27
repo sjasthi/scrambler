@@ -119,11 +119,7 @@
 </body>
 
     <script type="text/javascript">
-
-        function isLetter(c) {
-            return c.toLowerCase() != c.toUpperCase();
-        }
-
+    
         function checkform() {
             var inputString = document.forms["shapesForm"]["wordInput"].value;
             var wordList = inputString.split("\n");
@@ -134,8 +130,8 @@
                 
             for(i = 0; i < wordList.length; i++) {
                 for(j = 0; j < wordList[i].length; j++) {
-                    if(!isLetter(wordList[i].charAt(j))) {
-                        alert('The only characters permitted are letters. Please resolve.');
+                    if(!isNaN(parseInt(wordList[i].charAt(j), 10))) {
+                        alert('Numbers are not permitted in the input. Please resolve.');
                         console.log('word ' + i + ' character ' + j + ' letter is ' + wordList[i].charAt(j));
                         return false;
                     } else if(j == i){}
