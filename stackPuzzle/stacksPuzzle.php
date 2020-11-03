@@ -67,7 +67,15 @@
 			$characterList = $stacks->getCharacterList();
 
 			$lettersPuzzleType = 'rectangle';
-			?><script>
+
+			$_SESSION['wordList'] = $wordList;
+			$_SESSION['letterPuzzle'] = $stepUpLetterPuzzle;
+			$_SESSION['title'] = $title;
+			$_SESSION['subtitle'] = $subtitle;
+			$_SESSION['type'] = 'stacks';
+			?>
+
+			<script>
 			var lettersPuzzleType = <?php echo json_encode($lettersPuzzleType) ?>;
 			
 			var puzzleType = <?php echo json_encode($puzzleType) ?>;
@@ -156,11 +164,23 @@
     <title>Stacks Puzzle</title>
 </head>
 <style>
+	form {
+		display: inline;
+	}
+	
 	.puzzleLetter{}
 	.guess{}
 </style>
 <body>
     <div class="container-fluid">
+		<form method="post" action="linesPuzzleImage.php" onsubmit="return checkInput()">
+			<button type="submit" value="Submit">Generate Image</button>
+		</form>
+		<form method="post" action="../db/saveWords.php">
+			<button type="submit" value="Submit">Save Words</button>
+		</form>
+		<button type="button" onclick="alert('To be implemented')">Save Puzzle</button>
+		<button type="button" onclick="alert('To be implemented')">Play</button> 
 		<br>
         <div class="panel">
             <div class="panel-group">

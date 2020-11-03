@@ -44,6 +44,9 @@
 			redirect("count");
 		}
 
+		
+		$_SESSION['wordList'] = $wordList;
+
 		// Create swimlanes puzzle
 		$swim = new Swim($wordList);
 
@@ -70,9 +73,12 @@
 			$stepDownLetterPuzzle = $swim->getStepDownLetterPuzzle();
 			$swimLetterPuzzle = $swim->getSwimlanesLetterPuzzle();
 
-
-
 			$characterList = $swim->getCharacterList();
+
+			$_SESSION['letterPuzzle'] = $scrambledFullWords;
+			$_SESSION['title'] = $title;
+			$_SESSION['subtitle'] = $subtitle;
+			$_SESSION['type'] = 'swimlanes';
 
 	}
 	else{
@@ -153,10 +159,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale = 1">
 
-    <title>SwimLanes Puzzle</title>
+	<title>SwimLanes Puzzle</title>
+	<style>
+		form {
+			display: inline;
+		}
+	</style>
 </head>
 <body>
     <div class="container-fluid">
+		<form method="post" action="alert('To be implemented')" onsubmit="return checkInput()">
+			<button type="submit" value="Submit">Generate Image</button>
+		</form>
+		<form method="post" action="../db/saveWords.php">
+			<button type="submit" value="Submit">Save Words</button>
+		</form>
+		<button type="button" onclick="alert('To be implemented')">Save Puzzle</button>
+		<button type="button" onclick="alert('To be implemented')">Play</button> 
 		<br>
         <div class="panel">
             <div class="panel-group">

@@ -51,7 +51,7 @@
 
 		// If there was an error with input redirect with invalid input message
 		if($scrambler->getErrorStatus() == true){
-			print_r("asdfa:");
+			//print_r("asdfa:");
 			redirect("invalidinput");
 		}
 		else{
@@ -70,10 +70,11 @@
 			$characterList = $scrambler->getCharacterList();
 		}
 
-		$_SESSION['scramblerWordList'] = $wordList;
-		$_SESSION['scramblerLetterPuzzle'] = $stepUpLetterPuzzle;
-		$_SESSION['scramblerTitle'] = $title;
-		$_SESSION['scramblerSubtitle'] = $subtitle;
+		$_SESSION['wordList'] = $wordList;
+		$_SESSION['letterPuzzle'] = $stepUpLetterPuzzle;
+		$_SESSION['title'] = $title;
+		$_SESSION['subtitle'] = $subtitle;
+		$_SESSION['type'] = 'scrambler';
 
 	}
 	else{
@@ -153,13 +154,23 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale = 1">
-
-    <title>Scrambler Puzzle</title>
+	<style>
+		form {
+			display: inline;
+		}
+	</style>
+	<title>Scrambler Puzzle</title>
 </head>
 <body>
     <div class="container-fluid">
-        <!--<div class="jumbotron" id="jumbos">
-        </div>-->
+		<form method="post" action="scramblerPuzzleImage.php" onsubmit="return checkInput()">
+			<button type="submit" value="Submit">Generate Image</button>
+		</form>
+		<form method="post" action="../db/saveWords.php">
+			<button type="submit" value="Submit">Save Words</button>
+		</form>
+		<button type="button" onclick="alert('To be implemented')">Save Puzzle</button>
+		<button type="button" onclick="alert('To be implemented')">Play</button> 
 		<br>
         <div class="panel">
             <div class="panel-group">
@@ -473,14 +484,6 @@
                                             </div>
                                         </div>
 										<br>
-										<div class="row">
-											<div class="col-sm-6">
-												<form method="post" action="scramblerPuzzleImage.php" onsubmit="return checkInput()">
-													<button type="submit" value="Submit">Generate</button>
-												</form>
-											</div>
-												<h4>Generate Image</h4>
-                                		</div>
 		                            </div>
                                 </div>
 

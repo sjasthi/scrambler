@@ -50,7 +50,7 @@
     <title>SwimLanes Puzzle</title>
 </head>
 <body>
-    <form action="SwimPuzzle.php" method="post" name="shapesForm" class="form-horizontal" onsubmit='return checkform()'>
+    <form action="SwimPuzzle.php" method="post" name="swimForm" class="form-horizontal" onsubmit='return checkform()'>
         <div class="container-fluid">
             <div class="panel">
                 <div class="panel-group">
@@ -144,24 +144,37 @@
     <script type="text/javascript">
 
         function checkform() {
-            var inputString = document.forms["shapesForm"]["wordInput"].value;
+            var inputString = document.forms["swimForm"]["wordInput"].value;
+            if(inputString == '') {
+                alert('Cannot have empty input. Please enter at least 2 words');
+                return false;
+            }
             var wordList = inputString.split("\n");
-            console.log(wordList);
+            if(wordList.length == 1) {
+                alert('Cannot have input of less than 2 words. Please enter at least 2 words');
+                return false;
+            }
+            var length = wordList[0].length;
             var duplicates = new Array(0);
             var noDuplicates = true;
             var errorString = 'You cannot have duplicate words in your input. Please resolve.\n\nDuplicates found are:\n';
+            
                 
             for(i = 0; i < wordList.length; i++) {
+                if(wordList[i].length != length) {
+                    alert('Words must be of the same length. Please resolve.')
+                    return false;
+                }
                 for(j = 0; j < wordList[i].length; j++) {
                     if(!isNaN(parseInt(wordList[i].charAt(j), 10))) {
                         alert('Numbers are not permitted in the input. Please resolve.');
                         console.log('word ' + i + ' character ' + j + ' letter is ' + wordList[i].charAt(j));
                         return false;
                     } else if(j == i){}
-                    else if (wordList[i] == wordList[j]) { 
-                        if(!duplicates.includes(wordList[j])) {
-                            duplicates.push(wordList[j]);
-                        }
+                    else if(wordList[i] == wordList[j]) { 
+                            if(!duplicates.includes(wordList[j])) {
+                                duplicates.push(wordList[j]);
+                            }
                         noDuplicates = false;
                     }
                 }

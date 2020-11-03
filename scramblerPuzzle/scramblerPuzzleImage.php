@@ -6,10 +6,10 @@ if(session_id() == '' || !isset($_SESSION)){
     session_start();
 }
 
-$wordList = $_SESSION['scramblerWordList'];
-$puzzle = $_SESSION['scramblerLetterPuzzle'];
-$title = $_SESSION['scramblerTitle'];
-$subtitle = $_SESSION['scramblerSubtitle'];
+$wordList = $_SESSION['wordList'];
+$puzzle = $_SESSION['letterPuzzle'];
+$title = $_SESSION['title'];
+$subtitle = $_SESSION['subtitle'];
 
 $img_width = 3508;
 $img_height = 2480;

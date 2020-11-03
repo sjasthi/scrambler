@@ -65,6 +65,12 @@
 			$characterList = $dabble->getCharacterList();
 		}
 
+		$_SESSION['wordList'] = $wordList;
+		$_SESSION['letterPuzzle'] = $stepUpLetterPuzzle;
+		$_SESSION['title'] = $title;
+		$_SESSION['subtitle'] = $subtitle;
+		$_SESSION['type'] = 'dabble';
+
 	}
 	else{
 		redirect(" ");
@@ -144,12 +150,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale = 1">
 
-    <title>Dabble Puzzle</title>
+	<title>Dabble Puzzle</title>
+	<style>
+		form {
+			display: inline;
+		}
+	</style>
 </head>
 <body>
     <div class="container-fluid">
-        <!--<div class="jumbotron" id="jumbos">
-        </div>-->
+		<form method="post" action="alert('To be implemented')" onsubmit="return checkInput()">
+			<button type="submit" value="Submit">Generate Image</button>
+		</form>
+		<form method="post" action="../db/saveWords.php">
+			<button type="submit" value="Submit">Save Words</button>
+		</form>
+		<button type="button" onclick="alert('To be implemented')">Save Puzzle</button>
+		<button type="button" onclick="alert('To be implemented')">Play</button> 
 		<br>
         <div class="panel">
             <div class="panel-group">

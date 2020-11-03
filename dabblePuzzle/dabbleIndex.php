@@ -132,13 +132,25 @@
 
         function checkform() {
             var inputString = document.forms["shapesForm"]["wordInput"].value;
+            if(inputString == '') {
+                alert('Cannot have empty input. Please enter at least 2 words');
+                return false;
+            }
             var wordList = inputString.split("\n");
-            console.log(wordList);
+            if(wordList.length == 1) {
+                alert('Cannot have input of less than 2 words. Please enter at least 2 words');
+                return false;
+            }
             var duplicates = new Array(0);
+            var length = wordList[0].length;
             var noDuplicates = true;
             var errorString = 'You cannot have duplicate words in your input. Please resolve.\n\nDuplicates found are:\n';
                 
             for(i = 0; i < wordList.length; i++) {
+                if(wordList[i].length != length) {
+                    alert('Words must increment in length by one character per line. Please resolve.')
+                    return false;
+                }
                 for(j = 0; j < wordList[i].length; j++) {
                     if(!isNaN(parseInt(wordList[i].charAt(j), 10))) {
                         alert('Numbers are not permitted in the input. Please resolve.');
@@ -152,6 +164,7 @@
                         noDuplicates = false;
                     }
                 }
+                length++;
             }
             if(!noDuplicates) {
                 for (i = 0; i < duplicates.length; i++) {

@@ -41,6 +41,8 @@
 			redirect("count");
 		}
 
+		$_SESSION['wordList'] = $wordList;
+		
 		// Create shapes puzzle
 		$shapes = new Shapes($wordList);
 
@@ -66,6 +68,11 @@
 			$letterPuzzle = $shapes->getLetterPuzzle();
 			$characterList = $shapes->getCharacterList();
 		//}
+
+		$_SESSION['letterPuzzle'] = $letterPuzzle;
+		$_SESSION['title'] = $title;
+		$_SESSION['subtitle'] = $subtitle;
+		$_SESSION['type'] = 'shapes';
 
 	}
 	else{
@@ -147,10 +154,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale = 1">
 
-    <title>Shapes Puzzle</title>
+	<title>Shapes Puzzle</title>
+	<style>
+		form {
+			display: inline;
+		}
+	</style>
 </head>
 <body>
     <div class="container-fluid">
+		<form method="post" action="linesPuzzleImage.php" onsubmit="return checkInput()">
+			<button type="submit" value="Submit">Generate Image</button>
+		</form>
+		<form method="post" action="../db/saveWords.php">
+			<button type="submit" value="Submit">Save Words</button>
+		</form>
+		<button type="button" onclick="alert('To be implemented')">Save Puzzle</button>
+		<button type="button" onclick="alert('To be implemented')">Play</button> 
 		<br>
         <div class="panel">
             <div class="panel-group">

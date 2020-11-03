@@ -7,10 +7,10 @@ if(session_id() == '' || !isset($_SESSION)){
     session_start();
 }
 
-$wordList = $_SESSION['linesWordList'];
-$puzzle = $_SESSION['linesLetterPuzzle'];
-$title = $_SESSION['linesTitle'];
-$subtitle = $_SESSION['linesSubtitle'];
+$wordList = $_SESSION['wordList'];
+$puzzle = $_SESSION['letterPuzzle'];
+$title = $_SESSION['title'];
+$subtitle = $_SESSION['subtitle'];
 
 // for($i = 0; $i < count($wordList); $i++) {
 //     for($j = 0; $j < strlen($wordList[$i]); $j++) {
