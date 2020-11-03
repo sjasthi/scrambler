@@ -3,6 +3,8 @@
 	if(session_id() == '' || !isset($_SESSION)){
 		session_start();
 	}
+
+
 	
 	// set the current page to one of the main buttons
 	$nav_selected = "LINESPUZZLE";
@@ -56,10 +58,11 @@
 			$shuffledWordList = $lines->getShuffledWordList();
 			$characterList = $lines->getCharacterList();
 
-		$_SESSION['linesWordList'] = $wordList;
-		$_SESSION['linesLetterPuzzle'] = $linesLetterPuzzle;
-		$_SESSION['linesTitle'] = $title;
-		$_SESSION['linesSubtitle'] = $subtitle;
+		$_SESSION['wordList'] = $wordList;
+		$_SESSION['letterPuzzle'] = $linesLetterPuzzle;
+		$_SESSION['title'] = $title;
+		$_SESSION['subtitle'] = $subtitle;
+		$_SESSION['type'] = 'lines';
 
 	}
 	else{
@@ -141,9 +144,22 @@
     <meta name="viewport" content="width=device-width, initial-scale = 1">
 
     <title>Lines Puzzle</title>
+	<style>
+		form {
+			display: inline;
+		}
+	</style>
 </head>
 <body>
     <div class="container-fluid">
+		<form method="post" action="linesPuzzleImage.php" onsubmit="return checkInput()">
+			<button type="submit" value="Submit">Generate Image</button>
+		</form>
+		<form method="post" action="../db/saveWords.php">
+			<button type="submit" value="Submit">Save Words</button>
+		</form>
+		<button type="button" onclick="alert('To be implemented')">Save Puzzle</button>
+		<button type="button" onclick="alert('To be implemented')">Play</button> 
 		<br>
         <div class="panel">
             <div class="panel-group">
@@ -284,14 +300,14 @@
                                             	</div>
                                         	</div>
 											<br>
-											<div class="row">
+											<!-- <div class="row">
 												<div class="col-sm-6">
 													<form method="post" action="linesPuzzleImage.php" onsubmit="return checkInput()">
 														<button type="submit" value="Submit">Generate</button>
 													</form>
 												</div>
 												<h4>Generate Image</h4>
-                                			</div>
+                                			</div> -->
                                 		</div>
 									</div>
 

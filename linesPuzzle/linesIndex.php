@@ -51,7 +51,7 @@
 	
 </head>
 <body>
-    <form action="LinesPuzzle.php" method="post" name="shapesForm" class="form-horizontal" onsubmit='return checkform()'>
+    <form action="LinesPuzzle.php" method="post" name="linesForm" class="form-horizontal" onsubmit='return checkform()'>
         <div class="container-fluid">
             <div class="panel">
                 <div class="panel-group">
@@ -121,9 +121,8 @@
     <script type="text/javascript">
     
         function checkform() {
-            var inputString = document.forms["shapesForm"]["wordInput"].value;
+            var inputString = document.forms["linesForm"]["wordInput"].value;
             var wordList = inputString.split("\n");
-            console.log(wordList);
             var duplicates = new Array(0);
             var noDuplicates = true;
             var errorString = 'You cannot have duplicate words in your input. Please resolve.\n\nDuplicates found are:\n';
