@@ -8,23 +8,20 @@
 		$error = $_GET["error"];
 		
 		// Check to see if an error code was passed in
-		// Error get variable is passed through swimPuzzle.php after an issue has been detected
+		// Error get variable is passed through DabblePuzzle.php after an issue has been detected
 		// Here the message will get displayed and prompt the user to try again
 		switch($error){
 			case "emptyinput":
-				$errorMessage = "No input was provided.  Enter words with identical word lengths.";
+				$errorMessage = "No input was provided.  Please enter words in sequential length order.";
 				break;
 			case "count":
 				$errorMessage = "Only one word was entered.  Please enter more than one word.";
 				break;
 			case "invalidinput":
-				$errorMessage = "Input was invalid. Enter words with identical word lengths.";
+				$errorMessage = "Input was invalid. Enter words with sequential word lengths. Example: word with length 2, word with length 3, word with length 4, etc.";
 				break;
             case "nonalpha":
                 $errorMessage = "Input cannot contain numbers or special characters.";
-                break;
-            case 'duplicate':
-                $errorMessage = "Input cannot contain duplicate words. Please make each word unique.";
                 break;
 			default:
 				$errorMessage = "Unknown error - try again";
@@ -33,7 +30,7 @@
     }
     
     // set the current page to one of the main buttons
-    $nav_selected = "SWIM";
+    $nav_selected = "DABBLEPLUS";
 
     // make the left menu buttons visible; options: YES, NO
     $left_buttons = "NO";
@@ -58,7 +55,8 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale = 1">
-    <title>SwimLanes Puzzle</title>
+    <title>Dabble Plus Puzzle</title>
+	
 </head>
 <body>
     <br>
@@ -76,7 +74,7 @@
 			</div>
 		</div>
     <br>
-    <form action="SwimPuzzle.php" method="post" name="swimForm" class="form-horizontal">
+    <form action="DabblePlusPuzzle.php" method="post" name="shapesForm" class="form-horizontal">
         <div class="container-fluid">
             <div class="panel">
                 <div class="panel-group">
@@ -84,7 +82,7 @@
                         <div class="panel-heading">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <div align="center"><h2>SwimLanes Puzzle Maker</h2></div>
+                                    <div align="center"><h2>Dabble Plus Puzzle Maker</h2></div>
                                 </div>
                             </div>
                         </div>
@@ -95,7 +93,7 @@
                                 <div class="col-sm-9">
                                     <input class="form-control" id="title" name="title" <?php
                                         if(isset($_SESSION['title']) && isset($_SESSION['lastpage']) && 
-                                        $_SESSION['lastpage'] == 'swim'){
+                                        $_SESSION['lastpage'] == 'dabbleplus'){
                                             $title = $_SESSION['title'];
                                             echo "value='".$title."'";
                                         } else {
@@ -111,7 +109,7 @@
                                 <div class="col-sm-9">
                                     <input class="form-control" id="subtitle" name="subtitle" <?php
                                         if(isset($_SESSION['subtitle']) && isset($_SESSION['lastpage']) && 
-                                        $_SESSION['lastpage'] == 'swim'){
+                                        $_SESSION['lastpage'] == 'dabbleplus'){
                                             $subtitle = $_SESSION['subtitle'];
                                             echo "value='".$subtitle."'";
                                         } else {
@@ -121,25 +119,31 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-1"></div>
-                                <label class="control-label col-sm-1" style="text-align: left;">Fixed or Scrambled </label>
-
+                                <label class="control-label col-sm-1" style="text-align: left;">Puzzle Mode</label>
+                                
                                 <div class="col-sm-3">
-                                    <form action="swimPuzzle.php" method="post">
-                                    <select class="form-control" id="scrambled" name="scrambled">
-                                        <?php
-                                            if(isset($_SESSION['scrambled']) && isset($_SESSION['lastpage']) && 
-                                            $_SESSION['lastpage'] == 'swim'){
-                                                if($_SESSION['scrambled'] == 'fixed'){
-                                                    echo '<option value="fixed" selected="selected">Fixed</option>
-                                                    <option value="scrambled">Scrambled</option>';
-                                                } else if($_SESSION['scrambled'] == 'scrambled'){
-                                                    echo '<option value="fixed">Fixed</option>
-                                                    <option value="scrambled" selected="selected">Scrambled</option>';
+                                    <select class="form-control" id="puzzletype" name="puzzletype" onchange="sizeChange(this.value);">
+                                    <?php
+                                            if(isset($_SESSION['puzzletype']) && isset($_SESSION['lastpage']) &&
+                                            $_SESSION['lastpage'] == 'dabbleplus'){
+                                                if($_SESSION['puzzletype'] == 'pyramid'){
+                                                    echo '<option value="pyramid" selected="selected">Center Justified</option>
+                                                    <option value="stepup" >Right Justified</option>
+                                                    <option value="stepdown" >Left Justified</option>';
+                                                } else if($_SESSION['puzzletype'] == 'stepup'){
+                                                    echo '<option value="pyramid" >Center Justified</option>
+                                                    <option value="stepup" selected="selected">Right Justified</option>
+                                                    <option value="stepdown" >Left Justified</option>';
+                                                } else {
+                                                    echo '<option value="pyramid" >Center Justified</option>
+                                                    <option value="stepup" >Right Justified</option>
+                                                    <option value="stepdown" selected="selected">Left Justified</option>';
                                                 }
                                             }
                                             else{
-                                                echo '<option value="fixed" selected="selected">Fixed</option>
-                                                <option value="scrambled">Scrambled</option>';
+                                                echo '<option value="pyramid" >Center Justified</option>
+                                                <option value="stepup" >Right Justified</option>
+                                                <option value="stepdown" selected="selected">Left Justified</option>';
                                             }
                                         ?>
                                     </select>
@@ -147,35 +151,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-sm-1"></div>
-                                <label class="control-label col-sm-1" style="text-align: left;">Full or Sparse </label>
-                                
-                                <div class="col-sm-3">
-                                    <select class="form-control" id="puzzletype" name="puzzletype">
-                                    <?php
-                                            if(isset($_SESSION['puzzletype']) && isset($_SESSION['lastpage']) && 
-                                            $_SESSION['lastpage'] == 'swim'){
-                                                if($_SESSION['puzzletype'] == 'full'){
-                                                    echo '<option value="full" selected="selected">Full</option>
-                                                    <option value="sparse">Sparse</option>';
-                                                } else if($_SESSION['puzzletype'] == 'sparse'){
-                                                    echo '<option value="full" >Full</option>
-                                                    <option value="sparse" selected="selected">Sparse</option>';
-                                                }
-                                            }
-                                            else{
-                                                echo '<option value="full" selected="selected">Full</option>
-                                                <option value="sparse">Sparse</option>';
-                                            }
-                                    ?>
-                                    </select>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                            <div class="form-group">
-                                <div class="col-sm-1"></div>
-                                <label class="control-label col-sm-9" style="text-align: left;">Enter multiple words each on a new line.
-                                <br>All words should be equal in length.
+                                <label class="control-label col-sm-9" style="text-align: left;">Enter the pyramid words each on a new line, or on the same line separated by a comma. <br>Line lengths should be unique and have no gaps in numbers.<br>Example: 3 letter line, 4 letter line, 5 letter line, etc.
                                 </label>
                             </div>
                             <div class="form-group">
@@ -188,19 +164,7 @@
                                         ?></textarea>
                                 </div>
                             </div> 
-							<!-- <div class="form-group">
-								<div class="col-sm-1"></div>
-								<div class="col-sm-10">
-									<label class="charLabel" style="color:red;font-size:14px;" name="charName" value="">
-									<?php
-										// If there is a warning message after input validation display message to user
-										if(isset($errorMessage)){
-											echo($errorMessage);
-										}
-									?>
-									</label>
-								</div>
-							</div> -->
+							
 							<div class="row">
 								<div class="text-center">
 									<input type="submit" name="submit" class="btn btn-primary btn-lg" value="Generate">
@@ -213,11 +177,11 @@
         </div>
     </form>
 </body>
-<?php $_SESSION['lastpage'] = 'swimIndex';?>
+<?php $_SESSION['lastpage'] = 'dabblePlusIndex';?>
     <script type="text/javascript">
 
         function checkform() {
-            var inputString = document.forms["swimForm"]["wordInput"].value;
+            var inputString = document.forms["shapesForm"]["wordInput"].value;
             if(inputString == '') {
                 alert('Cannot have empty input. Please enter at least 2 words');
                 return false;
@@ -227,15 +191,14 @@
                 alert('Cannot have input of less than 2 words. Please enter at least 2 words');
                 return false;
             }
-            var length = wordList[0].length;
             var duplicates = new Array(0);
+            var length = wordList[0].length;
             var noDuplicates = true;
             var errorString = 'You cannot have duplicate words in your input. Please resolve.\n\nDuplicates found are:\n';
-            
                 
             for(i = 0; i < wordList.length; i++) {
                 if(wordList[i].length != length) {
-                    alert('Words must be of the same length. Please resolve.')
+                    alert('Words must increment in length by one character per line. Please resolve.')
                     return false;
                 }
                 for(j = 0; j < wordList[i].length; j++) {
@@ -244,13 +207,14 @@
                         console.log('word ' + i + ' character ' + j + ' letter is ' + wordList[i].charAt(j));
                         return false;
                     } else if(j == i){}
-                    else if(wordList[i] == wordList[j]) { 
-                            if(!duplicates.includes(wordList[j])) {
-                                duplicates.push(wordList[j]);
-                            }
+                    else if (wordList[i] == wordList[j]) { 
+                        if(!duplicates.includes(wordList[j])) {
+                            duplicates.push(wordList[j]);
+                        }
                         noDuplicates = false;
                     }
                 }
+                length++;
             }
             if(!noDuplicates) {
                 for (i = 0; i < duplicates.length; i++) {

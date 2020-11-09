@@ -15,7 +15,7 @@ class Stacks{
 	private $puzzleList = [];
 	private $characterList = [];
 	private $letterList = [];
-
+	private $characterListNoSpaces = [];
 
 	private $rectanglePuzzle = [];
 	private $stacksPyramidPuzzle = [];
@@ -52,8 +52,8 @@ class Stacks{
 		
 		//find the maximum word length, which is also the maximum number of columns
 		foreach($this->wordList as $word) {
-			if (getWordLength($word) > $this->maxLength) {
-				$this->maxLength = getWordLength($word);
+			if ($this->getWordLengthNoSpaces($word) > $this->maxLength) {
+				$this->maxLength = $this->getWordLengthNoSpaces($word);
 			}
 		}
 			//$this->maxLength = $this->getWordLength($this->wordList[(count($this->wordList) - 1)]);
@@ -81,25 +81,6 @@ class Stacks{
 	 }
 
 	/*
-	 * SHOULD NOT NEED TO VALIDATE INPUT AS INPUT SHOULD BE ACCEPTED AT THIS POINT NO MATTER WHAT
-	 */
-	/**private function validateInput(){
-		$len = $this->getWordLength($this->wordList[0]);
-
-		for($i = 1; $i < count($this->wordList); $i++){
-			$nextLen = $this->getWordLength($this->wordList[$i]);
-
-			if(($len) != $nextLen){
-				return false;
-			}
-
-			// $len++;
-		}
-
-		return true;
-	}**/
-
-	/*
 	 * Generates the puzzle list of letters in grid format with columns equal to maxColumns variable
 	 * Takes all words from input, split into characters, shuffle the list, then save in letterList in grid format
 	 */
@@ -117,7 +98,17 @@ class Stacks{
 
 		shuffle($this->characterList);
 
-		$charCount = count($this->characterList);
+		$this->characterListNoSpaces = $this->characterList;
+
+		for($i = 0; $i < count($this->characterListNoSpaces);){
+			if($this->characterListNoSpaces[$i] == ' ') {
+				array_splice($this->characterListNoSpaces, $i, 1);
+			} else {
+				$i++;
+			}
+		}
+
+		$charCount = count($this->characterListNoSpaces);
 
 		$cols = $this->maxColumns;
 		$rows = $charCount / $cols;
@@ -130,8 +121,8 @@ class Stacks{
 		for($i = 0; $i < $rows; $i++){
 			for($j = 0; $j < $cols; $j++){
 
-				if(isset($this->characterList[$k])){
-					$this->letterList[$i][$j] = $this->characterList[$k];
+				if(isset($this->characterListNoSpaces[$k])){
+					$this->letterList[$i][$j] = $this->characterListNoSpaces[$k];
 					$k++;
 				}
 			}
@@ -184,9 +175,21 @@ class Stacks{
 			$col = 0;
 
 			foreach($chars as $char){
-				$this->rectanglePuzzle[$row][$col] = $char;
+				if($char == ' '){}
+				else {
+					$this->rectanglePuzzle[$row][$col] = $char;
 
-				$col++;
+					$col++;
+				}
+			}
+
+			for($i = 0; $i < count($this->rectanglePuzzle[$row]); $i++){
+				if($this->rectanglePuzzle[$row][$i] == ' ') {
+					array_splice($this->rectanglePuzzle[$row], $i, 1);
+					array_push($this->rectanglePuzzle[$row], '0');
+				} else{
+					// $i++;
+				}
 			}
 
 			$row++;
@@ -212,9 +215,21 @@ class Stacks{
 			$col = 0;
 
 			foreach($chars as $char){
-				$this->rectangleLetterPuzzle[$row][$col] = $this->characterList[$count++];
+				if($char == ' '){}
+				else {
+					$this->rectangleLetterPuzzle[$row][$col] = $this->characterListNoSpaces[$count++];
 
-				$col++;
+					$col++;
+				}
+			}
+
+			for($i = 0; $i < count($this->rectangleLetterPuzzle[$row]); $i++){
+				if($this->rectangleLetterPuzzle[$row][$i] == ' ') {
+					array_splice($this->rectangleLetterPuzzle[$row], $i, 1);
+					//array_push($this->rectangleLetterPuzzle[$row], '0');
+				} else{
+					// $i++;
+				}
 			}
 
 			$row++;
@@ -249,9 +264,22 @@ class Stacks{
 			$col = 0;
 
 			foreach($chars as $char){
-				$this->stacksPyramidPuzzle[$row][$col] = $char;
+				if($char == ' '){}
+				else {
+					$this->stacksPyramidPuzzle[$row][$col] = $char;
 
-				$col++;
+					$col++;
+				}
+			}
+
+			for($i = 0; $i < count($this->stacksPyramidPuzzle[$row]); $i++){
+				if($this->stacksPyramidPuzzle[$row][$i] == ' ') {
+					array_splice($this->stacksPyramidPuzzle[$row], $i, 1);
+					array_push($this->stacksPyramidPuzzle[$row], '0');
+				} else{
+					// $i++;
+				}
+
 			}
 
 			$row++;
@@ -277,9 +305,21 @@ class Stacks{
 			$col = 0;
 
 			foreach($chars as $char){
-				$this->stacksPyramidLetterPuzzle[$row][$col] = $this->characterList[$count++];
+				if($char == ' '){}
+				else {
+					$this->stacksPyramidLetterPuzzle[$row][$col] = $this->characterListNoSpaces[$count++];
 
-				$col++;
+					$col++;
+				}
+			}
+
+			for($i = 0; $i < count($this->stacksPyramidLetterPuzzle[$row]); $i++){
+				if($this->stacksPyramidLetterPuzzle[$row][$i] == ' ') {
+					array_splice($this->stacksPyramidLetterPuzzle[$row], $i, 1);
+					array_push($this->stacksPyramidLetterPuzzle[$row], '0');
+				} else{
+					// $i++;
+				}
 			}
 
 			$row++;
@@ -303,14 +343,26 @@ class Stacks{
 
 		foreach($this->wordList as $word){
 			$chars = $this->splitWord($word);
-			$wordLength = $this->getWordLength($word);
+			$wordLength = $this->getWordLengthNoSpaces($word);
 
 			$col = $maxColumn - $wordLength;
 
 			foreach($chars as $char){
-				$this->stacksStepUpPuzzle[$row][$col] = $char;
+				if($char == ' '){}
+				else {
+					$this->stacksStepUpPuzzle[$row][$col] = $char;
 
-				$col++;
+					$col++;
+				}
+			}
+
+			for($i = 0; $i < count($this->stacksStepUpPuzzle[$row]);){
+				if($this->stacksStepUpPuzzle[$row][$i] == ' ') {
+					array_splice($this->stacksStepUpPuzzle[$row], $i, 1);
+					array_unshift($this->stacksStepUpPuzzle[$row], '0');
+				} else{
+					$i++;
+				}
 			}
 
 			$row++;
@@ -334,14 +386,26 @@ class Stacks{
 
 		foreach($this->wordList as $word){
 			$chars = $this->splitWord($word);
-			$wordLength = $this->getWordLength($word);
+			$wordLength = $this->getWordLengthNoSpaces($word);
 
 			$col = $maxColumn - $wordLength;
 
 			foreach($chars as $char){
-				$this->stacksStepUpLetterPuzzle[$row][$col] = $this->characterList[$count++];
+				if($char == ' '){}
+				else {
+					$this->stacksStepUpLetterPuzzle[$row][$col] = $this->characterListNoSpaces[$count++];
 
-				$col++;
+					$col++;
+				}
+			}
+
+			for($i = 0; $i < count($this->stacksStepUpLetterPuzzle[$row]);){
+				if($this->stacksStepUpLetterPuzzle[$row][$i] == ' ') {
+					array_splice($this->stacksStepUpLetterPuzzle[$row], $i, 1);
+					array_unshift($this->stacksStepUpLetterPuzzle[$row], '0');
+				} else{
+					$i++;
+				}
 			}
 
 			$row++;
@@ -366,9 +430,21 @@ class Stacks{
 			$col = 0;
 
 			foreach($chars as $char){
-				$this->stacksStepDownPuzzle[$row][$col] = $char;
+				if($char == ' '){}
+				else {
+					$this->stacksStepDownPuzzle[$row][$col] = $char;
 
-				$col++;
+					$col++;
+				}
+			}
+
+			for($i = 0; $i < count($this->stacksStepDownPuzzle[$row]);){
+				if($this->stacksStepDownPuzzle[$row][$i] == ' ') {
+					array_splice($this->stacksStepDownPuzzle[$row], $i, 1);
+					array_push($this->stacksStepDownPuzzle[$row], '0');
+				} else{
+					$i++;
+				}
 			}
 
 			$row++;
@@ -394,9 +470,21 @@ class Stacks{
 			$col = 0;
 
 			foreach($chars as $char){
-				$this->stacksStepDownLetterPuzzle[$row][$col] = $this->characterList[$count++];
+				if($char == ' ' ){}
+				else {
+					$this->stacksStepDownLetterPuzzle[$row][$col] = $this->characterListNoSpaces[$count++];
 
-				$col++;
+					$col++;
+				}
+			}
+
+			for($i = 0; $i < count($this->stacksStepDownLetterPuzzle[$row]);){
+				if($this->stacksStepDownLetterPuzzle[$row][$i] == ' ') {
+					array_splice($this->stacksStepDownLetterPuzzle[$row], $i, 1);
+					array_push($this->stacksStepDownLetterPuzzle[$row], '0');
+				} else{
+					$i++;
+				}
 			}
 
 			$row++;
@@ -457,11 +545,21 @@ class Stacks{
 		return $this->characterList;
 	}
 
+	public function getCharacterListNoSpaces(){
+		return $this->characterListNoSpaces;
+	}
+
 	/*** Word Processor Functions ***/
 	private function getWordLength($word){
 		$this->wordProcessor->setWord($word, "telugu");
 
 		return $this->wordProcessor->getLength();
+	}
+
+	private function getWordLengthNoSpaces($word){
+		$this->wordProcessor->setWord($word, "telugu");
+
+		return $this->wordProcessor->getLengthNoSpaces($word);
 	}
 
 	private function splitWord($word){

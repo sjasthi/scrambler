@@ -16,6 +16,7 @@ class Shapes{
 	private $puzzleList = [];
 	private $characterList = [];
 	private $letterList = [];
+	private $characterListNoSpaces = [];
 
 
 	private $wordPuzzle = [];
@@ -56,10 +57,10 @@ class Shapes{
 		if(count($this->wordList) > $this->MAX_WORD_COUNT) {
 			return false;
 		}
-		$len = $this->getWordLength($this->wordList[0]);
+		$len = $this->getWordLengthNoSpaces($this->wordList[0]);
 
 		for($i = 0; $i < count($this->wordList); $i++){
-			$nextLen = $this->getWordLength($this->wordList[$i]);
+			$nextLen = $this->getWordLengthNoSpaces($this->wordList[$i]);
 
 			if(($len) != $nextLen){
 				return false;
@@ -83,6 +84,14 @@ class Shapes{
 			$chars = $this->splitWord($word);
 
 			$this->wordList[$i] = $chars;
+
+			for($j = 0; $j < count($this->wordList[$i]);){
+				if($this->wordList[$i][$j] == ' '){
+					array_splice($this->wordList[$i], $j, 1);
+				} else {
+					$j++;
+				}
+			}
 
 			array_push($this->shapesPuzzle, $this->wordList[$i]);
 
@@ -122,7 +131,17 @@ class Shapes{
 
 		shuffle($this->characterList);
 
-		$charCount = count($this->characterList);
+		$this->characterListNoSpaces = $this->characterList;
+
+		for($i = 0; $i < count($this->characterListNoSpaces);){
+			if($this->characterListNoSpaces[$i] == ' ') {
+				array_splice($this->characterListNoSpaces, $i, 1);
+			} else {
+				$i++;
+			}
+		}
+
+		$charCount = count($this->characterListNoSpaces);
 
 		$cols = $this->maxColumns;
 		$rows = $charCount / $cols;
@@ -135,8 +154,8 @@ class Shapes{
 		for($i = 0; $i < $rows; $i++){
 			for($j = 0; $j < $cols; $j++){
 
-				if(isset($this->characterList[$k])){
-					$this->letterList[$i][$j] = $this->characterList[$k];
+				if(isset($this->characterListNoSpaces[$k])){
+					$this->letterList[$i][$j] = $this->characterListNoSpaces[$k];
 					$k++;
 				}
 			}
@@ -178,9 +197,22 @@ class Shapes{
 			$col = 0;
 
 			foreach($chars as $char){
-				$this->wordPuzzle[$row][$col] = $char;
+				if($char == ''){}
+				else{
+					$this->wordPuzzle[$row][$col] = $char;
 
-				$col++;
+					$col++;
+				}
+			}
+			
+			for($i = 0; $i < count($this->wordPuzzle[$row]);){
+				if($this->wordPuzzle[$row][$i] == ' ') {
+					array_splice($this->wordPuzzle[$row], $i, 1);
+					// array_push($this->wordPuzzle[$row], '0');
+				} else{
+					$i++;
+				}
+
 			}
 
 			$row++;
@@ -206,9 +238,22 @@ class Shapes{
 			$col = 0;
 
 			foreach($chars as $char){
-				$this->letterPuzzle[$row][$col] = $char;
+				
+				if($char == ' '){}
+				else{
+					$this->letterPuzzle[$row][$col] = $char;
 
-				$col++;
+					$col++;
+				}
+			}
+
+			for($i = 0; $i < count($this->letterPuzzle[$row]); $i++){
+				if($this->letterPuzzle[$row][$i] == ' ') {
+					array_splice($this->letterPuzzle[$row], $i, 1);
+					array_push($this->letterPuzzle[$row], '0');
+				} else{
+					// $i++;
+				}
 			}
 
 			$row++;
@@ -245,6 +290,10 @@ class Shapes{
 		return $this->characterList;
 	}
 
+	public function getCharacterListNoSpaces(){
+		return $this->characterListNoSpaces;
+	}
+
 	public function getShapesPuzzle(){
 		return $this->shapesPuzzle;
 	}
@@ -254,6 +303,12 @@ class Shapes{
 		$this->wordProcessor->setWord($word, "telugu");
 
 		return $this->wordProcessor->getLength();
+	}
+
+	private function getWordLengthNoSpaces($word){
+		$this->wordProcessor->setWord($word, "telugu");
+
+		return $this->wordProcessor->getLengthNoSpaces($word);
 	}
 
 	private function splitWord($word){

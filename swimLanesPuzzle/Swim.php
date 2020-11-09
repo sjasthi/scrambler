@@ -19,6 +19,7 @@ class Swim{
 	private $sparseWords = [];
 	private $scrambledSparseWords = [];
 	private $scrambledFullWords = [];
+	private $characterListNoSpaces = [];
 
 	private $rectanglePuzzle = [];
 	private $pyramidPuzzle = [];
@@ -57,7 +58,7 @@ class Swim{
 		if($this->validateInput()){
 		
 		
-			$this->maxLength = $this->getWordLength($this->wordList[(count($this->wordList) - 1)]);
+			$this->maxLength = $this->getWordLengthNoSpaces($this->wordList[(count($this->wordList) - 1)]);
 			$this->wordCount = count($wordList);
 
 			// Only need the count of the first element for swimlanes as they have to all be the same length
@@ -83,10 +84,10 @@ class Swim{
 
 	
 	private function validateInput(){
-		$len = $this->getWordLength($this->wordList[0]);
+		$len = $this->getWordLengthNoSpaces($this->wordList[0]);
 
 		for($i = 1; $i < count($this->wordList); $i++){
-			$nextLen = $this->getWordLength($this->wordList[$i]);
+			$nextLen = $this->getWordLengthNoSpaces($this->wordList[$i]);
 
 			if(($len) != $nextLen){
 				return false;
@@ -112,7 +113,10 @@ class Swim{
 			$chars = $this->splitWord($word);
 
 			foreach($chars as $char){
-				array_push($this->characterList, $char);
+				if($char == ' '){}
+				else{
+					array_push($this->characterList, $char);
+				}
 			}
 		}
 
@@ -121,6 +125,14 @@ class Swim{
 			$chars = $this->splitWord($word);
 
 			$this->wordList[$i] = $chars;
+
+			for($j = 0; $j < count($this->wordList[$i]);){
+				if($this->wordList[$i][$j] == ' '){
+					array_splice($this->wordList[$i], $j, 1);
+				} else {
+					$j++;
+				}
+			}
 
 			array_push($this->fullWords, $this->wordList[$i]);
 			array_push($this->scrambledFullWords, $this->wordList[$i]);
@@ -279,9 +291,12 @@ class Swim{
 			$col = 0;
 
 			foreach($chars as $char){
-				$this->swimPuzzle[$row][$col] = $char;
+				if($char == ' '){}
+				else{
+					$this->swimPuzzle[$row][$col] = $char;
 
-				$col++;
+					$col++;
+				}
 			}
 
 			$row++;
@@ -625,6 +640,10 @@ class Swim{
 		return $this->characterList;
 	}
 
+	public function getCharacterListNoSpaces(){
+		return $this->characterListNoSpaces;
+	}
+
 	public function getFullWords() {
 		return $this->fullWords;
 	}
@@ -646,6 +665,12 @@ class Swim{
 		$this->wordProcessor->setWord($word, "telugu");
 
 		return $this->wordProcessor->getLength();
+	}
+
+	private function getWordLengthNoSpaces($word){
+		$this->wordProcessor->setWord($word, "telugu");
+
+		return $this->wordProcessor->getLengthNoSpaces($word);
 	}
 
 	private function splitWord($word){

@@ -1,4 +1,4 @@
-@@ -0,0 +1,463 @@
+
 <?php
 
 	/* Created by Stephen Schneider
@@ -16,6 +16,7 @@ class Scrambler{
 	private $puzzleList = [];
 	private $characterList = [];
 	private $letterList = [];
+	private $characterListNoSpaces = [];
 
 
 	private $rectanglePuzzle = [];
@@ -43,14 +44,14 @@ class Scrambler{
 
 
 
-		$this->orderWords();
+		//$this->orderWords();
 
 		if($this->validateInput()){
-			$this->maxLength = $this->getWordLength($this->wordList[(count($this->wordList) - 1)]);
+			$this->maxLength = $this->getWordLengthNoSpaces($this->wordList[(count($this->wordList) - 1)]);
 			$this->wordCount = count($wordList);
 
 			// Only need the count of the first element for scrambler as they have to all be the same length
-			$this->maxColumns = getWordLength($this->wordList[0]);
+			$this->maxColumns = $this->getWordLengthNoSpaces($this->wordList[0]);
 
 			$this->generateLetterList();
 
@@ -76,10 +77,10 @@ class Scrambler{
 	 * Return true if no issue with input words
 	 */
 	private function validateInput(){
-		$len = $this->getWordLength($this->wordList[0]);
+		$len = $this->getWordLengthNoSpaces($this->wordList[0]);
 
 		for($i = 1; $i < count($this->wordList); $i++){
-			$nextLen = $this->getWordLength($this->wordList[$i]);
+			$nextLen = $this->getWordLengthNoSpaces($this->wordList[$i]);
 
 			if(($len) != $nextLen){
 				return false;
@@ -108,7 +109,17 @@ class Scrambler{
 
 		shuffle($this->characterList);
 
-		$charCount = count($this->characterList);
+		$this->characterListNoSpaces = $this->characterList;
+
+		for($i = 0; $i < count($this->characterListNoSpaces);){
+			if($this->characterListNoSpaces[$i] == ' ') {
+				array_splice($this->characterListNoSpaces, $i, 1);
+			} else {
+				$i++;
+			}
+		}
+
+		$charCount = count($this->characterListNoSpaces);
 
 		$cols = $this->maxColumns;
 		$rows = $charCount / $cols;
@@ -121,8 +132,8 @@ class Scrambler{
 		for($i = 0; $i < $rows; $i++){
 			for($j = 0; $j < $cols; $j++){
 
-				if(isset($this->characterList[$k])){
-					$this->letterList[$i][$j] = $this->characterList[$k];
+				if(isset($this->characterListNoSpaces[$k])){
+					$this->letterList[$i][$j] = $this->characterListNoSpaces[$k];
 					$k++;
 				}
 			}
@@ -294,14 +305,26 @@ class Scrambler{
 
 		foreach($this->wordList as $word){
 			$chars = $this->splitWord($word);
-			$wordLength = $this->getWordLength($word);
+			$wordLength = $this->getWordLengthNoSpaces($word);
 
 			$col = $maxColumn - $wordLength;
 
 			foreach($chars as $char){
-				$this->stepUpPuzzle[$row][$col] = $char;
+				if($char == ''){}
+				else {
+					$this->stepUpPuzzle[$row][$col] = $char;
 
-				$col++;
+					$col++;
+				}
+			}
+
+			for($i = 0; $i < count($this->stepUpPuzzle[$row]);){
+				if($this->stepUpPuzzle[$row][$i] == ' ') {
+					array_splice($this->stepUpPuzzle[$row], $i, 1);
+					// array_unshift($this->stepUpPuzzle[$row], '0');
+				} else{
+					$i++;
+				}
 			}
 
 			$row++;
@@ -448,11 +471,21 @@ class Scrambler{
 		return $this->characterList;
 	}
 
+	public function getCharacterListNoSpaces(){
+		return $this->characterListNoSpaces;
+	}
+
 	/*** Word Processor Functions ***/
 	private function getWordLength($word){
 		$this->wordProcessor->setWord($word, "telugu");
 
 		return $this->wordProcessor->getLength();
+	}
+
+	private function getWordLengthNoSpaces($word){
+		$this->wordProcessor->setWord($word, "telugu");
+
+		return $this->wordProcessor->getLengthNoSpaces($word);
 	}
 
 	private function splitWord($word){

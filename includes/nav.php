@@ -48,8 +48,14 @@
 
             <a href="dabblePuzzle/dabbleIndex.php">
               <li <?php if($nav_selected == "DABBLE"){ echo 'class="current-page"'; } ?>>
-                <img src="./images/pyramid.png">
+                <img src="./images/dabble.png">
                 <br/>Dabble</li>
+            </a>
+
+            <a href="dabblePlusPuzzle/dabblePlusIndex.php">
+              <li <?php if($nav_selected == "DABBLEPLUS"){ echo 'class="current-page"'; } ?>>
+                <img src="./images/pyramid.png">
+                <br/>Dabble Plus</li>
             </a>
 
             <a href="scramblerPuzzle/scramblerIndex.php">

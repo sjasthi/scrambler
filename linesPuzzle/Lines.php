@@ -16,6 +16,7 @@ class Lines{
 	private $characterList = [];
 	private $letterList = [];
 	private $shuffledWordList = [];
+	private $characterListNoSpaces = [];
 
 	private $linesPuzzle = [];
 	private $rectanglePuzzle = [];
@@ -54,8 +55,8 @@ class Lines{
 		
 		//find the maximum word length, which is also the maximum number of columns
 		foreach($this->wordList as $word) {
-			if (getWordLength($word) > $this->maxLength) {
-				$this->maxLength = getWordLength($word);
+			if ($this->getWordLengthNoSpaces($word) > $this->maxLength) {
+				$this->maxLength = $this->getWordLengthNoSpaces($word);
 			}
 		}
 			//$this->maxLength = $this->getWordLength($this->wordList[(count($this->wordList) - 1)]);
@@ -113,13 +114,30 @@ class Lines{
 			$chars = $this->splitWord($word);
 
 			foreach($chars as $char){
-				array_push($this->characterList, $char);
+					array_push($this->characterList, $char);	
 			}
 		}
 
+		for($i = 0; $i < count($this->characterList); $i++){
+				if($this->characterList[$i] == ' ') {
+					array_splice($this->characterList, $i, 1);
+				}
+		}
+		
+
 		shuffle($this->characterList);
 
-		$charCount = count($this->characterList);
+		$this->characterListNoSpaces = $this->characterList;
+
+		for($i = 0; $i < count($this->characterListNoSpaces);){
+			if($this->characterListNoSpaces[$i] == ' ') {
+				array_splice($this->characterListNoSpaces, $i, 1);
+			} else {
+				$i++;
+			}
+		}
+
+		$charCount = count($this->characterListNoSpaces);
 
 		$cols = $this->maxColumns;
 		$rows = $charCount / $cols;
@@ -132,8 +150,8 @@ class Lines{
 		for($i = 0; $i < $rows; $i++){
 			for($j = 0; $j < $cols; $j++){
 
-				if(isset($this->characterList[$k])){
-					$this->letterList[$i][$j] = $this->characterList[$k];
+				if(isset($this->characterListNoSpaces[$k])){
+					$this->letterList[$i][$j] = $this->characterListNoSpaces[$k];
 					$k++;
 				}
 			}
@@ -147,6 +165,11 @@ class Lines{
 		foreach($this->wordList as $word) {
 			$chars = splitWord($word);
 			$this->shuffledWordList[$count] = $chars;
+			for($i = 0; $i < count($this->shuffledWordList[$count]); $i++){
+				if($this->shuffledWordList[$count][$i] == ' ') {
+					array_splice($this->shuffledWordList[$count], $i, 1);
+				}
+			}
 			shuffle($this->shuffledWordList[$count]);
 			$count++;
 		}
@@ -207,9 +230,12 @@ class Lines{
 			$col = 0;
 
 			foreach($chars as $char){
-				$this->linesPuzzle[$row][$col] = $char;
+				if($char == ' '){}
+				else {
+					$this->linesPuzzle[$row][$col] = $char;
 
-				$col++;
+					$col++;
+				}
 			}
 
 			$row++;
@@ -225,9 +251,12 @@ class Lines{
 			$col = 0;
 
 			foreach($word as $char){
-				$this->linesLetterPuzzle[$row][$col] = $char;
+				if($char == ' '){}
+				else {
+					$this->linesLetterPuzzle[$row][$col] = $char;
 
-				$col++;
+					$col++;
+				}
 			}
 			$row++;
 		}
@@ -527,11 +556,21 @@ class Lines{
 		return $this->characterList;
 	}
 
+	public function getCharacterListNoSpaces(){
+		return $this->characterListNoSpaces;
+	}
+
 	/*** Word Processor Functions ***/
 	private function getWordLength($word){
 		$this->wordProcessor->setWord($word, "telugu");
 
 		return $this->wordProcessor->getLength();
+	}
+
+	private function getWordLengthNoSpaces($word){
+		$this->wordProcessor->setWord($word, "telugu");
+
+		return $this->wordProcessor->getLengthNoSpaces($word);
 	}
 
 	private function splitWord($word){

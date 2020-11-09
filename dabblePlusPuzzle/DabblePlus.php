@@ -10,14 +10,16 @@
 	 * Puzzles themselves are just blank solutions displayed on DabblePuzzle page
 	 * Dabble will stop if there is an error detected with user input and raise the errorStatus flag
 	 */
-class Dabble{
-	private $MAX_COLUMNS = 6;
+class DabblePlus{
+	private $MAX_COLUMNS = 5;
 
 	private $wordList = [];
 	private $puzzleList = [];
 	private $characterList = [];
 	private $letterList = [];
 	private $characterListNoSpaces = [];
+	private $wordsInRow = [];
+	private $characterListNoSpacesNoCommas = [];
 
 
 	private $pyramidPuzzle = [];
@@ -103,15 +105,25 @@ class Dabble{
 
 		$this->characterListNoSpaces = $this->characterList;
 
+		$this->characterListNoSpacesNoCommas = $this->characterList;
+
 		for($i = 0; $i < count($this->characterListNoSpaces);){
 			if($this->characterListNoSpaces[$i] == ' ') {
 				array_splice($this->characterListNoSpaces, $i, 1);
-			} else {
+			}else {
 				$i++;
 			}
 		}
 
-		$charCount = count($this->characterListNoSpaces);
+		for($i = 0; $i < count($this->characterListNoSpacesNoCommas);){
+			if($this->characterListNoSpacesNoCommas[$i] == ' ' || $this->characterListNoSpacesNoCommas[$i] == ',') {
+				array_splice($this->characterListNoSpacesNoCommas, $i, 1);
+			}else {
+				$i++;
+			}
+		}
+
+		$charCount = count($this->characterListNoSpacesNoCommas);
 
 		$cols = $this->MAX_COLUMNS;
 		$rows = $charCount / $cols;
@@ -124,8 +136,8 @@ class Dabble{
 		for($i = 0; $i < $rows; $i++){
 			for($j = 0; $j < $cols; $j++){
 
-				if(isset($this->characterListNoSpaces[$k])){
-					$this->letterList[$i][$j] = $this->characterListNoSpaces[$k];
+				if(isset($this->characterListNoSpacesNoCommas[$k])){
+					$this->letterList[$i][$j] = $this->characterListNoSpacesNoCommas[$k];
 					$k++;
 				}
 			}
@@ -318,9 +330,9 @@ class Dabble{
 
 			foreach($chars as $char){
 				
-				if($char == ' '){}
+				if($char == ' ' || $char == ','){}
 				else {
-					$this->stepUpLetterPuzzle[$row][$col] = $this->characterListNoSpaces[$count++];
+					$this->stepUpLetterPuzzle[$row][$col] = $this->characterListNoSpacesNoCommas[$count++];
 
 					$col++;
 				}
@@ -400,9 +412,9 @@ class Dabble{
 			$col = 0;
 
 			foreach($chars as $char){
-				if($char == ' ' ){}
+				if($char == ' ' || $char == ','){}
 				else {
-					$this->stepDownLetterPuzzle[$row][$col] = $this->characterListNoSpaces[$count++];
+					$this->stepDownLetterPuzzle[$row][$col] = $this->characterListNoSpacesNoCommas[$count++];
 
 					$col++;
 				}
@@ -482,7 +494,7 @@ class Dabble{
 	private function getWordLengthNoSpaces($word){
 		$this->wordProcessor->setWord($word, "telugu");
 
-		return $this->wordProcessor->getLengthNoSpaces($word);
+		return $this->wordProcessor->getLengthNoSpacesNoCommas($word);
 	}
 
 	private function splitWord($word){

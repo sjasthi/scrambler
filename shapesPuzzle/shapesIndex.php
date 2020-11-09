@@ -1,5 +1,8 @@
 <?php
 
+    if(session_id() == '' || !isset($_SESSION)){
+        session_start();
+    }
 
 	if(isset($_GET["error"])){
 		$error = $_GET["error"];
@@ -16,7 +19,13 @@
 				break;
 			case "invalidinput":
 				$errorMessage = "Input was invalid. Enter words with identical word lengths.";
-				break;
+                break;
+            case "nonalpha":
+                $errorMessage = "Input cannot contain numbers or special characters.";
+                break;
+            case 'duplicate':
+                $errorMessage = "Input cannot contain duplicate words. Please make each word unique.";
+                break;
 			default:
 				$errorMessage = "Unknown error - try again";
 		}
@@ -53,7 +62,22 @@
 	
 </head>
 <body>
-    <form method="post" class="form-horizontal" name="shapesForm" action="shapesPuzzle.php" onsubmit="return checkform()">
+    <br>
+        <div class="form-group">
+			<div class="col-sm-1"></div>
+			<div class="col-sm-10">
+				<label class="charLabel" style="color:red;font-size:14px;" name="charName" value="">
+				<?php
+					// If there is a warning message after input validation display message to user
+					if(isset($errorMessage)){
+						echo($errorMessage);
+					}
+				?>
+				</label>
+			</div>
+		</div>
+    <br>
+    <form method="post" class="form-horizontal" name="shapesForm" action="shapesPuzzle.php">
         <div class="container-fluid">
             <div class="panel">
                 <div class="panel-group">
@@ -70,7 +94,14 @@
                                 <div class="col-sm-1"></div>
                                 <label class="control-label col-sm-1" style="text-align: left;">Title</label>
                                 <div class="col-sm-9">
-                                    <input class="form-control" id="title" name="title" value="Title">
+                                    <input class="form-control" id="title" name="title" <?php
+                                        if(isset($_SESSION['title']) && isset($_SESSION['lastpage']) && 
+                                        $_SESSION['lastpage'] == 'shapes'){
+                                            $title = $_SESSION['title'];
+                                            echo "value='".$title."'";
+                                        } else {
+                                            echo 'value="Title"';
+                                        }?>>
                                 </div>
                             </div>
 
@@ -79,7 +110,14 @@
                                 <div class="col-sm-1"></div>
                                 <label class="control-label col-sm-1" style="text-align: left;">Subtitle</label>
                                 <div class="col-sm-9">
-                                    <input class="form-control" id="subtitle" name="subtitle" value="Subtitle">
+                                    <input class="form-control" id="subtitle" name="subtitle" <?php
+                                        if(isset($_SESSION['subtitle']) && isset($_SESSION['lastpage']) && 
+                                        $_SESSION['lastpage'] == 'shapes'){
+                                            $subtitle = $_SESSION['subtitle'];
+                                            echo "value='".$subtitle."'";
+                                        } else {
+                                            echo 'value="Subtitle"';
+                                        }?>>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -88,8 +126,22 @@
                                 
                                 <div class="col-sm-3">
                                     <select class="form-control" id="puzzletype" name="puzzletype" onchange="sizeChange(this.value);">
-                                        <option value="circles" selected="selected">Circles</option>
-                                        <option value="rectangles" >Rectangles</option>
+                                    <?php
+                                            if(isset($_SESSION['puzzletype']) && isset($_SESSION['lastpage']) && 
+                                            $_SESSION['lastpage'] == 'shapes'){
+                                                if($_SESSION['puzzletype'] == 'circles'){
+                                                    echo '<option value="circles" selected="selected">Circles</option>
+                                                    <option value="rectangles" >Rectangles</option>';
+                                                } else if($_SESSION['puzzletype'] == 'rectangles'){
+                                                    echo '<option value="circles" >Circles</option>
+                                                    <option value="rectangles" selected="selected">Rectangles</option>';
+                                                }
+                                            }
+                                            else{
+                                                echo '<option value="circles" selected="selected">Circles</option>
+                                                <option value="rectangles" >Rectangles</option>';
+                                            }
+                                    ?>
                                     </select>
                                 </div>
                             </div>
@@ -103,7 +155,11 @@
                             <div class="form-group">
                                 <div class="col-sm-1"></div>
                                 <div class="col-sm-10">
-                                    <textarea class="form-control" rows="10" id="input" name="wordInput"></textarea>
+                                    <textarea class="form-control" rows="10" id="input" name="wordInput"><?php
+                                            if(isset($_SESSION['userInput']) && isset($errorMessage)){
+                                                echo $_SESSION['userInput'];
+                                            }
+                                        ?></textarea>
                                     
                                 </div>
                             </div> 
@@ -111,12 +167,7 @@
 								<div class="col-sm-1"></div>
 								<div class="col-sm-10">
 									<label class="charLabel" style="color:red;font-size:14px;" name="charName" value="">
-									<?php
-										// If there is a warning message after input validation display message to user
-										if(isset($errorMessage)){
-											echo($errorMessage);
-										}
-									?>
+									
 									</label>
 								</div>
 							</div>
@@ -132,6 +183,7 @@
         </div>
     </form>
 </body>
+<?php $_SESSION['lastpage'] = 'shapesIndex';?>
 
     <script type="text/javascript">
 
