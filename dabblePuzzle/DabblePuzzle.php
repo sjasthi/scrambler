@@ -1,5 +1,9 @@
 <?php
 
+	if(session_id() == '' || !isset($_SESSION)){
+		session_start();
+	}
+
 	// set the current page to one of the main buttons
 	$nav_selected = "DABBLE";
 
@@ -9,9 +13,41 @@
 	// set the left menu button selected; options will change based on the main selection
 	$left_selected = "";
 
+	if(isset($_GET["saveResult"])){
+		$saveResult = $_GET["saveResult"];
+		
+		switch($saveResult){
+			case "success":
+				$saveMessage = "Successfully saved words to database";
+				break;
+			default:
+				$saveMessage = "Failed to save words to database";
+		}
+		
+    }
+
 	include("../includes/innerNav.php");
 	require("Dabble.php");
 	require(ROOT_PATH."indic-wp/word_processor.php");
+
+	if(isset($_GET["imageerror"])){
+		$error = $_GET["imageerror"];
+		
+		// Check to see if an error code was passed in
+		// Error get variable is passed through DabblePuzzle.php after an issue has been detected
+		// Here the message will get displayed and prompt the user to try again
+		switch($error){
+			case "tooManyWords":
+				$errorMessage = "Images cannot be generated for inputs more than 10 words in length";
+				break;
+			case "wordsTooLong":
+				$errorMessage = "Images cannot be generated for inputs with words longer than 10 characters";
+				break;
+			default:
+				$errorMessage = "Unknown error - try again";
+		}
+		
+    }
 
 	if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		$title = $_POST["title"];
@@ -21,6 +57,11 @@
 		if(isset($_POST["wordInput"]) && isset($_POST["puzzletype"])){
 			$puzzleType = $_POST["puzzletype"];
 			$wordInput = $_POST["wordInput"];
+			$_SESSION['puzzletype'] = $_POST['puzzletype'];
+			$_SESSION['userInput'] = $_POST["wordInput"];
+			$_SESSION['title'] = $title;
+			$_SESSION['subtitle'] = $subtitle;
+			$_SESSION['type'] = 'dabble';
 
 			// If input is blank redirect to Index with empty error message
 			if(trim($wordInput) === ''){
@@ -31,7 +72,9 @@
 			redirect("emptyinput");
 		}
 
-
+		if (preg_match('*[0-9]*', $wordInput) || preg_match('/[\'\/~`\!@#\$%\^&\*\(\)_\-\+=\{\}\[\]\|;:"\<\>,\.\?\\\]/', $wordInput)){
+			redirect("nonalpha");
+		}
 
 		// Parse through input and generate a word list
 		$wordList = generateWordList($wordInput);
@@ -46,7 +89,6 @@
 
 		// If there was an error with input redirect with invalid input message
 		if($dabble->getErrorStatus() == true){
-			print_r("asdfa:");
 			redirect("invalidinput");
 		}
 		else{
@@ -63,16 +105,38 @@
 			$stepDownLetterPuzzle = $dabble->getStepDownLetterPuzzle();
 
 			$characterList = $dabble->getCharacterList();
+			$characterListNoSpaces = $dabble->getCharacterListNoSpaces();
 		}
 
 		$_SESSION['wordList'] = $wordList;
-		$_SESSION['letterPuzzle'] = $stepUpLetterPuzzle;
-		$_SESSION['title'] = $title;
-		$_SESSION['subtitle'] = $subtitle;
-		$_SESSION['type'] = 'dabble';
+		$_SESSION['puzzle'] = $letterList;
+	} else if ($_SESSION['lastpage'] == 'saveWords') {
+			
+		$title = $_SESSION['title'];
+		$subtitle = $_SESSION['subtitle'];
+		$wordInput = $_SESSION['userInput'];
+		$wordList = $_SESSION['wordList'];
+		$puzzleType = $_SESSION['puzzletype'];
 
-	}
-	else{
+		$dabble = new Dabble($wordList);
+
+		$letterList = $dabble->getLetterList();
+		$wordList = $dabble->getWordList();
+
+		$pyramidPuzzle = $dabble->getPyramidPuzzle();
+		$stepUpPuzzle = $dabble->getStepUpPuzzle();
+		$stepDownPuzzle = $dabble->getStepDownPuzzle();
+	
+		$pyramidLetterPuzzle = $dabble->getPyramidLetterPuzzle();
+		$stepUpLetterPuzzle = $dabble->getStepUpLetterPuzzle();
+		$stepDownLetterPuzzle = $dabble->getStepDownLetterPuzzle();
+
+		$characterList = $dabble->getCharacterList();	
+		$characterListNoSpaces = $dabble->getCharacterListNoSpaces();
+
+		$_SESSION['puzzle'] = $stepUpLetterPuzzle;
+		
+	} else {
 		redirect(" ");
 	}
 
@@ -80,11 +144,12 @@
 	 * Redirects user to index page with Get error code if there is an issue with input
 	 */
 	function redirect($error){
+		$_SESSION['lastpage'] = 'dabble';
 		if($error != " "){
-			$url = "../index.php?error=".$error;
+			$url = "dabbleIndex.php?error=".$error;
 		}
 		else{
-			$url = "../index.php";
+			$url = "dabbleIndex.php";
 		}
 
 		header("Location: ".$url);
@@ -120,12 +185,21 @@
 		return $wordProcessor->getLength();
 	}
 
+	function getLengthNoSpaces($word){
+		$wordProcessor = new wordProcessor(" ", "telugu");
+		$wordProcessor->setWord($word, "telugu");
+
+		return $wordProcessor->getLengthNoSpaces($word);
+	}
+
 	function splitWord($word){
 		$wordProcessor = new wordProcessor(" ", "telugu");
 		$wordProcessor->setWord($word, "telugu");
 
 		return $wordProcessor->getLogicalChars();
 	}
+
+	$_SESSION['lastpage'] = 'dabble';
 ?>
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN''http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
@@ -158,8 +232,36 @@
 	</style>
 </head>
 <body>
+	<?php if(isset($errorMessage)) { ?>
+	<br>
+        <div class="form-group">
+			<div class="col-sm-1"></div>
+			<div class="col-sm-10">
+				<label class="charLabel" style="color:red;font-size:14px;" name="charName" value="">
+				<?php
+						echo($errorMessage);
+				?>
+				</label>
+			</div>
+		</div>
+    <br>
+	<?php } ?>
+	<br>
+        <div class="form-group">
+			<div class="col-sm-1"></div>
+			<div class="col-sm-10">
+				<label class="charLabel" style="color:red;font-size:14px;" name="charName" value="">
+				<?php
+					if(isset($saveMessage)){
+						echo($saveMessage);
+					}
+				?>
+				</label>
+			</div>
+		</div>
+    <br>
     <div class="container-fluid">
-		<form method="post" action="alert('To be implemented')" onsubmit="return checkInput()">
+		<form method="post" action="../imageGeneration/puzzleImageGenerator.php" onsubmit="return checkInput()">
 			<button type="submit" value="Submit">Generate Image</button>
 		</form>
 		<form method="post" action="../db/saveWords.php">
@@ -236,7 +338,6 @@
 									<div class="row">
 										<table class="puzzle">
 											<?php
-												// Prints blank step down puzzle
 
 												foreach($stepDownLetterPuzzle as $row){
 													echo'<tr>';
@@ -270,39 +371,39 @@
 											for($i = 0; $i < $wordCount; $i++){
 												$word = $wordList[$i];
 												$charList = splitWord($word);
-												$length = getWordLength($word);
+												$length = getLengthNoSpaces($word);
 
 												echo'<div class="row">';
 
 												for($j = 0; $j < $length; $j++){
 													if($i == 0){
 														if($j < $length - 1){
-															echo'<div class="top">'.$characterList[$count++].'</div>';
+															echo'<div class="top">'.$characterListNoSpaces[$count++].'</div>';
 														}
 														else{
-															echo'<div class="topRight">'.$characterList[$count++].'</div>';
+															echo'<div class="topRight">'.$characterListNoSpaces[$count++].'</div>';
 														}
 													}
 													else if($i < $wordCount - 1){
 														if($j == 0){
-															echo'<div class="left">'.$characterList[$count++].'</div>';
+															echo'<div class="left">'.$characterListNoSpaces[$count++].'</div>';
 														}
 														else if($j < ($length - 1)){
-															echo'<div class="inside">'.$characterList[$count++].'</div>';
+															echo'<div class="inside">'.$characterListNoSpaces[$count++].'</div>';
 
 														}
 														else{
-															echo'<div class="right">'.$characterList[$count++].'</div>';
+															echo'<div class="right">'.$characterListNoSpaces[$count++].'</div>';
 
 														}
 													}
 													else{
 														if($j < ($length - 1)){
-															echo'<div class="bottom">'.$characterList[$count++].'</div>';
+															echo'<div class="bottom">'.$characterListNoSpaces[$count++].'</div>';
 
 														}
 														else{
-															echo'<div class="bottomRight">'.$characterList[$count++].'</div>';
+															echo'<div class="bottomRight">'.$characterListNoSpaces[$count++].'</div>';
 
 														}
 													}
@@ -321,7 +422,6 @@
 									<div class="row">
 										<table class="puzzle">
 											<?php
-												// Prints blank step up puzzle
 												foreach($stepUpPuzzle as $row){
 													echo'<tr>';
 													foreach($row as $letter){
@@ -345,8 +445,6 @@
 									<div class="row">
 										<table class="puzzle">
 											<?php
-												// Prints blank step down puzzle
-
 												foreach($stepDownPuzzle as $row){
 													echo'<tr>';
 													foreach($row as $letter){
@@ -378,7 +476,7 @@
 											for($i = 0; $i < $wordCount; $i++){
 												$word = $wordList[$i];
 												$charList = splitWord($word);
-												$length = getWordLength($word);
+												$length = getLengthNoSpaces($word);
 
 												echo'<div class="row">';
 
@@ -648,39 +746,39 @@
 													for($i = 0; $i < $wordCount; $i++){
 														$word = $wordList[$i];
 														$charList = splitWord($word);
-														$length = getWordLength($word);
+														$length = getLengthNoSpaces($word);
 
 														echo'<div class="row">';
 
 														for($j = 0; $j < $length; $j++){
 															if($i == 0){
 																if($j < $length - 1){
-																	echo'<div class="top">'.$characterList[$count++].'</div>';
+																	echo'<div class="top">'.$characterListNoSpaces[$count++].'</div>';
 																}
 																else{
-																	echo'<div class="topRight">'.$characterList[$count++].'</div>';
+																	echo'<div class="topRight">'.$characterListNoSpaces[$count++].'</div>';
 																}
 															}
 															else if($i < $wordCount - 1){
 																if($j == 0){
-																	echo'<div class="left">'.$characterList[$count++].'</div>';
+																	echo'<div class="left">'.$characterListNoSpaces[$count++].'</div>';
 																}
 																else if($j < ($length - 1)){
-																	echo'<div class="inside">'.$characterList[$count++].'</div>';
+																	echo'<div class="inside">'.$characterListNoSpaces[$count++].'</div>';
 
 																}
 																else{
-																	echo'<div class="right">'.$characterList[$count++].'</div>';
+																	echo'<div class="right">'.$characterListNoSpaces[$count++].'</div>';
 
 																}
 															}
 															else{
 																if($j < ($length - 1)){
-																	echo'<div class="bottom">'.$characterList[$count++].'</div>';
+																	echo'<div class="bottom">'.$characterListNoSpaces[$count++].'</div>';
 
 																}
 																else{
-																	echo'<div class="bottomRight">'.$characterList[$count++].'</div>';
+																	echo'<div class="bottomRight">'.$characterListNoSpaces[$count++].'</div>';
 
 																}
 															}
@@ -753,7 +851,18 @@
 												for($i = 0; $i < $wordCount; $i++){
 													$word = $wordList[$i];
 													$charList = splitWord($word);
-													$length = getWordLength($word);
+													$test = 0;
+													for($j = 0; $j < count($charList);){
+														if($charList[$j] == ' ') {
+															array_splice($charList, $j, 1);
+															//array_push($charList, '0');
+														} else {
+															$j++;
+														}
+													}
+													$length = getLengthNoSpaces($word);
+
+													
 
 													echo'<div class="row">';
 
@@ -803,6 +912,35 @@
     </div>
 </body>
 </html>
+<script type="text/javascript">
+	function checkInput() {
+		var maxLength = 0;
+		var numSpaces = 0;
+		var array = <?php echo json_encode($_SESSION['puzzle']) ?>;
+		for (var i = 0, length = array.length; i < length; i++) {
+			numSpaces = 0;
+			for(var j = 0; j < array[i].length; j++){
+				if (array[i][j] == ' ') numSpaces++;
+			}
+			rowLength = array[i].length;
+			rowLength -= numSpaces;
+			if(rowLength > maxLength) {
+				maxLength = rowLength;
+			}
+		};
+
+		if(maxLength > 10) {
+			alert("Cannot generate images with words longer than ten characters due to size limitations");
+			return false;
+		}
+
+		if(array.length > 10)
+			{
+			alert("Cannot generate images with more than ten words due to size limitations");
+			return false;
+		}
+	}
+</script>
 <script>
 	// Set default spectrum elements
 	$(".letterSquareColor").spectrum({
@@ -944,6 +1082,7 @@
 
 	// Shows/hides puzzles and solutions when puzzle type is changed
 	function puzzleChange(){
+
 		if($('#puzzletype').val() == "pyramid"){
 			$(".pyramidPuzzle").show();
 			$(".stepupPuzzle").hide();

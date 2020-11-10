@@ -1,10 +1,10 @@
 <?php
 
-    header("refresh:5; url=../index.php");
-
     if(session_id() == '' || !isset($_SESSION)){
         session_start();
     }
+
+    
 
     // set the current page to one of the main buttons
 	$nav_selected = "SAVEWORDS";
@@ -20,7 +20,7 @@
     //require_once('../includes/initialize.php');
 
     $wordList = $_SESSION['wordList'];
-    $puzzle = $_SESSION['letterPuzzle'];
+    // $puzzle = $_SESSION['letterPuzzle'];
     $title = $_SESSION['title'];
     $subtitle = $_SESSION['subtitle'];
     $type = $_SESSION['type'];
@@ -29,15 +29,49 @@
 
     foreach($wordList as $word) {
         $success = insert_word($word, $set, $title, $subtitle, $type);
+
+        if($success) {
+            $saveResult = 'success';
+        } else {
+            $saveResult = 'failed';
+        }
     }
 
-    if ($success) {
-        echo "Successfully added words to database!
-        <br>
-        <br>
-        Returning to the home page.";
+    switch($_SESSION['lastpage']) {
+        case 'dabble':
+            $_SESSION['lastpage'] = 'saveWords';
+            header("refresh:0; url=../dabblePuzzle/DabblePuzzle.php?saveResult=".$saveResult);
+            break;
+        case 'dabbleplus':
+            $_SESSION['lastpage'] = 'saveWords';
+            header("refresh:0; url=../dabblePlusPuzzle/DabblePlusPuzzle.php?saveResult=".$saveResult);
+            break;
+        case 'stacks':
+            $_SESSION['lastpage'] = 'saveWords';
+            header("refresh:0; url=../stackPuzzle/stacksPuzzle.php?saveResult=".$saveResult);
+            break;
+        case 'scrambler':
+            $_SESSION['lastpage'] = 'saveWords';
+            header("refresh:0; url=../scramblerPuzzle/ScramblerPuzzle.php?saveResult=".$saveResult);
+            break;
+        case 'lines':
+            $_SESSION['lastpage'] = 'saveWords';
+            header("refresh:0; url=../linesPuzzle/linesPuzzle.php?saveResult=".$saveResult);
+            break;
+        case 'swim':
+            $_SESSION['lastpage'] = 'saveWords';
+            header("refresh:0; url=../swimLanesPuzzle/swimPuzzle.php?saveResult=".$saveResult);
+            break;
+        case 'shapes':
+            $_SESSION['lastpage'] = 'saveWords';
+            header("refresh:0; url=../shapesPuzzle/shapesPuzzle.php?saveResult=".$saveResult);
+            break;
+        default:
+            echo "<h1 style='color:red; align:center'><b>How did you get here? Going home.</h1>";
+            header("refresh:3; url=../index.php");
     }
 
+    
 
     function get_next_set_id() {
         global $db;

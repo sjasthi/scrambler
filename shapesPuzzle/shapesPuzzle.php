@@ -1,4 +1,9 @@
 <?php
+
+	if(session_id() == '' || !isset($_SESSION)){
+		session_start();
+	}
+
 	// set the current page to one of the main buttons
 	$nav_selected = "SHAPESPUZZLE";
 
@@ -7,6 +12,18 @@
 	
 	// set the left menu button selected; options will change based on the main selection
 	$left_selected = "";
+
+	if(isset($_GET["saveResult"])){
+		$saveResult = $_GET["saveResult"];
+		
+		switch($saveResult){
+			case "success":
+				$saveMessage = "Successfully saved words to database";
+				break;
+			default:
+				$saveMessage = "Failed to save words to database";
+		}
+    }
 
 	include("../includes/innerNav.php");
 	require("Shapes.php");
@@ -21,6 +38,11 @@
 			$puzzleType = 'shapes';
 			// $puzzleType = $_POST["puzzletype"];
 			$wordInput = $_POST["wordInput"];
+			$_SESSION['puzzletype'] = $_POST['puzzletype'];
+			$_SESSION['userInput'] = $_POST["wordInput"];
+			$_SESSION['title'] = $title;
+			$_SESSION['subtitle'] = $subtitle;
+			$_SESSION['type'] = 'shapes';
 
 			// If input is blank redirect to Index with empty error message
 			if(trim($wordInput) === ''){
@@ -31,7 +53,9 @@
 			redirect("emptyinput");
 		}
 
-
+		if (preg_match('*[0-9]*', $wordInput) || preg_match('/[\'\/~`\!@#\$%\^&\*\(\)_\-\+=\{\}\[\]\|;:"\<\>,\.\?\\\]/', $wordInput)){
+			redirect("nonalpha");
+		}
 
 		// Parse through input and generate a word list
 		$wordList = generateWordList($wordInput);
@@ -41,6 +65,15 @@
 			redirect("count");
 		}
 
+		for($i = 0; $i < count($wordList); $i++){
+			for($j = 0; $j < count($wordList); $j++){
+				if($i == $j){}
+				else if(strcmp($wordList[$i], $wordList[$j]) == 0){
+					redirect('duplicate');
+				}
+			}
+		}
+
 		$_SESSION['wordList'] = $wordList;
 		
 		// Create shapes puzzle
@@ -48,7 +81,6 @@
 
 		//If there was an error with input redirect with invalid input message
 		if($shapes->getErrorStatus() == true){
-			print_r("asdfa:");
 			redirect("invalidinput");
 		}
 
@@ -58,6 +90,8 @@
 		} else {
 			$puzzleType = 'circles';
 		}
+
+		$_SESSION['puzzletype'] = $puzzleType;
 
 		//else{
 			// Get lists and puzzles
@@ -70,12 +104,26 @@
 		//}
 
 		$_SESSION['letterPuzzle'] = $letterPuzzle;
-		$_SESSION['title'] = $title;
-		$_SESSION['subtitle'] = $subtitle;
-		$_SESSION['type'] = 'shapes';
 
-	}
-	else{
+	} else if ($_SESSION['lastpage'] == 'saveWords') {
+			
+		$title = $_SESSION['title'];
+		$subtitle = $_SESSION['subtitle'];
+		$wordInput = $_SESSION['userInput'];
+		$wordList = $_SESSION['wordList'];
+		$puzzleType = $_SESSION['puzzletype'];
+
+		$shapes = new Shapes($wordList);
+
+		$wordList = $shapes->getWordList();
+		$shapesPuzzle = $shapes->getShapesPuzzle();
+		$wordPuzzle = $shapes->getWordPuzzle();
+		$letterPuzzle = $shapes->getLetterPuzzle();
+		$characterList = $shapes->getCharacterList();
+
+		$_SESSION['letterPuzzle'] = $letterPuzzle;	
+		
+	} else{
 		redirect(" ");
 	}
 
@@ -83,11 +131,14 @@
 	 * Redirects user to index page with Get error code if there is an issue with input
 	 */
 	function redirect($error){
+
+		$_SESSION['lastpage'] = 'shapes';
+
 		if($error != " "){
-			$url = "../index.php?error=".$error;
+			$url = "shapesIndex.php?error=".$error;
 		}
 		else{
-			$url = "../index.php";
+			$url = "shapesIndex.php?error=unknown";
 		}
 
 		header("Location: ".$url);
@@ -129,6 +180,8 @@
 
 		return $wordProcessor->getLogicalChars();
 	}
+
+	$_SESSION['lastpage'] = 'shapes';
 ?>
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN''http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
@@ -162,6 +215,20 @@
 	</style>
 </head>
 <body>
+	<br>
+        <div class="form-group">
+			<div class="col-sm-1"></div>
+			<div class="col-sm-10">
+				<label class="charLabel" style="color:red;font-size:14px;" name="charName" value="">
+				<?php
+					if(isset($saveMessage)){
+						echo($saveMessage);
+					}
+				?>
+				</label>
+			</div>
+		</div>
+    <br>
     <div class="container-fluid">
 		<form method="post" action="linesPuzzleImage.php" onsubmit="return checkInput()">
 			<button type="submit" value="Submit">Generate Image</button>
@@ -304,7 +371,7 @@
 								
 							<div class="col-sm-6">
 								<div class="wordPuzzle word">
-									<div class="row"> <h3> Step Down </h3> </div>
+									<div class="row"> <h3></h3> </div>
 										<div class="row">
 											<table class="puzzle">
 												<?php
@@ -475,7 +542,7 @@
 							</div>
 							<div align="center">
 									<div class="letterSolution word">
-										<div class="row"> <h3> Words </h3> </div>
+										<div class="row"> <h3></h3> </div>
 										<div class="row">
 											<table class="puzzle">
 												<?php
@@ -507,6 +574,35 @@
     </div>
 </body>
 </html>
+<script type="text/javascript">
+	function checkInput() {
+		var maxLength = 0;
+		var numSpaces = 0;
+		var array = <?php echo json_encode($_SESSION['puzzle']) ?>;
+		for (var i = 0, length = array.length; i < length; i++) {
+			numSpaces = 0;
+			for(var j = 0; j < array[i].length; j++){
+				if (array[i][j] == ' ') numSpaces++;
+			}
+			rowLength = array[i].length;
+			rowLength -= numSpaces;
+			if(rowLength > maxLength) {
+				maxLength = rowLength;
+			}
+		};
+
+		if(maxLength > 10) {
+			alert("Cannot generate images with words longer than ten characters due to size limitations");
+			return false;
+		}
+
+		if(array.length > 10)
+			{
+			alert("Cannot generate images with more than ten words due to size limitations");
+			return false;
+		}
+	}
+</script>
 <script>
 	// Set default spectrum elements
 	$(".letterSquareColor").spectrum({

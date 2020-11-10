@@ -5,11 +5,11 @@
 	}
 
 	// set the current page to one of the main buttons
-	$nav_selected = "SCRAMBLERPUZZLE";
+	$nav_selected = "DABBLEPLUS";
 
 	// make the left menu buttons visible; options: YES, NO
 	$left_buttons = "NO";
-
+  
 	// set the left menu button selected; options will change based on the main selection
 	$left_selected = "";
 
@@ -27,40 +27,22 @@
     }
 
 	include("../includes/innerNav.php");
-	require("Scrambler.php");
+	require("DabblePlus.php");
 	require(ROOT_PATH."indic-wp/word_processor.php");
-
-	if(isset($_GET["imageerror"])){
-		$error = $_GET["imageerror"];
-		
-		// Check to see if an error code was passed in
-		// Error get variable is passed through DabblePuzzle.php after an issue has been detected
-		// Here the message will get displayed and prompt the user to try again
-		switch($error){
-			case "tooManyWords":
-				$errorMessage = "Images cannot be generated for inputs more than 10 words in length";
-				break;
-			case "wordsTooLong":
-				$errorMessage = "Images cannot be generated for inputs with words longer than 10 characters";
-				break;
-			default:
-				$errorMessage = "Unknown error - try again";
-		}
-		
-    }
 
 	if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		$title = $_POST["title"];
 		$subtitle = $_POST["subtitle"];
 
 		// If variables are not set redirect to index page with empty error message
-		if(isset($_POST["wordInput"])) {
-			$puzzleType = 'rectangle';
+		if(isset($_POST["wordInput"]) && isset($_POST["puzzletype"])){
+			$puzzleType = $_POST["puzzletype"];
 			$wordInput = $_POST["wordInput"];
+			$_SESSION['puzzletype'] = $_POST['puzzletype'];
 			$_SESSION['userInput'] = $_POST["wordInput"];
 			$_SESSION['title'] = $title;
 			$_SESSION['subtitle'] = $subtitle;
-			$_SESSION['type'] = 'scrambler';
+			$_SESSION['type'] = 'dabbleplus';
 
 			// If input is blank redirect to Index with empty error message
 			if(trim($wordInput) === ''){
@@ -71,7 +53,7 @@
 			redirect("emptyinput");
 		}
 
-		if (preg_match('*[0-9]*', $wordInput) || preg_match('/[\'\/~`\!@#\$%\^&\*\(\)_\-\+=\{\}\[\]\|;:"\<\>,\.\?\\\]/', $wordInput)){
+		if (preg_match('*[0-9]*', $wordInput) || preg_match('/[\'\/~`\!@#\$%\^&\*\(\)_\-\+=\{\}\[\]\|;:"\<\>\.\?\\\]/', $wordInput)){
 			redirect("nonalpha");
 		}
 
@@ -83,40 +65,33 @@
 			redirect("count");
 		}
 
-		for($i = 0; $i < count($wordList); $i++){
-			for($j = 0; $j < count($wordList); $j++){
-				if($i == $j){}
-				else if(strcmp($wordList[$i], $wordList[$j]) == 0){
-					redirect('duplicate');
-				}
-			}
-		}
-
-		// Create scrambler puzzle
-		$scrambler = new Scrambler($wordList);
+		// Create dabble puzzle
+		$dabble = new DabblePlus($wordList);
 
 		// If there was an error with input redirect with invalid input message
-		if($scrambler->getErrorStatus() == true){
+		if($dabble->getErrorStatus() == true){
+			print_r("asdfa:");
 			redirect("invalidinput");
 		}
 		else{
 			// Get lists and puzzles
-			$letterList = $scrambler->getLetterList();
-			$wordList = $scrambler->getWordList();
+			$letterList = $dabble->getLetterList();
+			$wordList = $dabble->getWordList();
 
-			$pyramidPuzzle = $scrambler->getPyramidPuzzle();
-			$stepUpPuzzle = $scrambler->getStepUpPuzzle();
-			$stepDownPuzzle = $scrambler->getStepDownPuzzle();
+			$pyramidPuzzle = $dabble->getPyramidPuzzle();
+			$stepUpPuzzle = $dabble->getStepUpPuzzle();
+			$stepDownPuzzle = $dabble->getStepDownPuzzle();
 
-			$pyramidLetterPuzzle = $scrambler->getPyramidLetterPuzzle();
-			$stepUpLetterPuzzle = $scrambler->getStepUpLetterPuzzle();
-			$stepDownLetterPuzzle = $scrambler->getStepDownLetterPuzzle();
+			$pyramidLetterPuzzle = $dabble->getPyramidLetterPuzzle();
+			$stepUpLetterPuzzle = $dabble->getStepUpLetterPuzzle();
+			$stepDownLetterPuzzle = $dabble->getStepDownLetterPuzzle();
 
-			$characterList = $scrambler->getCharacterList();
+			$characterList = $dabble->getCharacterList();
+			$characterListNoSpaces = $dabble->getCharacterListNoSpaces();
 		}
 
 		$_SESSION['wordList'] = $wordList;
-		$_SESSION['puzzle'] = $stepUpLetterPuzzle;
+		$_SESSION['letterPuzzle'] = $stepUpLetterPuzzle;
 
 	} else if ($_SESSION['lastpage'] == 'saveWords') {
 			
@@ -124,40 +99,44 @@
 		$subtitle = $_SESSION['subtitle'];
 		$wordInput = $_SESSION['userInput'];
 		$wordList = $_SESSION['wordList'];
+		$puzzleType = $_SESSION['puzzletype'];
 
-		$scrambler = new Scrambler($wordList);
+		$dabble = new DabblePlus($wordList);
 
-		$letterList = $scrambler->getLetterList();
-		$wordList = $scrambler->getWordList();
+		$letterList = $dabble->getLetterList();
+		$wordList = $dabble->getWordList();
 
-		$pyramidPuzzle = $scrambler->getPyramidPuzzle();
-		$stepUpPuzzle = $scrambler->getStepUpPuzzle();
-		$stepDownPuzzle = $scrambler->getStepDownPuzzle();
+		$pyramidPuzzle = $dabble->getPyramidPuzzle();
+		$stepUpPuzzle = $dabble->getStepUpPuzzle();
+		$stepDownPuzzle = $dabble->getStepDownPuzzle();
+	
+		$pyramidLetterPuzzle = $dabble->getPyramidLetterPuzzle();
+		$stepUpLetterPuzzle = $dabble->getStepUpLetterPuzzle();
+		$stepDownLetterPuzzle = $dabble->getStepDownLetterPuzzle();
 
-		$pyramidLetterPuzzle = $scrambler->getPyramidLetterPuzzle();
-		$stepUpLetterPuzzle = $scrambler->getStepUpLetterPuzzle();
-		$stepDownLetterPuzzle = $scrambler->getStepDownLetterPuzzle();
-
-		$characterList = $scrambler->getCharacterList();
-
-		$_SESSION['letterPuzzle'] = $stepUpLetterPuzzle;
+		$characterList = $dabble->getCharacterList();	
+		$characterListNoSpaces = $dabble->getCharacterListNoSpaces();
 		
-	} else{
+	} else {
 		redirect(" ");
 	}
+
+	$wordColors = [];
+	array_push($wordColors, "#FF0000");
+	array_push($wordColors, "#0000FF");
+	array_push($wordColors, "#00FF00");
+	$currentColor = 0;
 
 	/*
 	 * Redirects user to index page with Get error code if there is an issue with input
 	 */
 	function redirect($error){
-	
-		$_SESSION['lastpage'] = 'scrambler';
-
+		$_SESSION['lastpage'] = 'dabbleplus';
 		if($error != " "){
-			$url = "scramblerIndex.php?error=".$error;
+			$url = "dabblePlusIndex.php?error=".$error;
 		}
 		else{
-			$url = "scramblerIndex.php?error=unknown";
+			$url = "dabblePlusIndex.php";
 		}
 
 		header("Location: ".$url);
@@ -193,14 +172,21 @@
 		return $wordProcessor->getLength();
 	}
 
+	function getLengthNoSpaces($word){
+		$wordProcessor = new wordProcessor(" ", "telugu");
+		$wordProcessor->setWord($word, "telugu");
+
+		return $wordProcessor->getLengthNoSpacesNoCommas($word);
+	}
+
 	function splitWord($word){
 		$wordProcessor = new wordProcessor(" ", "telugu");
 		$wordProcessor->setWord($word, "telugu");
 
 		return $wordProcessor->getLogicalChars();
 	}
-	
-	$_SESSION['lastpage'] = 'scrambler';
+
+	$_SESSION['lastpage'] = 'dabbleplus';
 ?>
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN''http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
@@ -224,28 +210,15 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale = 1">
+
+	<title>Dabble Plus Puzzle</title>
 	<style>
 		form {
 			display: inline;
 		}
 	</style>
-	<title>Scrambler Puzzle</title>
 </head>
 <body>
-	<?php if(isset($errorMessage)) { ?>
-	<br>
-        <div class="form-group">
-			<div class="col-sm-1"></div>
-			<div class="col-sm-10">
-				<label class="charLabel" style="color:red;font-size:14px;" name="charName" value="">
-				<?php
-						echo($errorMessage);
-				?>
-				</label>
-			</div>
-		</div>
-    <br>
-	<?php } ?>
 	<br>
         <div class="form-group">
 			<div class="col-sm-1"></div>
@@ -261,7 +234,7 @@
 		</div>
     <br>
     <div class="container-fluid">
-		<form method="post" action="../imageGeneration/puzzleImageGenerator.php"  onsubmit="return checkInput()">
+		<form method="post" action="alert('To be implemented')" onsubmit="return checkInput()">
 			<button type="submit" value="Submit">Generate Image</button>
 		</form>
 		<form method="post" action="../db/saveWords.php">
@@ -276,7 +249,7 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-sm-12">
-                                <div align="center"><h2>Squares Puzzle</h2></div>
+                                <div align="center"><h2>Dabble Plus Puzzle</h2></div>
                             </div>
                         </div>
                     </div>
@@ -315,6 +288,8 @@
 									<div class="row">
 										<table class="puzzle">
 											<?php
+												// print_r($stepUpLetterPuzzle);
+												// echo '<br>';
 												// Prints blank step up puzzle
 												foreach($stepUpLetterPuzzle as $row){
 													echo'<tr>';
@@ -339,18 +314,31 @@
 										<table class="puzzle">
 											<?php
 												// Prints blank step down puzzle
-
+												// print_r($stepDownLetterPuzzle);
+												// echo '<br>';
 												foreach($stepDownLetterPuzzle as $row){
 													echo'<tr>';
 													foreach($row as $letter){
-														if($letter != "0"){
-															echo'<td class="filled">'.$letter.'</td>
-															';
-														}
-														else{
-															echo'<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
-															';
-														}
+														// if(!in_array(',', $row)){
+															if($letter != "0"){
+																echo'<td class="filled">'.$letter.'</td>
+																';
+															}
+															else{
+																if($letter != ','){
+																	echo'<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>';
+																}
+															}
+														// } else {
+														// 	if($letter != '0'){
+														// 		if($letter != ','){
+														// 			echo'<td class="filled" style="color:white; background-color:'.$wordColors[$currentColor].'">'.$letter.'</td>
+														// 			';
+														// 		} else {
+														// 			$currentColor = ($currentColor + 1) % count($wordColors);
+														// 		}
+														// 	}
+														// }
 													}
 													echo'</tr>';
 												}
@@ -358,11 +346,13 @@
 										</table>
 									</div>
 								</div>
-								<div class="letters rectangleLettersPuzzle" style="display: none;">
-									<div class="row"> <h3>Rectangle Letters</h3> </div>
-									<div class="rectangle">
+								<div class="letters pyramidLettersPuzzle" style="display: none;">
+									<div class="row"> <h3>Pyramid Letters</h3> </div>
+									<div class="pyramid">
 										<?php
-											// Prints blank rectangle puzzle
+												// print_r($pyramidLetterPuzzle);
+												// echo '<br>';
+											// Prints blank pyramid puzzle
 											// Cells must be printed with correct styling
 											// Top cell, then final top right cell, left cells, inside cells, right cells,
 											// bottom cells, then final right cell
@@ -372,39 +362,42 @@
 											for($i = 0; $i < $wordCount; $i++){
 												$word = $wordList[$i];
 												$charList = splitWord($word);
-												$length = getWordLength($word);
+												$length = getLengthNoSpaces($word);
 
 												echo'<div class="row">';
 
 												for($j = 0; $j < $length; $j++){
-													if($i == 0){
+													if ($characterListNoSpaces[$count] == ',') {
+														$count++;
+														$j--;	
+													} else if($i == 0){
 														if($j < $length - 1){
-															echo'<div class="top">'.$characterList[$count++].'</div>';
+															echo'<div class="top">'.$characterListNoSpaces[$count++].'</div>';
 														}
 														else{
-															echo'<div class="topRight">'.$characterList[$count++].'</div>';
+															echo'<div class="topRight">'.$characterListNoSpaces[$count++].'</div>';
 														}
 													}
 													else if($i < $wordCount - 1){
 														if($j == 0){
-															echo'<div class="left">'.$characterList[$count++].'</div>';
+															echo'<div class="left">'.$characterListNoSpaces[$count++].'</div>';
 														}
 														else if($j < ($length - 1)){
-															echo'<div class="inside">'.$characterList[$count++].'</div>';
+															echo'<div class="inside">'.$characterListNoSpaces[$count++].'</div>';
 
 														}
 														else{
-															echo'<div class="right">'.$characterList[$count++].'</div>';
+															echo'<div class="right">'.$characterListNoSpaces[$count++].'</div>';
 
 														}
 													}
 													else{
 														if($j < ($length - 1)){
-															echo'<div class="bottom">'.$characterList[$count++].'</div>';
+															echo'<div class="bottom">'.$characterListNoSpaces[$count++].'</div>';
 
 														}
 														else{
-															echo'<div class="bottomRight">'.$characterList[$count++].'</div>';
+															echo'<div class="bottomRight">'.$characterListNoSpaces[$count++].'</div>';
 
 														}
 													}
@@ -419,22 +412,38 @@
 							<?php //START OF WORDS PUZZLE *******************?>
               <div class="col-sm-6">
 								<div class="stepupPuzzle word">
-									<div class="row"> <h3>Words</h3></div>
+									<div class="row"> <h3>Step Up</h3></div>
 									<div class="row">
 										<table class="puzzle">
 											<?php
 												// Prints blank step up puzzle
-
+												// print_r($stepUpPuzzle);
+												// echo '<br>';
 												foreach($stepUpPuzzle as $row){
 													echo'<tr>';
 													foreach($row as $letter){
-														if($letter != "0"){
-															echo'<td class="filled">&nbsp;&nbsp;&nbsp;&nbsp;</td>
-															';
-														}
-														else{
-															echo'<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
-															';
+														if(!in_array(',', $row)){
+															if($letter != "0"){
+																echo'<td class="filled">&nbsp;&nbsp;&nbsp;&nbsp;</td>
+																';
+															}
+															else{
+																echo'<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+																';
+															}
+														} else {
+															if($letter != '0'){
+																if($letter != ','){
+																	echo'<td class="filled" style="color:white; background-color:'.$wordColors[$currentColor].'">&nbsp;&nbsp;&nbsp;&nbsp;</td>
+																	';
+																} else {
+																	$currentColor = ($currentColor + 1) % count($wordColors);
+																}
+															}
+															else{
+																echo'<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+																';
+															}
 														}
 													}
 													echo'</tr>';
@@ -443,88 +452,139 @@
 										</table>
 									</div>
 								</div>
-								<!-- <div class="stepdownPuzzle word">
+								<div class="stepdownPuzzle word">
 									<div class="row"> <h3> Step Down </h3> </div>
 									<div class="row">
 										<table class="puzzle">
 											<?php
 												// Prints blank step down puzzle
 
-												// foreach($stepDownPuzzle as $row){
-												// 	echo'<tr>';
-												// 	foreach($row as $letter){
-												// 		if($letter != "0"){
-												// 			echo'<td class="filled">&nbsp;&nbsp;&nbsp;&nbsp;</td>
-												// 			';
-												// 		}
-												// 		else{
-												// 			echo'<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
-												// 			';
-												// 		}
-												// 	}
-												// 	echo'</tr>';
-												// }
+												// print_r($stepDownPuzzle);
+												// echo '<br>';
+												foreach($stepDownPuzzle as $row){
+													echo'<tr>';
+													foreach($row as $letter){
+														if(!in_array(',', $row)){
+														if($letter != "0"){
+															echo'<td class="filled">&nbsp;&nbsp;&nbsp;&nbsp;</td>
+															';
+														}
+														else{
+															echo'<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+															';
+														}
+														} else {
+															if($letter != '0'){
+																if($letter != ','){
+																	echo'<td class="filled" style="color:white; background-color:'.$wordColors[$currentColor].'">&nbsp;&nbsp;&nbsp;&nbsp;</td>
+																	';
+																} else {
+																	$currentColor = ($currentColor + 1) % count($wordColors);
+																}
+															}
+														}
+													}
+													
+													echo'</tr>';
+												}
 											?>
 										</table>
 									</div>
 								</div>
 								<div class="pyramidPuzzle word">
-									<div class="row"> <h3> Words </h3> </div>
+									<div class="row"> <h3> Pyramid </h3> </div>
 									<div class="pyramid">
 										<?php
 											// Prints blank pyramid puzzle
 											// Cells must be printed with correct styling
 											// Top cell, then final top right cell, left cells, inside cells, right cells,
 											// bottom cells, then final right cell
-											// $wordCount = count($wordList);
-											// for($i = 0; $i < $wordCount; $i++){
-											// 	$word = $wordList[$i];
-											// 	$charList = splitWord($word);
-											// 	$length = getWordLength($word);
+												// print_r($pyramidPuzzle);
+												// echo '<br>';
+											$wordCount = count($wordList);
 
-											// 	echo'<div class="row">';
+											for($i = 0; $i < $wordCount; $i++){
+												$word = $wordList[$i];
+												$charList = splitWord($word);
+												$length = getWordLength($word);
 
-											// 	for($j = 0; $j < $length; $j++){
-											// 		if($i == 0){
-											// 			if($j < $length - 1){
-											// 				echo'<div class="top">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
-											// 			}
-											// 			else{
-											// 				echo'<div class="topRight">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
-											// 			}
-											// 		}
-											// 		else if($i < $wordCount - 1){
-											// 			if($j == 0){
-											// 				echo'<div class="left">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
-											// 			}
-											// 			else if($j < ($length - 1)){
-											// 				echo'<div class="inside">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
-											// 			}
-											// 			else{
-											// 				echo'<div class="right">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
-											// 			}
-											// 		}
-											// 		else{
-											// 			if($j < ($length - 1)){
-											// 				echo'<div class="bottom">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
-											// 			}
-											// 			else{
-											// 				echo'<div class="bottomRight">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
-											// 			}
-											// 		}
-											// 	}
-											// 	echo'</div>';
-											// }
+												echo'<div class="row">';
+
+												for($j = 0; $j < $length; $j++){
+														if(in_array(',', $charList)){
+															if($charList[$j] == '0' || $charList[$j] == ' ') {}
+															else if($charList[$j] == ','){
+																	$currentColor = ($currentColor + 1) % count($wordColors);															
+															}
+															else if($i == 0){
+																if($j < $length - 1){
+																	echo'<div class="top" style="color:white; background-color:'.$wordColors[$currentColor].'">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+																}
+																else{
+																	echo'<div class="topRight" style="color:white; background-color:'.$wordColors[$currentColor].'">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+																}
+															}
+															else if($i < $wordCount - 1){
+																if($j == 0){
+																	echo'<div class="left" style="color:white; background-color:'.$wordColors[$currentColor].'">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+																}
+																else if($j < ($length - 1)){
+																	echo'<div class="inside" style="color:white; background-color:'.$wordColors[$currentColor].'">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+																}
+																else{
+																	echo'<div class="right" style="color:white; background-color:'.$wordColors[$currentColor].'">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+																}
+															}
+															else{
+																if($j < ($length - 1)){
+																	echo'<div class="bottom" style="color:white; background-color:'.$wordColors[$currentColor].'">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+																}
+																else{
+																	echo'<div class="bottomRight" style="color:white; background-color:'.$wordColors[$currentColor].'">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+																}
+															}
+														} else {
+															if($i == 0){
+																if($j < $length - 1){
+																	echo'<div class="top">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+																}
+																else{
+																	echo'<div class="topRight">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+																}
+															}
+															else if($i < $wordCount - 1){
+																if($j == 0){
+																	echo'<div class="left">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+																}
+																else if($j < ($length - 1)){
+																	echo'<div class="inside">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+																}
+																else{
+																	echo'<div class="right">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+																}
+															}
+															else{
+																if($j < ($length - 1)){
+																	echo'<div class="bottom">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+																}
+																else{
+																	echo'<div class="bottomRight">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+																}
+														}
+													}
+												}
+												echo'</div>';
+											}
 										?>
 									</div>
-								</div> -->
+								</div>
                             </div>
                         </div>
                     </div>
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-sm-12">
-                                <div align="center"><h2>Squares Options</h2></div>
+                                <div align="center"><h2>Dabble Plus Options</h2></div>
                             </div>
                         </div>
                     </div>
@@ -535,10 +595,10 @@
 															<div class="col-sm-4">
 																	<div class="row">
 																			<div class="col-sm-8">
-																					<h3>Letters</h3>
+																					<!-- <h3>Letters</h3> -->
 																			</div>
 																			<div align="left" >
-	                                        <div class="row">
+	                                        <!-- <div class="row">
 	                                            <div class="col-sm-6" >
 	                                                <label>Letter Square Color</label>
 	                                            </div>
@@ -563,11 +623,11 @@
 	                                            <div class="col-sm-6" >
 	                                                <input type="text" class='lineColorLetters'/>
 	                                            </div>
-	                                        </div>
+	                                        </div> -->
 	                                        <br>
 	                                    </div>
-									</div>
-								</div>
+																		</div>
+																	</div>
                                 <div class="col-sm-4">
                                     <div class="row">
                                         <div class="col-sm-8">
@@ -575,25 +635,49 @@
                                         </div>
                                     </div>
 
-									<div align="left">
+																		<div align="left">
                                         <div class="row">
                                             <div class="col-sm-12" >
                                                 <input type="checkbox" class="showSolutionCheckbox" onchange="solutionCheckboxChange()" checked> Show Solution
                                             </div>
                                         </div>
+										<?php //addition of letters options ************************* ?>
 										<br>
-		                            </div>
+										<div class="row">
+											<div class="col-sm-6">
+												<select class="form-control" id="puzzlelettertype" name="puzzlelettertype" onchange="lettersChange()">
+													<option value="rectangle">Rectangle</option>
+													<option value="pyramid" >Pyramid</option>
+													<option value="stepup" >Step Up</option>
+													<option value="stepdown" >Step Down</option>
+												</select>
+											</div>
+										<h4>Letters</h4>
+										</div>
+
+										<br>
+										<div class="row">
+											<div class="col-sm-6">
+												<select class="form-control" id="puzzletype" name="puzzletype" onchange="puzzleChange()">
+													<option value="pyramid" <?php if($puzzleType == "pyramid"){echo('selected="selected"');} ?>>Pyramid</option>
+													<option value="stepup" <?php if($puzzleType == "stepup"){echo('selected="selected"');} ?>>Step Up</option>
+													<option value="stepdown" <?php if($puzzleType == "stepdown"){echo('selected="selected"');} ?>>Step Down</option>
+												</select>
+											</div>
+										<h4>Words</h4>
+										</div>
+                                    </div>
                                 </div>
 
 																<?php // Words OPTIONS ********************************** ?>
                                 <div class="col-sm-4">
                                     <div class="row">
                                         <div class="col-sm-8">
-                                            <h3>Words</h3>
+                                            <!-- <h3>Words</h3> -->
                                         </div>
                                     </div>
                                     <div align="left" >
-                                        <div class="row">
+                                        <!-- <div class="row">
                                             <div class="col-sm-6" >
                                                 <label>Word Square Color</label>
                                             </div>
@@ -618,7 +702,7 @@
                                             <div class="col-sm-6" >
                                                 <input type="text" class='lineColor'/>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <br>
                                     </div>
                                 </div>
@@ -630,7 +714,7 @@
 						<div class="panel-heading ">
 							<div class="row">
 								<div class="col-sm-12">
-									<div align="center"><h2>Squares Solution</h2></div>
+									<div align="center"><h2>Dabble Plus Solution</h2></div>
 								</div>
 							</div>
 						</div>
@@ -712,11 +796,11 @@
 												</table>
 											</div>
 										</div>
-										<div class="letters rectangleLettersPuzzle" style="display: none;">
-											<div class="row"> <h3>Rectangle Letters</h3> </div>
-											<div class="rectangle">
+										<div class="letters pyramidLettersPuzzle" style="display: none;">
+											<div class="row"> <h3>Pyramid Letters</h3> </div>
+											<div class="pyramid">
 												<?php
-													// Prints blank rectangle puzzle
+													// Prints blank pyramid puzzle
 													// Cells must be printed with correct styling
 													// Top cell, then final top right cell, left cells, inside cells, right cells,
 													// bottom cells, then final right cell
@@ -726,39 +810,43 @@
 													for($i = 0; $i < $wordCount; $i++){
 														$word = $wordList[$i];
 														$charList = splitWord($word);
-														$length = getWordLength($word);
+														$length = getLengthNoSpaces($word);
 
 														echo'<div class="row">';
 
 														for($j = 0; $j < $length; $j++){
-															if($i == 0){
+															if ($characterListNoSpaces[$count] == ',') {
+																$count++;
+																$j--;	
+															} 
+															else if($i == 0){
 																if($j < $length - 1){
-																	echo'<div class="top">'.$characterList[$count++].'</div>';
+																	echo'<div class="top">'.$characterListNoSpaces[$count++].'</div>';
 																}
 																else{
-																	echo'<div class="topRight">'.$characterList[$count++].'</div>';
+																	echo'<div class="topRight">'.$characterListNoSpaces[$count++].'</div>';
 																}
 															}
 															else if($i < $wordCount - 1){
 																if($j == 0){
-																	echo'<div class="left">'.$characterList[$count++].'</div>';
+																	echo'<div class="left">'.$characterListNoSpaces[$count++].'</div>';
 																}
 																else if($j < ($length - 1)){
-																	echo'<div class="inside">'.$characterList[$count++].'</div>';
+																	echo'<div class="inside">'.$characterListNoSpaces[$count++].'</div>';
 
 																}
 																else{
-																	echo'<div class="right">'.$characterList[$count++].'</div>';
+																	echo'<div class="right">'.$characterListNoSpaces[$count++].'</div>';
 
 																}
 															}
 															else{
 																if($j < ($length - 1)){
-																	echo'<div class="bottom">'.$characterList[$count++].'</div>';
+																	echo'<div class="bottom">'.$characterListNoSpaces[$count++].'</div>';
 
 																}
 																else{
-																	echo'<div class="bottomRight">'.$characterList[$count++].'</div>';
+																	echo'<div class="bottomRight">'.$characterListNoSpaces[$count++].'</div>';
 
 																}
 															}
@@ -771,7 +859,7 @@
 								</div>
 								<div class="col-sm-6">
 									<div class="stepupSolution word">
-										<div class="row"> <h3>Words</h3> </div>
+										<div class="row"> <h3>Step Up</h3> </div>
 										<div class="row">
 											<table class="puzzle">
 												<?php
@@ -779,13 +867,15 @@
 													foreach($stepUpPuzzle as $row){
 														echo'<tr>';
 														foreach($row as $letter){
-															if($letter != "0"){
+															if($letter != "0"&& $letter != ','){
 																echo'<td class="filled">'.$letter.'</td>
 																';
 															}
 															else{
-																echo'<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
-																';
+																if($letter != ','){
+																	echo'<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+																	';
+																}
 															}
 														}
 														echo'</tr>';
@@ -794,83 +884,95 @@
 											</table>
 										</div>
 									</div>
-									<!-- <div class="stepdownSolution word">
+									<div class="stepdownSolution word">
 										<div class="row"> <h3> Step Down </h3> </div>
 										<div class="row">
 											<table class="puzzle">
 												<?php
 													// Prints solution for step down
-													// foreach($stepDownPuzzle as $row){
-													// 	echo'<tr>';
-													// 	foreach($row as $letter){
-													// 		if($letter != "0"){
-													// 			echo'<td class="filled">'.$letter.'</td>
-													// 			';
-													// 		}
-													// 		else{
-													// 			echo'<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
-													// 			';
-													// 		}
-													// 	}
-													// 	echo'</tr>';
-													// }
+													foreach($stepDownPuzzle as $row){
+														echo'<tr>';
+														foreach($row as $letter){
+															if($letter != "0" && $letter != ','){
+																echo'<td class="filled">'.$letter.'</td>
+																';
+															}
+															else{
+																if($letter != ','){
+																	echo'<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+																	';
+																}
+															}
+														}
+														echo'</tr>';
+													}
 												?>
 											</table>
 										</div>
 									</div>
-									<div class="rectangleSolution word">
-										<div class="row"> <h3> Words </h3> </div>
-										<div class="rectangle">
+									<div class="pyramidSolution word">
+										<div class="row"> <h3> Pyramid </h3> </div>
+										<div class="pyramid">
 											<?php
-												// Prints solution rectangle
+												// Prints solution pyramid
 												// Cells must be printed with correct styling
 												// Top cell, then final top right cell, left cells, inside cells, right cells,
 												// bottom cells, then final right cell
-												// $wordCount = count($wordList);
+												$wordCount = count($wordList);
 
-												// for($i = 0; $i < $wordCount; $i++){
-												// 	$word = $wordList[$i];
-												// 	$charList = splitWord($word);
-												// 	$length = getWordLength($word);
+												for($i = 0; $i < $wordCount; $i++){
+													$word = $wordList[$i];
+													$charList = splitWord($word);
+													$test = 0;
+													for($j = 0; $j < count($charList);){
+														if($charList[$j] == ' ' || $charList[$j] == ',') {
+															array_splice($charList, $j, 1);
+														} else {
+															$j++;
+														}
+													}
+													$length = getLengthNoSpaces($word);
 
-												// 	echo'<div class="row">';
+													
 
-												// 	for($j = 0; $j < $length; $j++){
-												// 		if($i == 0){
-												// 			if($j < $length - 1){
-												// 				echo'<div class="top">'.$charList[$j].'</div>';
-												// 			}
-												// 			else{
-												// 				echo'<div class="topRight">'.$charList[$j].'</div>';
-												// 			}
-												// 		}
-												// 		else if($i < $wordCount - 1){
-												// 			if($j == 0){
-												// 				echo'<div class="left">'.$charList[$j].'</div>';
-												// 			}
-												// 			else if($j < ($length - 1)){
-												// 				echo'<div class="inside">'.$charList[$j].'</div>';
-												// 			}
-												// 			else{
-												// 				echo'<div class="right">'.$charList[$j].'</div>';
-												// 			}
-												// 		}
-												// 		else{
-												// 			if($j < ($length - 1)){
-												// 				echo'<div class="bottom">'.$charList[$j].'</div>';
-												// 			}
-												// 			else{
-												// 				echo'<div class="bottomRight">'.$charList[$j].'</div>';
-												// 			}
-												// 		}
+													echo'<div class="row">';
 
-												// 	}
+													for($j = 0; $j < $length; $j++){
+														if($i == 0){
+															if($j < $length - 1){
+																echo'<div class="top">'.$charList[$j].'</div>';
+															}
+															else{
+																echo'<div class="topRight">'.$charList[$j].'</div>';
+															}
+														}
+														else if($i < $wordCount - 1){
+															if($j == 0){
+																echo'<div class="left">'.$charList[$j].'</div>';
+															}
+															else if($j < ($length - 1)){
+																echo'<div class="inside">'.$charList[$j].'</div>';
+															}
+															else{
+																echo'<div class="right">'.$charList[$j].'</div>';
+															}
+														}
+														else{
+															if($j < ($length - 1)){
+																echo'<div class="bottom">'.$charList[$j].'</div>';
+															}
+															else{
+																echo'<div class="bottomRight">'.$charList[$j].'</div>';
+															}
+														}
 
-												// 	echo'</div>';
-												// }
+													}
+
+													echo'</div>';
+												}
 											?>
 										</div>
-									</div> -->
+									</div>
                                 </div>
 							</div>
 						</div>
@@ -881,48 +983,19 @@
     </div>
 </body>
 </html>
-<script type="text/javascript">
-	function checkInput() {
-		var maxLength = 0;
-		var numSpaces = 0;
-		var array = <?php echo json_encode($_SESSION['puzzle']) ?>;
-		for (var i = 0, length = array.length; i < length; i++) {
-			numSpaces = 0;
-			for(var j = 0; j < array[i].length; j++){
-				if (array[i][j] == ' ') numSpaces++;
-			}
-			rowLength = array[i].length;
-			rowLength -= numSpaces;
-			if(rowLength > maxLength) {
-				maxLength = rowLength;
-			}
-		};
-
-		if(maxLength > 10) {
-			alert("Cannot generate images with words longer than ten characters due to size limitations");
-			return false;
-		}
-
-		if(array.length > 10)
-			{
-			alert("Cannot generate images with more than ten words due to size limitations");
-			return false;
-		}
-	}
-</script>
 <script>
 	// Set default spectrum elements
 	$(".letterSquareColor").spectrum({
 		color: "#EEEEEE",
 		change: function(color) {
 			$(".word table.puzzle tr td.filled").css("background-color", color.toHexString());
-            $(".word .rectangle .inside").css("background-color", color.toHexString());
-			$(".word .rectangle .left").css("background-color", color.toHexString());
-			$(".word .rectangle .right").css("background-color", color.toHexString());
-			$(".word .rectangle .top").css("background-color", color.toHexString());
-			$(".word .rectangle .topRight").css("background-color", color.toHexString());
-			$(".word .rectangle .bottom").css("background-color", color.toHexString());
-			$(".word .rectangle .bottomRight").css("background-color", color.toHexString());
+            $(".word .pyramid .inside").css("background-color", color.toHexString());
+			$(".word .pyramid .left").css("background-color", color.toHexString());
+			$(".word .pyramid .right").css("background-color", color.toHexString());
+			$(".word .pyramid .top").css("background-color", color.toHexString());
+			$(".word .pyramid .topRight").css("background-color", color.toHexString());
+			$(".word .pyramid .bottom").css("background-color", color.toHexString());
+			$(".word .pyramid .bottomRight").css("background-color", color.toHexString());
 		}
 	});
 
@@ -930,16 +1003,16 @@
 		color: "#000000",
 		change: function(color) {
 			$(".word table.puzzle tr td.filled").css("color", color.toHexString());
-            $(".word .rectangle .cell").css("color", color.toHexString());
+            $(".word .pyramid .cell").css("color", color.toHexString());
 
 			$(".word table.puzzle tr td.filled").css("color", color.toHexString());
-            $(".word .rectangle .inside").css("color", color.toHexString());
-			$(".word .rectangle .left").css("color", color.toHexString());
-			$(".word .rectangle .right").css("color", color.toHexString());
-			$(".word .rectangle .top").css("color", color.toHexString());
-			$(".word .rectangle .topRight").css("color", color.toHexString());
-			$(".word .rectangle .bottom").css("color", color.toHexString());
-			$(".word .rectangle .bottomRight").css("color", color.toHexString());
+            $(".word .pyramid .inside").css("color", color.toHexString());
+			$(".word .pyramid .left").css("color", color.toHexString());
+			$(".word .pyramid .right").css("color", color.toHexString());
+			$(".word .pyramid .top").css("color", color.toHexString());
+			$(".word .pyramid .topRight").css("color", color.toHexString());
+			$(".word .pyramid .bottom").css("color", color.toHexString());
+			$(".word .pyramid .bottomRight").css("color", color.toHexString());
 		}
 	});
 
@@ -947,16 +1020,16 @@
 		color: "#000000",
 		change: function(color) {
 			$(".word table.puzzle tr td.filled").css("border", "2px solid " + color.toHexString());
-            $(".word .rectangle .cell").css("border", "2px solid " + color.toHexString());
+            $(".word .pyramid .cell").css("border", "2px solid " + color.toHexString());
 
 			$(".word table.puzzle tr td.filled").css("border-color", color.toHexString());
-            $(".word .rectangle .inside").css("border-color", color.toHexString());
-			$(".word .rectangle .left").css("border-color", color.toHexString());
-			$(".word .rectangle .right").css("border-color", color.toHexString());
-			$(".word .rectangle .top").css("border-color", color.toHexString());
-			$(".word .rectangle .topRight").css("border-color", color.toHexString());
-			$(".word .rectangle .bottom").css("border-color", color.toHexString());
-			$(".word .rectangle .bottomRight").css("border-color", color.toHexString());
+            $(".word .pyramid .inside").css("border-color", color.toHexString());
+			$(".word .pyramid .left").css("border-color", color.toHexString());
+			$(".word .pyramid .right").css("border-color", color.toHexString());
+			$(".word .pyramid .top").css("border-color", color.toHexString());
+			$(".word .pyramid .topRight").css("border-color", color.toHexString());
+			$(".word .pyramid .bottom").css("border-color", color.toHexString());
+			$(".word .pyramid .bottomRight").css("border-color", color.toHexString());
 		}
 	});
 
@@ -964,13 +1037,13 @@
 		color: "#EEEEEE",
 		change: function(color) {
 			$(".letters table.puzzle tr td.filled").css("background-color", color.toHexString());
-						$(".letters .rectangle .inside").css("background-color", color.toHexString());
-			$(".letters .rectangle .left").css("background-color", color.toHexString());
-			$(".letters .rectangle .right").css("background-color", color.toHexString());
-			$(".letters .rectangle .top").css("background-color", color.toHexString());
-			$(".letters .rectangle .topRight").css("background-color", color.toHexString());
-			$(".letters .rectangle .bottom").css("background-color", color.toHexString());
-			$(".letters .rectangle .bottomRight").css("background-color", color.toHexString());
+						$(".letters .pyramid .inside").css("background-color", color.toHexString());
+			$(".letters .pyramid .left").css("background-color", color.toHexString());
+			$(".letters .pyramid .right").css("background-color", color.toHexString());
+			$(".letters .pyramid .top").css("background-color", color.toHexString());
+			$(".letters .pyramid .topRight").css("background-color", color.toHexString());
+			$(".letters .pyramid .bottom").css("background-color", color.toHexString());
+			$(".letters .pyramid .bottomRight").css("background-color", color.toHexString());
 		}
 	});
 
@@ -978,16 +1051,16 @@
 		color: "#000000",
 		change: function(color) {
 			$(".letters table.puzzle tr td.filled").css("color", color.toHexString());
-						$(".letters .rectangle .cell").css("color", color.toHexString());
+						$(".letters .pyramid .cell").css("color", color.toHexString());
 
 			$(".letters table.puzzle tr td.filled").css("color", color.toHexString());
-						$(".letters .rectangle .inside").css("color", color.toHexString());
-			$(".letters .rectangle .left").css("color", color.toHexString());
-			$(".letters .rectangle .right").css("color", color.toHexString());
-			$(".letters .rectangle .top").css("color", color.toHexString());
-			$(".letters .rectangle .topRight").css("color", color.toHexString());
-			$(".letters .rectangle .bottom").css("color", color.toHexString());
-			$(".letters .rectangle .bottomRight").css("color", color.toHexString());
+						$(".letters .pyramid .inside").css("color", color.toHexString());
+			$(".letters .pyramid .left").css("color", color.toHexString());
+			$(".letters .pyramid .right").css("color", color.toHexString());
+			$(".letters .pyramid .top").css("color", color.toHexString());
+			$(".letters .pyramid .topRight").css("color", color.toHexString());
+			$(".letters .pyramid .bottom").css("color", color.toHexString());
+			$(".letters .pyramid .bottomRight").css("color", color.toHexString());
 		}
 	});
 
@@ -995,50 +1068,48 @@
 		color: "#000000",
 		change: function(color) {
 			$(".letters table.puzzle tr td.filled").css("border", "2px solid " + color.toHexString());
-						$(".letters .rectangle .cell").css("border", "2px solid " + color.toHexString());
+						$(".letters .pyramid .cell").css("border", "2px solid " + color.toHexString());
 
 			$(".letters table.puzzle tr td.filled").css("border-color", color.toHexString());
-						$(".letters .rectangle .inside").css("border-color", color.toHexString());
-			$(".letters .rectangle .left").css("border-color", color.toHexString());
-			$(".letters .rectangle .right").css("border-color", color.toHexString());
-			$(".letters .rectangle .top").css("border-color", color.toHexString());
-			$(".letters .rectangle .topRight").css("border-color", color.toHexString());
-			$(".letters .rectangle .bottom").css("border-color", color.toHexString());
-			$(".letters .rectangle .bottomRight").css("border-color", color.toHexString());
+						$(".letters .pyramid .inside").css("border-color", color.toHexString());
+			$(".letters .pyramid .left").css("border-color", color.toHexString());
+			$(".letters .pyramid .right").css("border-color", color.toHexString());
+			$(".letters .pyramid .top").css("border-color", color.toHexString());
+			$(".letters .pyramid .topRight").css("border-color", color.toHexString());
+			$(".letters .pyramid .bottom").css("border-color", color.toHexString());
+			$(".letters .pyramid .bottomRight").css("border-color", color.toHexString());
 		}
 	});
 
 	<?php
 		// Hide/Show starting puzzles/solutions based off input from Index page
-		// if($puzzleType == "stepup"){
-		// 	echo('$(".pyramidPuzzle").hide();');
-		// 	echo('$(".stepupPuzzle").show();');
-		// 	echo('$(".stepdownPuzzle").hide();');
+		if($puzzleType == "stepup"){
+			echo('$(".pyramidPuzzle").hide();');
+			echo('$(".stepupPuzzle").show();');
+			echo('$(".stepdownPuzzle").hide();');
 
-		// 	echo('$(".pyramidSolution").hide();');
-		// 	echo('$(".stepupSolution").show();');
-		// 	echo('$(".stepdownSolution").hide();');
-		// }
-		// else if($puzzleType == "stepdown"){
-		// 	echo('$(".pyramidPuzzle").hide();');
-		// 	echo('$(".stepupPuzzle").hide();');
-		// 	echo('$(".stepdownPuzzle").show();');
+			echo('$(".pyramidSolution").hide();');
+			echo('$(".stepupSolution").show();');
+			echo('$(".stepdownSolution").hide();');
+		}
+		else if($puzzleType == "stepdown"){
+			echo('$(".pyramidPuzzle").hide();');
+			echo('$(".stepupPuzzle").hide();');
+			echo('$(".stepdownPuzzle").show();');
 
-		// 	echo('$(".pyramidSolution").hide();');
-		// 	echo('$(".stepupSolution").hide();');
-		// 	echo('$(".stepdownSolution").show();');
-		// }
-		// else{
-		// 	echo('$(".rectanglePuzzle").hide();');
-		// 	echo('$(".pyramidPuzzle").hide();');
-		// 	echo('$(".stepupPuzzle").show();');
-		// 	echo('$(".stepdownPuzzle").hide();');
+			echo('$(".pyramidSolution").hide();');
+			echo('$(".stepupSolution").hide();');
+			echo('$(".stepdownSolution").show();');
+		}
+		else{
+			echo('$(".pyramidPuzzle").show();');
+			echo('$(".stepupPuzzle").hide();');
+			echo('$(".stepdownPuzzle").hide();');
 
-		// 	echo('$(".rectangleSolution").hide();');
-		// 	echo('$(".pyramidSolution").show();');
-		// 	echo('$(".stepupSolution").show();');
-		// 	echo('$(".stepdownSolution").hide();');
-		// }
+			echo('$(".pyramidSolution").show();');
+			echo('$(".stepupSolution").hide();');
+			echo('$(".stepdownSolution").hide();');
+		}
 	?>
 
 	// Updates the solution section to hidden/visable on check box update
@@ -1051,67 +1122,68 @@
 		}
 	}
 
-	// Shows/hides puzzles and solutions when puzzle type is changed (not needed for scrambler)
-/*	function puzzleChange(){
-		if($('#puzzletype').val() == "rectangle"){
-			$(".rectanglePuzzle").show();
+	// Shows/hides puzzles and solutions when puzzle type is changed
+	function puzzleChange(){
+
+		if($('#puzzletype').val() == "pyramid"){
+			$(".pyramidPuzzle").show();
 			$(".stepupPuzzle").hide();
 			$(".stepdownPuzzle").hide();
 
-			$(".rectangleSolution").show();
+			$(".pyramidSolution").show();
 			$(".stepupSolution").hide();
 			$(".stepdownSolution").hide();
 		}
 		else if($('#puzzletype').val() == "stepup"){
-			$(".rectanglePuzzle").hide();
+			$(".pyramidPuzzle").hide();
 			$(".stepupPuzzle").show();
 			$(".stepdownPuzzle").hide();
 
-			$(".rectangleSolution").hide();
+			$(".pyramidSolution").hide();
 			$(".stepupSolution").show();
 			$(".stepdownSolution").hide();
 		}
 		else{
-			$(".rectanglePuzzle").hide();
+			$(".pyramidPuzzle").hide();
 			$(".stepupPuzzle").hide();
 			$(".stepdownPuzzle").show();
 
-			$(".rectangleSolution").hide();
+			$(".pyramidSolution").hide();
 			$(".stepupSolution").hide();
 			$(".stepdownSolution").show();
 		}
 	}
-*/
-	// 	Shows/hides letters when puzzle type is changed (not needed for scrambler)
-/*	function lettersChange(){
+
+	// 	Shows/hides letters when puzzle type is changed
+	function lettersChange(){
 			if($('#puzzlelettertype').val() == "rectangle"){
 				$(".rectangleLettersPuzzle").show();
-				$(".rectangleLettersPuzzle").show();
+				$(".pyramidLettersPuzzle").hide();
 				$(".stepupLettersPuzzle").hide();
 				$(".stepdownLettersPuzzle").hide();
 
 			}
 			else if($('#puzzlelettertype').val() == "pyramid"){
 				$(".rectangleLettersPuzzle").hide();
-				$(".rectangleLettersPuzzle").show();
+				$(".pyramidLettersPuzzle").show();
 				$(".stepupLettersPuzzle").hide();
 				$(".stepdownLettersPuzzle").hide();
 
 			}
 			else if($('#puzzlelettertype').val() == "stepup"){
 				$(".rectangleLettersPuzzle").hide();
-				$(".rectangleLettersPuzzle").hide();
+				$(".pyramidLettersPuzzle").hide();
 				$(".stepupLettersPuzzle").show();
 				$(".stepdownLettersPuzzle").hide();
 
 			}
 			else{
 				$(".rectangleLettersPuzzle").hide();
-				$(".rectangleLettersPuzzle").hide();
+				$(".pyramidLettersPuzzle").hide();
 				$(".stepupLettersPuzzle").hide();
 				$(".stepdownLettersPuzzle").show();
 
 			}
-		}*/
+		}
 </script>
 </html>

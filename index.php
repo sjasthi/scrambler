@@ -1,5 +1,11 @@
 <?php
 
+  if(session_id() == '' || !isset($_SESSION)){
+    session_start();
+  }
+
+  $_SESSION['lastpage'] = 'index';
+
   // set the current page to one of the main buttons
   $nav_selected = "HOME";
 

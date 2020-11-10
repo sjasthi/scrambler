@@ -1,10 +1,15 @@
 <?php
+
+    if(session_id() == '' || !isset($_SESSION)){
+        session_start();
+    }
+
 	if(isset($_GET["error"])){
 		$error = $_GET["error"];
 		
 		// Check to see if an error code was passed in
 		// Error get variable is passed through ScrablerPuzzle.php after an issue has been detected
-		// Here the message will get displayed and prompt the user to try again
+        // Here the message will get displayed and prompt the user to try again
 		switch($error){
 			case "emptyinput":
 				$errorMessage = "No input was provided.  Enter words with identical word lengths.";
@@ -14,7 +19,13 @@
 				break;
 			case "invalidinput":
 				$errorMessage = "Input was invalid. Enter words with identical word lengths.";
-				break;
+                break;
+            case "nonalpha":
+                $errorMessage = "Input cannot contain numbers or special characters.";
+                break;
+            case 'duplicate':
+                $errorMessage = "Input cannot contain duplicate words. Please make each word unique.";
+                break;
 			default:
 				$errorMessage = "Unknown error - try again";
 		}
@@ -51,7 +62,22 @@
 	
 </head>
 <body>
-    <form action="ScramblerPuzzle.php" method="post" name="scramblerForm" class="form-horizontal" onsubmit='return checkform()'>
+    <br>
+        <div class="form-group">
+			<div class="col-sm-1"></div>
+			<div class="col-sm-10">
+				<label class="charLabel" style="color:red;font-size:14px;" name="charName" value="">
+				<?php
+					// If there is a warning message after input validation display message to user
+					if(isset($errorMessage)){
+						echo($errorMessage);
+					}
+				?>
+				</label>
+			</div>
+		</div>
+    <br>
+    <form action="ScramblerPuzzle.php" method="post" name="scramblerForm" class="form-horizontal">
         <div class="container-fluid">
             <div class="panel">
                 <div class="panel-group">
@@ -68,7 +94,14 @@
                                 <div class="col-sm-1"></div>
                                 <label class="control-label col-sm-1" style="text-align: left;">Title</label>
                                 <div class="col-sm-9">
-                                    <input class="form-control" id="title" name="title" value="Title">
+                                    <input class="form-control" id="title" name="title" <?php
+                                        if(isset($_SESSION['title']) && isset($_SESSION['lastpage']) && 
+                                        $_SESSION['lastpage'] == 'scrambler'){
+                                            $title = $_SESSION['title'];
+                                            echo "value='".$title."'";
+                                        } else {
+                                            echo 'value="Title"';
+                                        }?>>
                                 </div>
                             </div>
 
@@ -77,23 +110,17 @@
                                 <div class="col-sm-1"></div>
                                 <label class="control-label col-sm-1" style="text-align: left;">Subtitle</label>
                                 <div class="col-sm-9">
-                                    <input class="form-control" id="subtitle" name="subtitle" value="Subtitle">
+                                    <input class="form-control" id="subtitle" name="subtitle" <?php
+                                        if(isset($_SESSION['subtitle']) && isset($_SESSION['lastpage']) && 
+                                        $_SESSION['lastpage'] == 'scrambler'){
+                                            $subtitle = $_SESSION['subtitle'];
+                                            echo "value='".$subtitle."'";
+                                        } else {
+                                            echo 'value="Subtitle"';
+                                        }?>>
                                 </div>
                             </div>
-<!--                             <div class="form-group">
-                                <div class="col-sm-1"></div>
-                                <label class="control-label col-sm-1" style="text-align: left;">Puzzle Mode</label>
-                                
-                                <div class="col-sm-3">
-                                    <select class="form-control" id="puzzletype" name="puzzletype" onchange="sizeChange(this.value);">
-                                        <option value="rectangle" selected="selected">Rectangle</option>
-                                        <option value="pyramid" >Pyramid</option>
-                                        <option value="stepup" >Step Up</option>
-										<option value="stepdown" >Step Down</option>
-                                    </select>
-                                </div>
-                            </div>
- -->                            <div class="form-group">
+                            <div class="form-group">
                                 <div class="col-sm-1"></div>
                                 <label class="control-label col-sm-9" style="text-align: left;">Enter multiple words each on a new line.
                                 <br>All words should be equal in length.
@@ -102,22 +129,13 @@
                             <div class="form-group">
                                 <div class="col-sm-1"></div>
                                 <div class="col-sm-10">
-                                    <textarea class="form-control" rows="10" id="input" name="wordInput"></textarea>
+                                    <textarea class="form-control" rows="10" id="input" name="wordInput"><?php
+                                            if(isset($_SESSION['userInput']) && isset($errorMessage)){
+                                                echo $_SESSION['userInput'];
+                                            }
+                                        ?></textarea>
                                 </div>
-                            </div> 
-							<div class="form-group">
-								<div class="col-sm-1"></div>
-								<div class="col-sm-10">
-									<label class="charLabel" style="color:red;font-size:14px;" name="charName" value="">
-									<?php
-										// If there is a warning message after input validation display message to user
-										if(isset($errorMessage)){
-											echo($errorMessage);
-										}
-									?>
-									</label>
-								</div>
-							</div>
+                            </div>
 							<div class="row">
 								<div class="text-center">
 									<input type="submit" name="submit" class="btn btn-primary btn-lg" value="Generate">
@@ -130,19 +148,20 @@
         </div>
     </form>
 </body>
+<?php $_SESSION['lastpage'] = 'scramblerIndex';?>
     <script type="text/javascript">
 
 function checkform() {
             var inputString = document.forms["scramblerForm"]["wordInput"].value;
-            if(inputString == '') {
-                alert('Cannot have empty input. Please enter at least 2 words');
-                return false;
-            }
+            // if(inputString == '') {
+            //     alert('Cannot have empty input. Please enter at least 2 words');
+            //     return false;
+            // }
             var wordList = inputString.split("\n");
-            if(wordList.length == 1) {
-                alert('Cannot have input of less than 2 words. Please enter at least 2 words');
-                return false;
-            }
+            // if(wordList.length == 1) {
+            //     alert('Cannot have input of less than 2 words. Please enter at least 2 words');
+            //     return false;
+            // }
             var length = wordList[0].length;
             var duplicates = new Array(0);
             var noDuplicates = true;

@@ -1,4 +1,9 @@
 <?php
+
+    if(session_id() == '' || !isset($_SESSION)){
+        session_start();
+    }
+
 	if(isset($_GET["error"])){
 		$error = $_GET["error"];
 		
@@ -15,6 +20,9 @@
 			case "invalidinput":
 				$errorMessage = "Input was invalid. Enter words with sequential word lengths. Example: word with length 2, word with length 3, word with length 4, etc.";
 				break;
+            case "nonalpha":
+                $errorMessage = "Input cannot contain numbers or special characters.";
+                break;
 			default:
 				$errorMessage = "Unknown error - try again";
 		}
@@ -51,7 +59,22 @@
 	
 </head>
 <body>
-    <form action="DabblePuzzle.php" method="post" name="shapesForm" class="form-horizontal" onsubmit='return checkform()'>
+    <br>
+        <div class="form-group">
+			<div class="col-sm-1"></div>
+			<div class="col-sm-10">
+				<label class="charLabel" style="color:red;font-size:14px;" name="charName" value="">
+				<?php
+					// If there is a warning message after input validation display message to user
+					if(isset($errorMessage)){
+						echo($errorMessage);
+					}
+				?>
+				</label>
+			</div>
+		</div>
+    <br>
+    <form action="DabblePuzzle.php" method="post" name="shapesForm" class="form-horizontal">
         <div class="container-fluid">
             <div class="panel">
                 <div class="panel-group">
@@ -68,7 +91,14 @@
                                 <div class="col-sm-1"></div>
                                 <label class="control-label col-sm-1" style="text-align: left;">Title</label>
                                 <div class="col-sm-9">
-                                    <input class="form-control" id="title" name="title" value="Title">
+                                    <input class="form-control" id="title" name="title" <?php
+                                        if(isset($_SESSION['title']) && isset($_SESSION['lastpage']) && 
+                                        $_SESSION['lastpage'] == 'dabble'){
+                                            $title = $_SESSION['title'];
+                                            echo "value='".$title."'";
+                                        } else {
+                                            echo 'value="Title"';
+                                        }?>>
                                 </div>
                             </div>
 
@@ -77,7 +107,14 @@
                                 <div class="col-sm-1"></div>
                                 <label class="control-label col-sm-1" style="text-align: left;">Subtitle</label>
                                 <div class="col-sm-9">
-                                    <input class="form-control" id="subtitle" name="subtitle" value="Subtitle">
+                                    <input class="form-control" id="subtitle" name="subtitle" <?php
+                                        if(isset($_SESSION['subtitle']) && isset($_SESSION['lastpage']) && 
+                                        $_SESSION['lastpage'] == 'dabble'){
+                                            $subtitle = $_SESSION['subtitle'];
+                                            echo "value='".$subtitle."'";
+                                        } else {
+                                            echo 'value="Subtitle"';
+                                        }?>>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -86,9 +123,29 @@
                                 
                                 <div class="col-sm-3">
                                     <select class="form-control" id="puzzletype" name="puzzletype" onchange="sizeChange(this.value);">
-                                        <option value="pyramid" selected="selected">Pyramid</option>
-                                        <option value="stepup" >Step Up</option>
-										<option value="stepdown" >Step Down</option>
+                                    <?php
+                                            if(isset($_SESSION['puzzletype']) && isset($_SESSION['lastpage']) &&
+                                            $_SESSION['lastpage'] == 'dabble'){
+                                                if($_SESSION['puzzletype'] == 'pyramid'){
+                                                    echo '<option value="pyramid" selected="selected">Center Justified</option>
+                                                    <option value="stepup" >Right Justified</option>
+                                                    <option value="stepdown" >Left Justified</option>';
+                                                } else if($_SESSION['puzzletype'] == 'stepup'){
+                                                    echo '<option value="pyramid" >Center Justified</option>
+                                                    <option value="stepup" selected="selected">Right Justified</option>
+                                                    <option value="stepdown" >Left Justified</option>';
+                                                } else {
+                                                    echo '<option value="pyramid" >Center Justified</option>
+                                                    <option value="stepup" >Right Justified</option>
+                                                    <option value="stepdown" selected="selected">Left Justified</option>';
+                                                }
+                                            }
+                                            else{
+                                                echo '<option value="pyramid" >Center Justified</option>
+                                                <option value="stepup" >Right Justified</option>
+                                                <option value="stepdown" selected="selected">Left Justified</option>';
+                                            }
+                                        ?>
                                     </select>
                                 </div>
                             </div>
@@ -100,22 +157,14 @@
                             <div class="form-group">
                                 <div class="col-sm-1"></div>
                                 <div class="col-sm-10">
-                                    <textarea class="form-control" rows="10" id="input" name="wordInput"></textarea>
+                                    <textarea class="form-control" rows="10" id="input" name="wordInput"><?php
+                                            if(isset($_SESSION['userInput']) && isset($errorMessage)){
+                                                echo $_SESSION['userInput'];
+                                            }
+                                        ?></textarea>
                                 </div>
                             </div> 
-							<div class="form-group">
-								<div class="col-sm-1"></div>
-								<div class="col-sm-10">
-									<label class="charLabel" style="color:red;font-size:14px;" name="charName" value="">
-									<?php
-										// If there is a warning message after input validation display message to user
-										if(isset($errorMessage)){
-											echo($errorMessage);
-										}
-									?>
-									</label>
-								</div>
-							</div>
+							
 							<div class="row">
 								<div class="text-center">
 									<input type="submit" name="submit" class="btn btn-primary btn-lg" value="Generate">
@@ -128,6 +177,7 @@
         </div>
     </form>
 </body>
+<?php $_SESSION['lastpage'] = 'dabbleIndex';?>
     <script type="text/javascript">
 
         function checkform() {

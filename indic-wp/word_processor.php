@@ -370,5 +370,13 @@ class wordProcessor {
 
 		return $weight;
 	}
+
+	function getLengthNoSpaces($word) {
+		return count($this->getLogicalChars()) - substr_count($word, ' ');
+	}
+
+	function getLengthNoSpacesNoCommas($word) {
+		return count($this->getLogicalChars()) - substr_count($word, ' ') - substr_count($word, ',');
+	}
 }
 ?>

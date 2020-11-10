@@ -3,8 +3,6 @@
 	if(session_id() == '' || !isset($_SESSION)){
 		session_start();
 	}
-
-
 	
 	// set the current page to one of the main buttons
 	$nav_selected = "LINESPUZZLE";
@@ -14,6 +12,19 @@
 	
 	// set the left menu button selected; options will change based on the main selection
 	$left_selected = "";
+
+	if(isset($_GET["saveResult"])){
+		$saveResult = $_GET["saveResult"];
+		
+		switch($saveResult){
+			case "success":
+				$saveMessage = "Successfully saved words to database";
+				break;
+			default:
+				$saveMessage = "Failed to save words to database";
+		}
+		
+    }
 
 	include("../includes/innerNav.php");
 
@@ -26,9 +37,11 @@
 
 		// If variables are not set redirect to index page with empty error message
 		if(isset($_POST["wordInput"])) {
-			//$puzzleType = 'stacks';
-			//$puzzleType = $_POST["puzzletype"];
 			$wordInput = $_POST["wordInput"];
+			$_SESSION['userInput'] = $_POST["wordInput"];
+			$_SESSION['title'] = $title;
+			$_SESSION['subtitle'] = $subtitle;
+			$_SESSION['type'] = 'lines';
 
 			// If input is blank redirect to Index with empty error message
 			if(trim($wordInput) === ''){
@@ -39,7 +52,9 @@
 			redirect("emptyinput");
 		}
 
-
+		if (preg_match('*[0-9]*', $wordInput) || preg_match('/[\'\/~`\!@#\$%\^&\*\(\)_\-\+=\{\}\[\]\|;:"\<\>,\.\?\\\]/', $wordInput)){
+			redirect("nonalpha");
+		}
 
 		// Parse through input and generate a word list
 		$wordList = generateWordList($wordInput);
@@ -47,6 +62,15 @@
 		// If only one word was passed in redirect with count error message
 		if(count($wordList) == 1){
 			redirect("count");
+		}
+
+		for($i = 0; $i < count($wordList); $i++){
+			for($j = 0; $j < count($wordList); $j++){
+				if($i == $j){}
+				else if(strcmp($wordList[$i], $wordList[$j]) == 0){
+					redirect('duplicate');
+				}
+			}
 		}
 
 			$lines = new Lines($wordList);
@@ -59,13 +83,25 @@
 			$characterList = $lines->getCharacterList();
 
 		$_SESSION['wordList'] = $wordList;
-		$_SESSION['letterPuzzle'] = $linesLetterPuzzle;
-		$_SESSION['title'] = $title;
-		$_SESSION['subtitle'] = $subtitle;
-		$_SESSION['type'] = 'lines';
+		$_SESSION['puzzle'] = $linesLetterPuzzle;
 
-	}
-	else{
+	} else if ($_SESSION['lastpage'] == 'saveWords') {
+			
+		$title = $_SESSION['title'];
+		$subtitle = $_SESSION['subtitle'];
+		$wordInput = $_SESSION['userInput'];
+		$wordList = $_SESSION['wordList'];
+
+		$lines = new Lines($wordList);
+
+		$letterList = $lines->getLetterList();
+		$wordList = $lines->getWordList();
+		$linesPuzzle = $lines->getLinesPuzzle();
+		$linesLetterPuzzle = $lines->getLinesLetterPuzzle();
+		$shuffledWordList = $lines->getShuffledWordList();
+		$characterList = $lines->getCharacterList();	
+		
+	} else {
 		redirect(" ");
 	}
 
@@ -73,11 +109,13 @@
 	 * Redirects user to index page with Get error code if there is an issue with input
 	 */
 	function redirect($error){
+		
+		$_SESSION['lastpage'] = 'lines';
 		if($error != " "){
-			$url = "../index.php?error=".$error;
+			$url = "linesIndex.php?error=".$error;
 		}
 		else{
-			$url = "../index.php";
+			$url = "linesIndex.php";
 		}
 
 		header("Location: ".$url);
@@ -113,12 +151,21 @@
 		return $wordProcessor->getLength();
 	}
 
+	function getLengthNoSpaces($word){
+		$wordProcessor = new wordProcessor(" ", "telugu");
+		$wordProcessor->setWord($word, "telugu");
+
+		return $wordProcessor->getLengthNoSpaces($word);
+	}
+
 	function splitWord($word){
 		$wordProcessor = new wordProcessor(" ", "telugu");
 		$wordProcessor->setWord($word, "telugu");
 
 		return $wordProcessor->getLogicalChars();
 	}
+	
+	$_SESSION['lastpage'] = 'lines';
 ?>
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN''http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
@@ -151,8 +198,22 @@
 	</style>
 </head>
 <body>
+	<br>
+        <div class="form-group">
+			<div class="col-sm-1"></div>
+			<div class="col-sm-10">
+				<label class="charLabel" style="color:red;font-size:14px;" name="charName" value="">
+				<?php
+					if(isset($saveMessage)){
+						echo($saveMessage);
+					}
+				?>
+				</label>
+			</div>
+		</div>
+    <br>
     <div class="container-fluid">
-		<form method="post" action="linesPuzzleImage.php" onsubmit="return checkInput()">
+		<form method="post" action="../imageGeneration/puzzleImageGenerator.php" onsubmit="return checkInput()">
 			<button type="submit" value="Submit">Generate Image</button>
 		</form>
 		<form method="post" action="../db/saveWords.php">
@@ -299,15 +360,6 @@
                                                 	<input type="checkbox" class="showSolutionCheckbox" onchange="solutionCheckboxChange()" checked> Show Solution
                                             	</div>
                                         	</div>
-											<br>
-											<!-- <div class="row">
-												<div class="col-sm-6">
-													<form method="post" action="linesPuzzleImage.php" onsubmit="return checkInput()">
-														<button type="submit" value="Submit">Generate</button>
-													</form>
-												</div>
-												<h4>Generate Image</h4>
-                                			</div> -->
                                 		</div>
 									</div>
 
@@ -432,9 +484,18 @@
 
 	function checkInput() {
 		var maxLength = 0;
-		var array = <?php echo json_encode($wordList) ?>;
+		var numSpaces = 0;
+		var array = <?php echo json_encode($_SESSION['puzzle']) ?>;
 		for (var i = 0, length = array.length; i < length; i++) {
-		maxLength = Math.max(maxLength, array[i].length);
+			numSpaces = 0;
+			for(var j = 0; j < array[i].length; j++){
+				if (array[i][j] == ' ') numSpaces++;
+			}
+			rowLength = array[i].length;
+			rowLength -= numSpaces;
+			if(rowLength > maxLength) {
+				maxLength = rowLength;
+			}
 		};
 
 		if(maxLength > 10) {
@@ -624,68 +685,5 @@
 			$(".solutionSection").hide();
 		}
 	}
-
-	// Shows/hides puzzles and solutions when puzzle type is changed (not needed for scrambler)
-// function puzzleChange(){
-// 		if($('#puzzletype').val() == "pyramid"){
-// 			$(".pyramidPuzzle").show();
-// 			$(".stepupPuzzle").hide();
-// 			$(".stepdownPuzzle").hide();
-
-// 			$(".pyramidSolution").show();
-// 			$(".stepupSolution").hide();
-// 			$(".stepdownSolution").hide();
-// 		}
-// 		else if($('#puzzletype').val() == "stepup"){
-// 			$(".pyramidPuzzle").hide();
-// 			$(".stepupPuzzle").show();
-// 			$(".stepdownPuzzle").hide();
-
-// 			$(".pyramidSolution").hide();
-// 			$(".stepupSolution").show();
-// 			$(".stepdownSolution").hide();
-// 		}
-// 		else{
-// 			$(".pyramidPuzzle").hide();
-// 			$(".stepupPuzzle").hide();
-// 			$(".stepdownPuzzle").show();
-
-// 			$(".pyramidSolution").hide();
-// 			$(".stepupSolution").hide();
-// 			$(".stepdownSolution").show();
-// 		}
-// 	}
-
-	// 	Shows/hides letters when puzzle type is changed (not needed for scrambler)
-// function lettersChange(){
-// 			if($('#puzzlelettertype').val() == "rectangle"){
-// 				$(".rectangleLettersPuzzle").show();
-// 				$(".pyramidLettersPuzzle").hide();
-// 				$(".stepupLettersPuzzle").hide();
-// 				$(".stepdownLettersPuzzle").hide();
-
-// 			}
-// 			else if($('#puzzlelettertype').val() == "pyramid"){
-// 				$(".rectangleLettersPuzzle").hide();
-// 				$(".pyramidLettersPuzzle").show();
-// 				$(".stepupLettersPuzzle").hide();
-// 				$(".stepdownLettersPuzzle").hide();
-
-// 			}
-// 			else if($('#puzzlelettertype').val() == "stepup"){
-// 				$(".rectangleLettersPuzzle").hide();
-// 				$(".pyramidLettersPuzzle").hide();
-// 				$(".stepupLettersPuzzle").show();
-// 				$(".stepdownLettersPuzzle").hide();
-
-// 			}
-// 			else{
-// 				$(".rectangleLettersPuzzle").hide();
-// 				$(".pyramidLettersPuzzle").hide();
-// 				$(".stepupLettersPuzzle").hide();
-// 				$(".stepdownLettersPuzzle").show();
-
-// 			}
-// 		}
-// </script>
+</script>
 </html>
