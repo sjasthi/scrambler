@@ -144,9 +144,9 @@
                                                 }
                                             }
                                             else{
-                                                echo '<option value="pyramid" >Center Justified</option>
+                                                echo '<option value="pyramid" selected="selected">Center Justified</option>
                                                 <option value="stepup" >Right Justified</option>
-                                                <option value="stepdown" selected="selected">Left Justified</option>';
+                                                <option value="stepdown">Left Justified</option>';
                                             }
                                         ?>
                                     </select>
