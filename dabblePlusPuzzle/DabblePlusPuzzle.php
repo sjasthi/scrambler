@@ -91,7 +91,11 @@
 		}
 
 		$_SESSION['wordList'] = $wordList;
-		$_SESSION['letterPuzzle'] = $stepUpLetterPuzzle;
+		
+		$_SESSION['stepupletterpuzzle'] = $stepUpLetterPuzzle;
+		$_SESSION['stepdownletterpuzzle'] = $stepDownLetterPuzzle;
+		$_SESSION['pyramidletterpuzzle'] = $pyramidLetterPuzzle;
+		$_SESSION['letterlist'] = $letterList;
 
 	} else if ($_SESSION['lastpage'] == 'saveWords') {
 			
@@ -116,6 +120,11 @@
 
 		$characterList = $dabble->getCharacterList();	
 		$characterListNoSpaces = $dabble->getCharacterListNoSpaces();
+		
+		$_SESSION['stepupletterpuzzle'] = $stepUpLetterPuzzle;
+		$_SESSION['stepdownletterpuzzle'] = $stepDownLetterPuzzle;
+		$_SESSION['pyramidletterpuzzle'] = $pyramidLetterPuzzle;
+		$_SESSION['letterlist'] = $letterList;
 		
 	} else {
 		redirect(" ");
@@ -234,9 +243,7 @@
 		</div>
     <br>
     <div class="container-fluid">
-		<form method="post" action="alert('To be implemented')" onsubmit="return checkInput()">
-			<button type="submit" value="Submit">Generate Image</button>
-		</form>
+		<button type="submit" value="Submit" form="options" >Generate Image</button>
 		<form method="post" action="../db/saveWords.php">
 			<button type="submit" value="Submit">Save Words</button>
 		</form>
@@ -262,7 +269,7 @@
                         </div>
                         <div align="center">
                             <div class="col-sm-6">
-                                <div class="row letters rectangleLettersPuzzle"> <h3>Letters</h3>
+                                <div class="row letters rectangleLettersPuzzle" style="display: none;"> <h3>Letters</h3>
 								<table class="puzzle">
                                 <?php
 									// Prints a grid with 5 square width with puzzle letters
@@ -346,7 +353,7 @@
 										</table>
 									</div>
 								</div>
-								<div class="letters pyramidLettersPuzzle" style="display: none;">
+								<div class="letters pyramidLettersPuzzle">
 									<div class="row"> <h3>Pyramid Letters</h3> </div>
 									<div class="pyramid">
 										<?php
@@ -544,7 +551,8 @@
 																}
 															}
 														} else {
-															if($i == 0){
+															if($charList[$j] == '0' || $charList[$j] == ' ') {}
+															else if($i == 0){
 																if($j < $length - 1){
 																	echo'<div class="top">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
 																}
@@ -588,6 +596,7 @@
                             </div>
                         </div>
                     </div>
+					<form method="post" id="options" action="../imageGeneration/dabbleImageGenerator.php"  onsubmit="return checkInput()">
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-sm-12" align="center">
@@ -647,7 +656,7 @@
 											<div class="col-sm-6">
 												<select class="form-control" id="puzzlelettertype" name="puzzlelettertype" onchange="lettersChange()">
 													<option value="rectangle">Rectangle</option>
-													<option value="pyramid" >Pyramid</option>
+													<option value="pyramid" selected="selected">Pyramid</option>
 													<option value="stepup" >Step Up</option>
 													<option value="stepdown" >Step Down</option>
 												</select>
@@ -709,6 +718,7 @@
                             </div>
                         </div>
                     </div>
+					</form>
                     <br>
 					<div class="panel panel-primary solutionSection">
 						<div class="panel-heading ">
@@ -727,7 +737,7 @@
 							</div>
 							<div align="center">
 								<div class="col-sm-6">
-									<div class="row letters rectangleLettersPuzzle"> <h3>Letters</h3>
+									<div class="row letters rectangleLettersPuzzle" style="display: none;"> <h3>Letters</h3>
 										<table class="puzzle">
 																		<?php
 											// Prints a grid with 5 square width with puzzle letters
@@ -796,7 +806,7 @@
 												</table>
 											</div>
 										</div>
-										<div class="letters pyramidLettersPuzzle" style="display: none;">
+										<div class="letters pyramidLettersPuzzle">
 											<div class="row"> <h3>Pyramid Letters</h3> </div>
 											<div class="pyramid">
 												<?php
@@ -983,6 +993,39 @@
     </div>
 </body>
 </html>
+<script type="text/javascript">
+	function checkInput() {
+		var maxLength = 0;
+		var numSpaces = 0;
+		var numCommas = 0;
+		var array = <?php echo json_encode($_SESSION['stepupletterpuzzle']) ?>;
+		for (var i = 0, length = array.length; i < length; i++) {
+			numSpaces = 0;
+			numCommas = 0;
+			for(var j = 0; j < array[i].length; j++){
+				if (array[i][j] == ' ') numSpaces++;
+				if(array[i][j] == ',') numCommas++;
+			}
+			rowLength = array[i].length;
+			rowLength -= numSpaces;
+			rowLength -= numCommas;
+			if(rowLength > maxLength) {
+				maxLength = rowLength;
+			}
+		};
+
+		if(maxLength > 10) {
+			alert("Cannot generate images with words longer than ten characters due to size limitations");
+			return false;
+		}
+
+		if(array.length > 10)
+			{
+			alert("Cannot generate images with more than ten words due to size limitations");
+			return false;
+		}
+	}
+</script>
 <script>
 	// Set default spectrum elements
 	$(".letterSquareColor").spectrum({
