@@ -212,7 +212,7 @@ class Dabble{
 		$col = 0;
 		$row = 0;
 		$count=0;
-
+		
 		foreach($this->wordList as $word){
 			$chars = $this->splitWord($word);
 			$col = 0;
@@ -441,7 +441,7 @@ class Dabble{
 	}
 
 	public function getPyramidLetterPuzzle(){
-		return $this->pyramidPuzzle;
+		return $this->pyramidLetterPuzzle;
 	}
 
 	public function getStepUpPuzzle(){

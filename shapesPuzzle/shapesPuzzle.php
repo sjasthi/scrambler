@@ -74,6 +74,10 @@
 			}
 		}
 
+		if(strlen($wordList[0]) == 1) {
+			redirect('length1');
+		}
+
 		$_SESSION['wordList'] = $wordList;
 		
 		// Create shapes puzzle
@@ -104,6 +108,7 @@
 		//}
 
 		$_SESSION['letterPuzzle'] = $letterPuzzle;
+		$_SESSION['puzzle'] = $shapesPuzzle;
 
 	} else if ($_SESSION['lastpage'] == 'saveWords') {
 			
@@ -230,9 +235,9 @@
 		</div>
     <br>
     <div class="container-fluid">
-		<form method="post" action="linesPuzzleImage.php" onsubmit="return checkInput()">
-			<button type="submit" value="Submit">Generate Image</button>
-		</form>
+		<!-- <form method="post" action="../imageGeneration/shapesImageGenerator.php" onsubmit="return checkInput()"> -->
+			<button type="submit" form="options" value="Submit">Generate Image</button>
+		<!-- </form> -->
 		<form method="post" action="../db/saveWords.php">
 			<button type="submit" value="Submit">Save Words</button>
 		</form>
@@ -462,24 +467,14 @@
 										<br>
 										<div class="row">
 											<div class="col-sm-6">
+											<form method="post" id="options" action="../imageGeneration/shapesImageGenerator.php"  onsubmit="return checkInput()">
 												<select class="form-control" id="puzzletype" name="puzzletype" onchange="puzzleChange()">
 													<option value="circles" >Circles</option>
                                         			<option value="rectangles" >Rectangles</option>
 												</select>
+											</form>
 											</div>
 										<h4>Puzzle Type</h4>
-										</div>
-
-<!-- 										<br>
-										<div class="row">
-											<div class="col-sm-6">
-												<select class="form-control" id="puzzletype" name="puzzletype" onchange="puzzleChange()">
-													<option value="pyramid">Pyramid</option>
-													<option value="stepup">Step Up</option>
-													<option value="stepdown">Step Down</option>
-												</select>
-											</div>
-										<h4>Words</h4>
 										</div>
  -->                                    </div>
                                 </div>
@@ -656,14 +651,6 @@
 	$(".letterSquareColorLetters").spectrum({
 		color: "#EEEEEE",
 		change: function(color) {
-			// $(".letters table.puzzle tr td.filled").css("background-color", color.toHexString());
-			// 			$(".letters .rectangle .inside").css("background-color", color.toHexString());
-			// $(".letters .rectangle .left").css("background-color", color.toHexString());
-			// $(".letters .rectangle .right").css("background-color", color.toHexString());
-			// $(".letters .rectangle .top").css("background-color", color.toHexString());
-			// $(".letters .rectangle .topRight").css("background-color", color.toHexString());
-			// $(".letters .rectangle .bottom").css("background-color", color.toHexString());
-			// $(".letters .rectangle .bottomRight").css("background-color", color.toHexString());
 			$(".circleShape").css("background-color", color.toHexString());
 			$(".rectangleShape").css("background-color", color.toHexString());
 		}
@@ -682,54 +669,10 @@
 	$(".lineColorLetters").spectrum({
 		color: "#000000",
 		change: function(color) {
-			// $(".letters table.puzzle tr td.filled").css("border", "2px solid " + color.toHexString());
-			// 			$(".letters .rectangle .cell").css("border", "2px solid " + color.toHexString());
-
-			// $(".letters table.puzzle tr td.filled").css("border-color", color.toHexString());
-			// 			$(".letters .rectangle .inside").css("border-color", color.toHexString());
-			// $(".letters .rectangle .left").css("border-color", color.toHexString());
-			// $(".letters .rectangle .right").css("border-color", color.toHexString());
-			// $(".letters .rectangle .top").css("border-color", color.toHexString());
-			// $(".letters .rectangle .topRight").css("border-color", color.toHexString());
-			// $(".letters .rectangle .bottom").css("border-color", color.toHexString());
-			// $(".letters .rectangle .bottomRight").css("border-color", color.toHexString());
 			$(".circleShape").css("border-color", color.toHexString());
 			$(".rectangleShape").css("border-color", color.toHexString());
 		}
 	});
-
-	<?php
-		// // Hide/Show starting puzzles/solutions based off input from Index page
-		// if($puzzleType == "stepup"){
-		// 	echo('$(".pyramidPuzzle").hide();');
-		// 	echo('$(".stepupPuzzle").show();');
-		// 	echo('$(".stepdownPuzzle").hide();');
-
-		// 	echo('$(".pyramidSolution").hide();');
-		// 	echo('$(".stepupSolution").show();');
-		// 	echo('$(".stepdownSolution").hide();');
-		// }
-		// else if($puzzleType == "stepdown"){
-		// 	echo('$(".pyramidPuzzle").hide();');
-		// 	echo('$(".stepupPuzzle").hide();');
-		// 	echo('$(".stepdownPuzzle").show();');
-
-		// 	echo('$(".pyramidSolution").hide();');
-		// 	echo('$(".stepupSolution").hide();');
-		// 	echo('$(".stepdownSolution").show();');
-		// }
-		// else{
-		// 	echo('$(".rectanglePuzzle").hide();');
-		// 	echo('$(".pyramidPuzzle").hide();');
-		// 	echo('$(".stepupPuzzle").show();');
-		// 	echo('$(".stepdownPuzzle").hide();');
-
-		// 	echo('$(".rectangleSolution").hide();');
-		// 	echo('$(".pyramidSolution").show();');
-		// 	echo('$(".stepupSolution").show();');
-		// 	echo('$(".stepdownSolution").hide();');
-		// }
-	?>
 
 	// Updates the solution section to hidden/visable on check box update
 	function solutionCheckboxChange(){
@@ -753,37 +696,6 @@ function puzzleChange(){
 		}
 	}
 
-	// 	Shows/hides letters when puzzle type is changed (not needed for scrambler)
-/*	function lettersChange(){
-			if($('#puzzlelettertype').val() == "rectangle"){
-				$(".rectangleLettersPuzzle").show();
-				$(".rectangleLettersPuzzle").show();
-				$(".stepupLettersPuzzle").hide();
-				$(".stepdownLettersPuzzle").hide();
-
-			}
-			else if($('#puzzlelettertype').val() == "pyramid"){
-				$(".rectangleLettersPuzzle").hide();
-				$(".rectangleLettersPuzzle").show();
-				$(".stepupLettersPuzzle").hide();
-				$(".stepdownLettersPuzzle").hide();
-
-			}
-			else if($('#puzzlelettertype').val() == "stepup"){
-				$(".rectangleLettersPuzzle").hide();
-				$(".rectangleLettersPuzzle").hide();
-				$(".stepupLettersPuzzle").show();
-				$(".stepdownLettersPuzzle").hide();
-
-			}
-			else{
-				$(".rectangleLettersPuzzle").hide();
-				$(".rectangleLettersPuzzle").hide();
-				$(".stepupLettersPuzzle").hide();
-				$(".stepdownLettersPuzzle").show();
-
-			}
-		}*/
 </script>
 	<script type="text/javascript">
         var xyCoords = <?php echo json_encode($xyCoords) ?>;

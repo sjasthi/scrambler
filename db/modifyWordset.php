@@ -29,10 +29,7 @@ if (!$touched) {
 		
 } else {     $id = $_POST['ident'];
     $sql = "SELECT * FROM word_sets_meta
-            WHERE set_id = '$id'";
-    
-
-	
+            WHERE set_id = '$id'";	
 }
 if ($touched) {
     if (!$result = $db->query($sql)) {
@@ -42,44 +39,61 @@ if ($touched) {
 
 if ($result->num_rows > 0) {
 	
-    $row = $result->fetch_assoc();
+    $count = 0;
+    while($row = $result->fetch_assoc()){
+      if($count == 0){
+        echo '<form action="modifyTheWordset.php" method="POST" enctype="multipart/form-data">
+              <br>
+              <h2 id="title">Modify Wordset</h2><br>
+        
+              <table>
+                <tr>
+                  <td style="width:100px>   <label for="setid">Set ID</label> </td>
+                  <td> <input type="number" class="form-control" name="setid" value="'.$row["set_id"].'"  maxlength="255" readonly></td>
+                </tr>
+        
+                <tr>
+                  <td style="width:100px>  <label for="title">Title</label></td>
+                  <td>    <input type="text" class="form-control" name="title" value="'.$row["title"].'"  maxlength="255"  required></td>
+                </tr>
+        
+                <tr>
+                  <td style="width:100px>  <label for="subtitle">Subtitle</label></td>
+                  <td> <input type="text" class="form-control" name="subtitle" value="'.$row["subtitle"].'"  maxlength="255" required></td>
+                </tr>
+                    
+                <tr>
+                  <td style="width:100px>   <label for="type">Type</label></td>
+                  <td>      <input type="text" class="form-control" name="type" value="'.$row["type"].'"  maxlength="255" size="200"  readonly></td>
+                </tr>
+              ';
+      }
+      $count++;
 
-      echo '<form action="modifyTheWordset.php" method="POST" enctype="multipart/form-data">
-      <br>
-     <h2 id="title">Modify Wordset</h2><br>
+            //while($row = $result->fetch_assoc()) {
+              $sql = 'SELECT word FROM word_sets WHERE word_id = "'.$row['word_id'].'"';
+              $data = mysqli_query($db, $sql);
+              $word = $data->fetch_assoc();
+              echo '<tr>
+                      <td style="width:100px><label for="word'.$count.'">Word '.$count.'</label></td>
+                      <td><input type="text" class="form-control" name="word'.$count.'" value="'.$word['word'].'"  maxlength="255" size="200"  required></td>
+                    </tr>';
+           // }
+            
       
-           <table>
-		   <tr>
-       <td style="width:100px>   <label for="setid">Set ID</label> </td>
-       <td> <input type="number" class="form-control" name="setid" value="'.$row["set_id"].'"  maxlength="255" readonly></td>
-      </tr>
-      
-    <tr>
-        <td style="width:100px>  <label for="title">Title</label></td>
-     <td>    <input type="text" class="form-control" name="title" value="'.$row["title"].'"  maxlength="255"  required></td>
-  </tr>
-      
-      <tr>
-        <td style="width:100px>  <label for="subtitle">Subtitle</label></td>
-    <td>     <input type="text" class="form-control" name="subtitle" value="'.$row["subtitle"].'"  maxlength="255" required></td>
-     </tr>
-          
-   <tr>
-       <td style="width:100px>   <label for="type">Type</label></td>
-   <td>      <input type="text" class="form-control" name="type" value="'.$row["type"].'"  maxlength="255" size="200"  readonly></td>
-     </tr>
-          
-    </table>
-
-      <br>
-      <div class="text-left">
-          <button type="submit" name="submit" class="btn btn-primary btn-md align-items-center">Modify</button>
-      </div>
-      <br> <br>
-      
-      </form>';
     
-    //}//end while
+    }//end while
+    echo '</table>
+
+          <input type="number" name="count" style="display: none" value="'.$count.'">
+
+            <br>
+            <div class="text-left">
+                <button type="submit" name="submit" class="btn btn-primary btn-md align-items-center">Modify</button>
+            </div>
+            <br> <br>
+      
+            </form>';
 }//end if
 }
 else {

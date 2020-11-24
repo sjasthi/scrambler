@@ -12,6 +12,9 @@
       case 'deleted':
         $editMessage = 'Successfully deleted word set';
         break;
+      case 'invalidinput':
+        $editMessage = 'Input for word list was not valid for the puzzle type, no changes made';
+        break;
       default:
         $editMessage = 'Unknown error editing word sets';
     }
@@ -23,11 +26,30 @@
 
   include("../includes/innerNav.php");
 
-  $query = "SELECT * FROM word_sets_meta";
+  $query = "SELECT * FROM word_sets_meta INNER JOIN word_sets WHERE word_sets_meta.word_id = word_sets.word_id";
 
   $set_ids = [];
+  $wordsets = [];
 ?>
+<html>
+<style>
+  [data-title] {
+    position: relative;
+    cursor: help;
+  }
 
+  [data-title]:hover::before {
+    content: attr(data-title);
+    position: absolute;
+    bottom: -46px;
+    padding: 10px;
+    background: #000;
+    color: #fff;
+    font-size: 14px;
+    white-space: nowrap, pre-line;
+  }
+
+</style>
 <?php if(isset($editMessage)) { ?>
 	<br>
         <div class="form-group">
@@ -57,6 +79,7 @@
                   <th>Set ID</th>
                   <th>Title</th>
                   <th>Subtitle</th>
+                  <th>Words</th>
                   <th>Type</th>
                   <th>Date Created</th>
                 </tr>
@@ -67,18 +90,45 @@
                   $data = mysqli_query($db, $query);
                   if($data) {
                     if ($data->num_rows > 0) {
+                      $count = -1;
                       while($row = $data->fetch_assoc()) {
-                        if(in_array($row["set_id"], $set_ids)){}
+                        if(in_array($row["set_id"], $set_ids)){
+                          $wordsets[$count] = $wordsets[$count].", ".$row["word"];
+                         } else {
+                          array_push($set_ids, $row['set_id']);
+                          $count++;
+                          $wordsets[$count] = $row["word"];
+                        }
+                      }
+                      $array_length = count($set_ids);
+                      for($i = 0; $i < $array_length; $i++) {
+                        unset($set_ids[$i]);
+                      }
+                    }
+                  }
+                  $data = mysqli_query($db, $query);
+                  if($data) {
+                    if($data->num_rows > 0) {
+                      $count = 0;
+                      while($row = $data->fetch_assoc()) {
+                        if(in_array($row["set_id"], $set_ids)){
+                        }
                         else {
                           array_push($set_ids, $row['set_id']);
                           echo '<tr>
                             <td><input type ="radio" name ="ident" value ='.$row["set_id"].'></td>
                             <td>'.$row["set_id"].'</td>
                             <td>'.$row["title"].'</td>
-                            <td>'.$row["subtitle"].' </span> </td>
-                            <td>'.$row["type"].'</td>
+                            <td>'.$row["subtitle"].' </span> </td>';
+                            if(strlen($wordsets[$count]) > 15 ) {
+                            echo '<td data-title="'.$wordsets[$count].'">'.substr($wordsets[$count],0,15).'... </td>';
+                            } else {
+                              echo '<td>'.$wordsets[$count].'</td>';
+                            }
+                            echo '<td>'.$row["type"].'</td>
                             <td>'.$row["created_date"].' </span> </td>
                             </tr>';
+                            $count++;
                         }
                       }
                     } else {
@@ -94,7 +144,7 @@
     </div>
   </div>
 </div>
-
+</html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
 
 

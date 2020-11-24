@@ -100,6 +100,12 @@
                 <br/>Login</li>
             </a>
 
+            <a href="../feelingLucky/feelingLucky.php">
+              <li <?php if($nav_selected == "LUCKY"){ echo 'class="current-page"'; } ?>>
+                <img src="../images/feelingLucky.png">
+                <br/>Random</li>
+            </a>
+
       </ul>
       
       <br />

@@ -310,224 +310,45 @@
 								?>
 								</table>
 							</div>
-								<div class="letters stepupLettersPuzzle" style="display: none;">
-									<div class="row"> <h3>Step Up Letters</h3></div>
-									<div class="row">
-										<table class="puzzle">
-											<?php
-												// Prints blank step up puzzle
-												foreach($stepUpLetterPuzzle as $row){
-													echo'<tr>';
-													foreach($row as $letter){
-														if($letter != "0"){
-															echo'<td class="filled">'.$letter.'</td>';
-														}
-														else{
-															echo'<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
-															';
-														}
-													}
-													echo'</tr>';
-												}
-											?>
-										</table>
-									</div>
-								</div>
-								<div class="letters stepdownLettersPuzzle" style="display: none;">
-									<div class="row"> <h3>Step Down Letters</h3> </div>
-									<div class="row">
-										<table class="puzzle">
-											<?php
-												// Prints blank step down puzzle
+              			</div>
 
-												foreach($stepDownLetterPuzzle as $row){
-													echo'<tr>';
-													foreach($row as $letter){
-														if($letter != "0"){
-															echo'<td class="filled">'.$letter.'</td>
-															';
-														}
-														else{
-															echo'<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
-															';
-														}
-													}
-													echo'</tr>';
-												}
-											?>
-										</table>
-									</div>
-								</div>
-								<div class="letters rectangleLettersPuzzle" style="display: none;">
-									<div class="row"> <h3>Rectangle Letters</h3> </div>
-									<div class="rectangle">
-										<?php
-											// Prints blank rectangle puzzle
-											// Cells must be printed with correct styling
-											// Top cell, then final top right cell, left cells, inside cells, right cells,
-											// bottom cells, then final right cell
-											$wordCount = count($wordList);
-											$count = 0;
-
-											for($i = 0; $i < $wordCount; $i++){
-												$word = $wordList[$i];
-												$charList = splitWord($word);
-												$length = getWordLength($word);
-
-												echo'<div class="row">';
-
-												for($j = 0; $j < $length; $j++){
-													if($i == 0){
-														if($j < $length - 1){
-															echo'<div class="top">'.$characterList[$count++].'</div>';
-														}
-														else{
-															echo'<div class="topRight">'.$characterList[$count++].'</div>';
-														}
-													}
-													else if($i < $wordCount - 1){
-														if($j == 0){
-															echo'<div class="left">'.$characterList[$count++].'</div>';
-														}
-														else if($j < ($length - 1)){
-															echo'<div class="inside">'.$characterList[$count++].'</div>';
-
-														}
-														else{
-															echo'<div class="right">'.$characterList[$count++].'</div>';
-
-														}
-													}
-													else{
-														if($j < ($length - 1)){
-															echo'<div class="bottom">'.$characterList[$count++].'</div>';
-
-														}
-														else{
-															echo'<div class="bottomRight">'.$characterList[$count++].'</div>';
-
-														}
-													}
-												}
-												echo'</div>';
-											}
-										?>
-									</div>
-								</div>
-              </div>
-
-							<?php //START OF WORDS PUZZLE *******************?>
-              <div class="col-sm-6">
+						<?php //START OF WORDS PUZZLE *******************?>
+              			<div class="col-sm-6">
 								<div class="stepupPuzzle word">
 									<div class="row"> <h3>Words</h3></div>
-									<div class="row">
-										<table class="puzzle">
-											<?php
-												// Prints blank step up puzzle
+										<div class="row">
+											<table class="puzzle">
+												<?php
+													// Prints blank step up puzzle
 
-												foreach($stepUpPuzzle as $row){
-													echo'<tr>';
-													foreach($row as $letter){
-														if($letter != "0"){
-															echo'<td class="filled">&nbsp;&nbsp;&nbsp;&nbsp;</td>
-															';
+													foreach($stepUpPuzzle as $row){
+														echo'<tr>';
+														foreach($row as $letter){
+															if($letter != "0"){
+																echo'<td class="filled">&nbsp;&nbsp;&nbsp;&nbsp;</td>
+																';
+															}
+															else{
+																echo'<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
+																';
+															}
 														}
-														else{
-															echo'<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
-															';
-														}
+														echo'</tr>';
 													}
-													echo'</tr>';
-												}
-											?>
-										</table>
+												?>
+											</table>
+										</div>
 									</div>
+                            	</div>
+                        	</div>
+                    	</div>
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-sm-12">
+									<div align="center"><h2>Squares Options</h2></div>
 								</div>
-								<!-- <div class="stepdownPuzzle word">
-									<div class="row"> <h3> Step Down </h3> </div>
-									<div class="row">
-										<table class="puzzle">
-											<?php
-												// Prints blank step down puzzle
-
-												// foreach($stepDownPuzzle as $row){
-												// 	echo'<tr>';
-												// 	foreach($row as $letter){
-												// 		if($letter != "0"){
-												// 			echo'<td class="filled">&nbsp;&nbsp;&nbsp;&nbsp;</td>
-												// 			';
-												// 		}
-												// 		else{
-												// 			echo'<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
-												// 			';
-												// 		}
-												// 	}
-												// 	echo'</tr>';
-												// }
-											?>
-										</table>
-									</div>
-								</div>
-								<div class="pyramidPuzzle word">
-									<div class="row"> <h3> Words </h3> </div>
-									<div class="pyramid">
-										<?php
-											// Prints blank pyramid puzzle
-											// Cells must be printed with correct styling
-											// Top cell, then final top right cell, left cells, inside cells, right cells,
-											// bottom cells, then final right cell
-											// $wordCount = count($wordList);
-											// for($i = 0; $i < $wordCount; $i++){
-											// 	$word = $wordList[$i];
-											// 	$charList = splitWord($word);
-											// 	$length = getWordLength($word);
-
-											// 	echo'<div class="row">';
-
-											// 	for($j = 0; $j < $length; $j++){
-											// 		if($i == 0){
-											// 			if($j < $length - 1){
-											// 				echo'<div class="top">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
-											// 			}
-											// 			else{
-											// 				echo'<div class="topRight">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
-											// 			}
-											// 		}
-											// 		else if($i < $wordCount - 1){
-											// 			if($j == 0){
-											// 				echo'<div class="left">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
-											// 			}
-											// 			else if($j < ($length - 1)){
-											// 				echo'<div class="inside">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
-											// 			}
-											// 			else{
-											// 				echo'<div class="right">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
-											// 			}
-											// 		}
-											// 		else{
-											// 			if($j < ($length - 1)){
-											// 				echo'<div class="bottom">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
-											// 			}
-											// 			else{
-											// 				echo'<div class="bottomRight">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
-											// 			}
-											// 		}
-											// 	}
-											// 	echo'</div>';
-											// }
-										?>
-									</div>
-								</div> -->
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div align="center"><h2>Squares Options</h2></div>
-                            </div>
-                        </div>
-                    </div>
+							</div>
+						</div>
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-sm-12" align="center">
@@ -794,83 +615,6 @@
 											</table>
 										</div>
 									</div>
-									<!-- <div class="stepdownSolution word">
-										<div class="row"> <h3> Step Down </h3> </div>
-										<div class="row">
-											<table class="puzzle">
-												<?php
-													// Prints solution for step down
-													// foreach($stepDownPuzzle as $row){
-													// 	echo'<tr>';
-													// 	foreach($row as $letter){
-													// 		if($letter != "0"){
-													// 			echo'<td class="filled">'.$letter.'</td>
-													// 			';
-													// 		}
-													// 		else{
-													// 			echo'<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
-													// 			';
-													// 		}
-													// 	}
-													// 	echo'</tr>';
-													// }
-												?>
-											</table>
-										</div>
-									</div>
-									<div class="rectangleSolution word">
-										<div class="row"> <h3> Words </h3> </div>
-										<div class="rectangle">
-											<?php
-												// Prints solution rectangle
-												// Cells must be printed with correct styling
-												// Top cell, then final top right cell, left cells, inside cells, right cells,
-												// bottom cells, then final right cell
-												// $wordCount = count($wordList);
-
-												// for($i = 0; $i < $wordCount; $i++){
-												// 	$word = $wordList[$i];
-												// 	$charList = splitWord($word);
-												// 	$length = getWordLength($word);
-
-												// 	echo'<div class="row">';
-
-												// 	for($j = 0; $j < $length; $j++){
-												// 		if($i == 0){
-												// 			if($j < $length - 1){
-												// 				echo'<div class="top">'.$charList[$j].'</div>';
-												// 			}
-												// 			else{
-												// 				echo'<div class="topRight">'.$charList[$j].'</div>';
-												// 			}
-												// 		}
-												// 		else if($i < $wordCount - 1){
-												// 			if($j == 0){
-												// 				echo'<div class="left">'.$charList[$j].'</div>';
-												// 			}
-												// 			else if($j < ($length - 1)){
-												// 				echo'<div class="inside">'.$charList[$j].'</div>';
-												// 			}
-												// 			else{
-												// 				echo'<div class="right">'.$charList[$j].'</div>';
-												// 			}
-												// 		}
-												// 		else{
-												// 			if($j < ($length - 1)){
-												// 				echo'<div class="bottom">'.$charList[$j].'</div>';
-												// 			}
-												// 			else{
-												// 				echo'<div class="bottomRight">'.$charList[$j].'</div>';
-												// 			}
-												// 		}
-
-												// 	}
-
-												// 	echo'</div>';
-												// }
-											?>
-										</div>
-									</div> -->
                                 </div>
 							</div>
 						</div>

@@ -26,6 +26,9 @@
             case 'duplicate':
                 $errorMessage = "Input cannot contain duplicate words. Please make each word unique.";
                 break;
+            case 'length1':
+                $errorMessage = "Lines must have more than one character";
+                break;
 			default:
 				$errorMessage = "Unknown error - try again";
 		}

@@ -12,7 +12,6 @@ class Swim{
 	// Removed the global as max columns need to change with scrambler
 	// private $MAX_COLUMNS = 5;
 	private $wordList = [];
-	private $puzzleList = [];
 	private $characterList = [];
 	private $letterList = [];
 	private $fullWords = [];
@@ -63,6 +62,8 @@ class Swim{
 
 			// Only need the count of the first element for swimlanes as they have to all be the same length
 			$this->maxColumns = $this->maxLength;
+
+			$this->generateLetterList();
 
 			$this->generateWordArrays();
 
@@ -218,14 +219,11 @@ class Swim{
 			}
 		}
 
-		shuffle($this->characterList);
-
 		$charCount = count($this->characterList);
 
 		$cols = $this->maxColumns;
 		$rows = $charCount / $cols;
 		$rows = ceil($rows);
-
 		$this->letterList = array_fill(0, $rows, array_fill(0, $cols, 0));
 
 		$k = 0;
@@ -239,6 +237,8 @@ class Swim{
 				}
 			}
 		}
+
+		shuffle($this->characterList);
 	}
 
 	/*
