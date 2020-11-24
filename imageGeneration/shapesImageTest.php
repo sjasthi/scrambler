@@ -5,8 +5,6 @@ header("Content-type: image/png");
 $img_width = 3508;
 $img_height = 2480;
 
-$offset = 5;
-
 $image = imagecreatetruecolor($img_width, $img_height);
 
 imagesetthickness($image, 5);
@@ -20,25 +18,23 @@ $orange = imagecolorallocate($image, 255, 200, 0);
 
 imagefill($image, 0, 0, $white);
 
-//determines the number of shapes
-$offset = 7;
 
 //determines the location of the shapes around the circle based on the angle in radians
-$rad = (2 * pi())/$offset;
+$rad = (2 * pi())/$numShapes;
 
 //sets the radius of the entire circle, ending at the center of the word circles
-$radius = 600;
+$radius = 300;
 
 //start at 0 radians
 $currentRad = 0;
 
 //determine the origin of the image
-$middleX = $img_width/2;
-$middleY = $img_height/2;
+$middleX = 900;
+$middleY = 700 + ($img_height/2);
 
 //set the initial x and y values to the origin
 $currentX = $img_width/2;
-$currentY = $img_height/2;
+$currentY = 700 + ($img_height/2);
 
 //placeholders used for drawing the lines between circles
 $lastX = 0;
@@ -73,7 +69,7 @@ $fontsize = 48;
 $fontangle = 0;
 
 //a for loop to draw the shapes the words will be in, with similar logic to the lines
-for($i = 1; $i <= $offset; $i++){
+for($i = 1; $i <= $numShapes; $i++){
 
     $currentRad = 0 + ($i * $rad);
 

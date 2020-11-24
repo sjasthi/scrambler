@@ -16,13 +16,6 @@ $wordsPuzzleType = $_POST['puzzletype'];
 $title = $_SESSION['title'];
 $subtitle = $_SESSION['subtitle'];
 
-// $letterBorder = $_POST['table.letters.border'];
-// $letterBackground = $_POST['letterSquareColorLetters'];
-// $letterText = $_POST['letterText'];
-// $wordBorder = $_POST['lineColor'];
-// $wordBackground = $_POST['letterSquareColor'];
-// $wordText = $_POST['letterColor'];
-
 $puzzleName = '';
 $url = '';
 
@@ -51,13 +44,6 @@ switch($_SESSION['lastpage']) {
     default:
         $puzzleName = 'How did you get here?';
 }
-
-// print_r($puzzle);
-// echo '<br>';
-// for($i = 0; $i < count($puzzle); $i++){
-//     print_r($puzzle[$i]);
-//     echo '<br>';
-// }
 
 header("Content-type: image/png");
 
@@ -171,6 +157,7 @@ $maxlen = max(array_map('count', $stepDownLetterPuzzle));
 
 $startingX = $img_width - 300 - (140 * $maxlen);
 $startingY = 700;
+$pyramidStartingX = 0;
 
 imagettftext($image, 100, 0, $img_width - 845, $startingY - 120, $black, realpath('./arlrdbd.ttf'), 'Solution');
 
@@ -207,25 +194,36 @@ if($wordsPuzzleType == 'stepup') {
         }
     }
 } else {
+    $fullWidth = $startingX + (140 * $maxlen);
+    $midPoint = $fullWidth - ((140 * $maxlen)/2);
     for($i = 0; $i < count($pyramidLetterPuzzle); $i++){
+        $count = 0;
         for($j = 0; $j < count($pyramidLetterPuzzle[$i]); $j++) {
-            if($pyramidLetterPuzzle[$i][$j] != '0' && $pyramidLetterPuzzle[$i][$j] != ',' && $pyramidLetterPuzzle[$i][$j] != ' ') {
-            imagefilledrectangle($image, $startingX - 25 + (140 * $j), $startingY - 105 + (140 * $i), $startingX + 115 + (140 * $j), $startingY + 35 + (140 * $i), $white);
-            imagerectangle($image, $startingX - 25 + (140 * $j), $startingY - 105 + (140 * $i), $startingX + 115 + (140 * $j), $startingY + 35 + (140 * $i), $black);
-            } else if($pyramidLetterPuzzle[$i][$j] == '0') {
-                $currentX1 = $startingX - 25 + (140 * $j);
-                $currentX2 = $startingX + 115 + (140 * $j);
-                $currentY1 = $startingY - 105 + (140 * $i);
-                $currentY2 = $startingY + 35 + (140 * $i);
-
-                imagefilledrectangle($image, $currentX1 + 5, $currentY1 + 5, $currentX2 - 5, $currentY2 - 5, $white);
+            if($pyramidLetterPuzzle[$i][$j] != '0' && $pyramidLetterPuzzle[$i][$j] != ',' && $pyramidLetterPuzzle[$i][$j] != ' '){
+                $count++;
             }
+        }
+        $pyramidStartingX = $midPoint - (70 * $count);
+        for($j = 0; $j < $count; $j++) {
+            if($pyramidLetterPuzzle[$i][$j] != '0' && $pyramidLetterPuzzle[$i][$j] != ',' && $pyramidLetterPuzzle[$i][$j] != ' ') {
+                imagefilledrectangle($image, $pyramidStartingX + (140 * $j), $startingY - 105 + (140 * $i), $pyramidStartingX + 115 + (140 * $j), $startingY + 35 + (140 * $i), $white);
+                imagerectangle($image, $pyramidStartingX - 25 + (140 * $j), $startingY - 105 + (140 * $i), $pyramidStartingX + 115 + (140 * $j), $startingY + 35 + (140 * $i), $black);
+            }
+            // } else if($pyramidLetterPuzzle[$i][$j] == '0') {
+            //     $currentX1 = $pyramidStartingX - 25 + (140 * $j);
+            //     $currentX2 = $pyramidStartingX + 115 + (140 * $j);
+            //     $currentY1 = $startingY - 105 + (140 * $i);
+            //     $currentY2 = $startingY + 35 + (140 * $i);
+
+            //     imagefilledrectangle($image, $currentX1 + 5, $currentY1 + 5, $currentX2 - 5, $currentY2 - 5, $white);
+            // }
         }
     }
 }
 
 $startingX = 300;
 $startingY = 700;
+$pyramidStartingX = 0;
 
 imagettftext($image, 100, 0, $startingX - 35, $startingY - 120, $black, realpath('./arlrdbd.ttf'), 'Puzzle');
 if($letterPuzzleType == 'stepup') {
@@ -355,12 +353,21 @@ if($letterPuzzleType == 'stepup') {
         }
     }
 } else {
+    $fullWidth = $startingX + (140 * $maxlen);
+    $midPoint = $fullWidth - ((140 * $maxlen)/2);
     for($i = 0; $i < count($pyramidLetterPuzzle); $i++){
+        $count = 0;
         for($j = 0; $j < count($pyramidLetterPuzzle[$i]); $j++) {
+            if($pyramidLetterPuzzle[$i][$j] != '0' && $pyramidLetterPuzzle[$i][$j] != ',' && $pyramidLetterPuzzle[$i][$j] != ' '){
+                $count++;
+            }
+        }
+        $pyramidStartingX = $midPoint - (70 * $count);
+        for($j = 0; $j < $count; $j++) {
             if($pyramidLetterPuzzle[$i][$j] != '0' && $pyramidLetterPuzzle[$i][$j] != ',' && $pyramidLetterPuzzle[$i][$j] != ' ') {
 
-                $currentX1 = $startingX - 25 + (140 * $j);
-                $currentX2 = $startingX + 115 + (140 * $j);
+                $currentX1 = $pyramidStartingX - 25 + (140 * $j);
+                $currentX2 = $pyramidStartingX + 115 + (140 * $j);
                 $currentY1 = $startingY - 105 + (140 * $i);
                 $currentY2 = $startingY + 35 + (140 * $i);
 
@@ -387,8 +394,8 @@ if($letterPuzzleType == 'stepup') {
 
                 imagettftext($image, 60, 0, $x_offset, $y_offset, $black, realpath('./Gidugu-Regular.ttf'), $pyramidLetterPuzzle[$i][$j]);
             } else if($pyramidLetterPuzzle[$i][$j] == '0') {
-                $currentX1 = $startingX - 25 + (140 * $j);
-                $currentX2 = $startingX + 115 + (140 * $j);
+                $currentX1 = $pyramidStartingX - 25 + (140 * $j);
+                $currentX2 = $pyramidStartingX + 115 + (140 * $j);
                 $currentY1 = $startingY - 105 + (140 * $i);
                 $currentY2 = $startingY + 35 + (140 * $i);
 
