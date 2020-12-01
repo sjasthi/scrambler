@@ -239,7 +239,7 @@ if($letterPuzzleType == 'stepup') {
                 imagefilledrectangle($image, $currentX1, $currentY1, $currentX2, $currentY2, $white);
                 imagerectangle($image, $currentX1, $currentY1, $currentX2, $currentY2, $black);
                 
-                $text_bound = imagettfbbox(60, 0, realpath('./Gidugu-Regular.ttf'), $stepUpLetterPuzzle[$i][$j]);
+                $text_bound = imagettfbbox(60, 0, realpath('./NTR-Regular.ttf'), $stepUpLetterPuzzle[$i][$j]);
 
                 $lower_left_x =  $text_bound[0]; 
                 $lower_left_y =  $text_bound[1];
@@ -257,7 +257,7 @@ if($letterPuzzleType == 'stepup') {
                 $x_offset = $currentX1 + ($currentX2 - $currentX1)/2 - $text_width/2;
                 $y_offset = $currentY1 + ($currentY2 - $currentY1)/2 +10;
 
-                imagettftext($image, 60, 0, $x_offset, $y_offset, $black, realpath('./Gidugu-Regular.ttf'), $stepUpLetterPuzzle[$i][$j]);
+                imagettftext($image, 60, 0, $x_offset, $y_offset, $black, realpath('./NTR-Regular.ttf'), $stepUpLetterPuzzle[$i][$j]);
             } else if($stepUpLetterPuzzle[$i][$j] == '0') {
                 $currentX1 = $startingX - 25 + (140 * $j);
                 $currentX2 = $startingX + 115 + (140 * $j);
@@ -281,7 +281,7 @@ if($letterPuzzleType == 'stepup') {
                 imagefilledrectangle($image, $currentX1, $currentY1, $currentX2, $currentY2, $white);
                 imagerectangle($image, $currentX1, $currentY1, $currentX2, $currentY2, $black);
                 
-                $text_bound = imagettfbbox(60, 0, realpath('./Gidugu-Regular.ttf'), $stepDownLetterPuzzle[$i][$j]);
+                $text_bound = imagettfbbox(60, 0, realpath('./NTR-Regular.ttf'), $stepDownLetterPuzzle[$i][$j]);
 
                 $lower_left_x =  $text_bound[0]; 
                 $lower_left_y =  $text_bound[1];
@@ -299,7 +299,7 @@ if($letterPuzzleType == 'stepup') {
                 $x_offset = $currentX1 + ($currentX2 - $currentX1)/2 - $text_width/2;
                 $y_offset = $currentY1 + ($currentY2 - $currentY1)/2 +10;
 
-                imagettftext($image, 60, 0, $x_offset, $y_offset, $black, realpath('./Gidugu-Regular.ttf'), $stepDownLetterPuzzle[$i][$j]);
+                imagettftext($image, 60, 0, $x_offset, $y_offset, $black, realpath('./NTR-Regular.ttf'), $stepDownLetterPuzzle[$i][$j]);
             } else if($stepDownLetterPuzzle[$i][$j] == '0') {
                 $currentX1 = $startingX - 25 + (140 * $j);
                 $currentX2 = $startingX + 115 + (140 * $j);
@@ -323,7 +323,7 @@ if($letterPuzzleType == 'stepup') {
                 imagefilledrectangle($image, $currentX1, $currentY1, $currentX2, $currentY2, $white);
                 imagerectangle($image, $currentX1, $currentY1, $currentX2, $currentY2, $black);
                 
-                $text_bound = imagettfbbox(60, 0, realpath('./Gidugu-Regular.ttf'), $letterList[$i][$j]);
+                $text_bound = imagettfbbox(60, 0, realpath('./NTR-Regular.ttf'), $letterList[$i][$j]);
 
                 $lower_left_x =  $text_bound[0]; 
                 $lower_left_y =  $text_bound[1];
@@ -341,7 +341,7 @@ if($letterPuzzleType == 'stepup') {
                 $x_offset = $currentX1 + ($currentX2 - $currentX1)/2 - $text_width/2;
                 $y_offset = $currentY1 + ($currentY2 - $currentY1)/2 +10;
 
-                imagettftext($image, 60, 0, $x_offset, $y_offset, $black, realpath('./Gidugu-Regular.ttf'), $letterList[$i][$j]);
+                imagettftext($image, 60, 0, $x_offset, $y_offset, $black, realpath('./NTR-Regular.ttf'), $letterList[$i][$j]);
             } else if($letterList[$i][$j] == '0') {
                 $currentX1 = $startingX - 25 + (140 * $j);
                 $currentX2 = $startingX + 115 + (140 * $j);
@@ -374,7 +374,7 @@ if($letterPuzzleType == 'stepup') {
                 imagefilledrectangle($image, $currentX1, $currentY1, $currentX2, $currentY2, $white);
                 imagerectangle($image, $currentX1, $currentY1, $currentX2, $currentY2, $black);
                 
-                $text_bound = imagettfbbox(60, 0, realpath('./Gidugu-Regular.ttf'), $pyramidLetterPuzzle[$i][$j]);
+                $text_bound = imagettfbbox(60, 0, realpath('./NTR-Regular.ttf'), $pyramidLetterPuzzle[$i][$j]);
 
                 $lower_left_x =  $text_bound[0]; 
                 $lower_left_y =  $text_bound[1];
@@ -392,7 +392,7 @@ if($letterPuzzleType == 'stepup') {
                 $x_offset = $currentX1 + ($currentX2 - $currentX1)/2 - $text_width/2;
                 $y_offset = $currentY1 + ($currentY2 - $currentY1)/2 +10;
 
-                imagettftext($image, 60, 0, $x_offset, $y_offset, $black, realpath('./Gidugu-Regular.ttf'), $pyramidLetterPuzzle[$i][$j]);
+                imagettftext($image, 60, 0, $x_offset, $y_offset, $black, realpath('./NTR-Regular.ttf'), $pyramidLetterPuzzle[$i][$j]);
             } else if($pyramidLetterPuzzle[$i][$j] == '0') {
                 $currentX1 = $pyramidStartingX - 25 + (140 * $j);
                 $currentX2 = $pyramidStartingX + 115 + (140 * $j);

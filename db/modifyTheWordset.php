@@ -9,13 +9,78 @@
     $left_selected = "WORDSETS";
 
     include("../includes/innerNav.php");
-    require(ROOT_PATH."indic-wp/word_processor.php");
+    require("../indic-wp/word_processor.php");
 
     function getLengthNoSpaces($word){
       $wordProcessor = new wordProcessor(" ", "telugu");
       $wordProcessor->setWord($word, "telugu");
   
       return $wordProcessor->getLengthNoSpacesNoCommas($word);
+    }
+
+    function generateWordList($wordInput){
+      $wordList = [];
+  
+      $lines = explode("\n", $wordInput);
+  
+      foreach($lines as $line){
+  
+        $word = trim($line);
+  
+        if(!(empty($word))){
+          array_push($wordList, $word);
+        }
+      }
+  
+      return $wordList;
+    }
+
+    function insert_word($word, $set, $title, $subtitle, $type) {
+      global $db;
+  
+      $sql = "INSERT INTO word_sets ";
+      $sql .= " (word) ";
+      $sql .= "VALUES (";
+      $sql .= "'" . $word . "')";
+  
+      $result = mysqli_query($db, $sql);
+      
+      if($result) {
+          $sql = "SELECT MAX(word_id) FROM word_sets";
+          $result = mysqli_query($db, $sql);
+  
+          confirm_result_set($result);
+  
+          $word_id = mysqli_fetch_assoc($result);
+          if($word_id['MAX(word_id)'] != null) {}
+          else {
+              $word_id['MAX(word_id)'] = '1';
+          }
+  
+          $sql = "INSERT INTO word_sets_meta ";
+          $sql .= " (word_id, set_id, title, subtitle, type) ";
+          $sql .= "VALUES (";
+          $sql .= "'" . $word_id['MAX(word_id)'] . "',";
+          $sql .= "'" . $set . "',";
+          $sql .= "'" . $title . "',";
+          $sql .= "'" . $subtitle . "',";
+          $sql .= "'" . $type .  "'";
+          $sql .= ")";
+  
+          $result = mysqli_query($db, $sql);
+  
+          if($result){
+              return true;
+          } else {
+              //insert into word_sets_meta failed
+              echo 'Insert into word_sets_meta error: ' . mysqli_error($db);
+              exit;
+          }
+      } else {
+          //insert into word_sets failed
+          echo 'Insert into word_sets error: ' . mysqli_error($db);
+          exit;
+      }
     }
 
     if (isset($_POST['setid'])){
@@ -25,16 +90,11 @@
       $subtitle = mysqli_real_escape_string($db, $_POST['subtitle']);
       $type = mysqli_real_escape_string($db, $_POST['type']);
       $count = mysqli_real_escape_string($db, $_POST['count']);
-      $words = [];
+      $wordInput = $_POST['wordinput'];
+      $words = generateWordList($wordInput);
       $valid = true;
-      for($i = 1; $i <= $count; $i++){
-        $string = 'word'.$i;
-        array_push($words, $_POST[$string]);
-        
-        print_r($words[$i - 1]);
-        echo '<br>';
-        //NO ZERO LENGTH STRINGS ALLOWED
-        if(strlen($words[$i - 1]) == 0) {
+      for($i = 0; $i < count($words); $i++){
+        if(strlen($words[$i]) == 0) {
           $valid = false;
         }
       }
@@ -101,7 +161,18 @@
       //UPDATE WORDS
       $sql = "SELECT word_id FROM word_sets_meta WHERE set_id = $set_id";
       $result = mysqli_query($db, $sql);
-      if ($result->num_rows > 0) {
+      if(count($words) != $result->num_rows) {
+        $sql = "DELETE FROM word_sets_meta WHERE set_id = $set_id";
+        mysqli_query($db, $sql);
+        while($row = $result->fetch_assoc()){
+          $wordID = $row['word_id'];
+          $sql = "DELETE FROM word_sets WHERE word_id = '$wordID'";
+          mysqli_query($db, $sql);
+        }
+        foreach($words as $word) {
+          $success = insert_word($word, $set_id, $title, $subtitle, $type);
+        }
+      } else if ($result->num_rows > 0) {
         $count = 0;
         $string = $words[$count];
         while($row = $result->fetch_assoc()){

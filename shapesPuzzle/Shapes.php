@@ -101,21 +101,21 @@ class Shapes{
 		for($i = 0; $i < count($this->shapesPuzzle); $i++){
 			shuffle($this->shapesPuzzle[$i]);
 		}
-		// for($i = 0; $i < $this->maxLength; $i++) {
-		// 	$indexShuffle = null;
-		// 	$indexShuffle = [];
-		// 	$testArray = null;
-		// 	$testArray = [];
-		// 	for($j = 0; $j < $this->wordCount; $j++) {
-		// 		array_push($indexShuffle, $this->shapesPuzzle[$j][$i]);				
-		// 	}
+		for($i = 0; $i < $this->maxLength; $i++) {
+			$indexShuffle = null;
+			$indexShuffle = [];
+			$testArray = null;
+			$testArray = [];
+			for($j = 0; $j < $this->wordCount; $j++) {
+				array_push($indexShuffle, $this->shapesPuzzle[$j][$i]);				
+			}
 
-		// 	shuffle($indexShuffle);
+			shuffle($indexShuffle);
 
-		// 	for($j = 0; $j < $this->wordCount; $j++) {
-		// 		$this->shapesPuzzle[$j][$i] = $indexShuffle[$j];
-		// 	}
-		// }
+			for($j = 0; $j < $this->wordCount; $j++) {
+				$this->shapesPuzzle[$j][$i] = $indexShuffle[$j];
+			}
+		}
 	}
 	
 	private function generateLetterList(){

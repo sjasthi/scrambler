@@ -29,7 +29,7 @@
 	include("../includes/innerNav.php");
 
 	require("Lines.php");
-	require(ROOT_PATH."indic-wp/word_processor.php");
+	require("../indic-wp/word_processor.php");
 
 	if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		$title = $_POST["title"];

@@ -27,7 +27,7 @@
 
 	include("../includes/innerNav.php");
 	require("Shapes.php");
-	require(ROOT_PATH."indic-wp/word_processor.php");
+	require("../indic-wp/word_processor.php");
 
 	if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		$title = $_POST["title"];
@@ -476,7 +476,7 @@
 											</div>
 										<h4>Puzzle Type</h4>
 										</div>
- -->                                    </div>
+                                    </div>
                                 </div>
 
 																<?php // Words OPTIONS ********************************** ?>

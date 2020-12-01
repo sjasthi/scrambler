@@ -37,16 +37,53 @@ if ($touched) {
     }//end if
 //end if
 
+$wordsString = '';
+
 if ($result->num_rows > 0) {
 	
     $count = 0;
     while($row = $result->fetch_assoc()){
       if($count == 0){
-        echo '<form action="modifyTheWordset.php" method="POST" enctype="multipart/form-data">
+        echo  '<form action="modifyTheWordset.php" method="POST" enctype="multipart/form-data">
               <br>
               <h2 id="title">Modify Wordset</h2><br>
-        
-              <table>
+              <p style="text-align:center; font-weight:bold">';
+              
+        switch ($row['type']) {
+          case 'dabble':
+            echo 'Enter the pyramid words each on a new line.  
+            Word lengths should be unique and have no gaps in numbers.<br>
+            Example: 3 letter word, 4 letter word, 5 letter word, etc.';
+            break;
+          case 'dabbleplus':
+            echo 'Enter the pyramid words each on a new line.  
+            Word lengths should be unique and have no gaps in numbers.<br>
+            Example: 3 letter word, 4 letter word, 5 letter word, etc.';
+            break;
+          case 'lines':
+            echo 'Enter multiple words each on a new line.
+            <br>Words can be any variety of lengths.';
+            break;
+          case 'stack':
+            echo 'Enter multiple words each on a new line.
+            <br>Words can be any variety of lengths.';
+            break;
+          case 'scrambler':
+            echo 'Enter multiple words each on a new line.
+            <br>All words should be equal in length.';
+            break;
+          case 'shapes':
+            echo 'Enter multiple words each on a new line.
+            <br>Words must be the same length.
+            <br>Maximum of 5 words with maximum length of 5 letters';
+            break;
+          case 'swim':
+            echo 'Enter multiple words each on a new line.
+            <br>All words should be equal in length.';
+            break;
+        }
+        echo '</p><br>';
+        echo  '<table>
                 <tr>
                   <td style="width:100px>   <label for="setid">Set ID</label> </td>
                   <td> <input type="number" class="form-control" name="setid" value="'.$row["set_id"].'"  maxlength="255" readonly></td>
@@ -70,30 +107,30 @@ if ($result->num_rows > 0) {
       }
       $count++;
 
-            //while($row = $result->fetch_assoc()) {
               $sql = 'SELECT word FROM word_sets WHERE word_id = "'.$row['word_id'].'"';
               $data = mysqli_query($db, $sql);
               $word = $data->fetch_assoc();
-              echo '<tr>
-                      <td style="width:100px><label for="word'.$count.'">Word '.$count.'</label></td>
-                      <td><input type="text" class="form-control" name="word'.$count.'" value="'.$word['word'].'"  maxlength="255" size="200"  required></td>
-                    </tr>';
-           // }
+              $wordsString = $wordsString.$word['word'].'
+';
             
       
     
     }//end while
+    echo '<tr>
+            <td style="width:100px><label for="wordinput">Words</label></td>
+            <td><textarea class="form-control" name="wordinput" rows="10"  required>'.$wordsString.'</textarea></td>
+          </tr>';
     echo '</table>
 
           <input type="number" name="count" style="display: none" value="'.$count.'">
 
-            <br>
-            <div class="text-left">
-                <button type="submit" name="submit" class="btn btn-primary btn-md align-items-center">Modify</button>
-            </div>
-            <br> <br>
-      
-            </form>';
+          <br>
+          <div class="text-left">
+              <button type="submit" name="submit" class="btn btn-primary btn-md align-items-center">Modify</button>
+          </div>
+          <br> <br>
+    
+          </form>';
 }//end if
 }
 else {

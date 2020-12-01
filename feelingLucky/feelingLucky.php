@@ -20,18 +20,24 @@
 	require("../swimLanesPuzzle/Swim.php");
     require("../dabblePuzzle/Dabble.php");
     require("../dabblePlusPuzzle/DabblePlus.php");
-    require(ROOT_PATH."indic-wp/word_processor.php");
+    require("../indic-wp/word_processor.php");
     
     $words = [];
     $wordInput = '';
-        
-    $setquery = "SELECT MAX(set_id) FROM word_sets_meta WHERE word_id = 
-            (SELECT MAX(word_id) FROM word_sets_meta)";
-    $setresult = mysqli_query($db, $setquery);
-    $data = mysqli_fetch_assoc($setresult);
-    $max_id = $data['MAX(set_id)'];
+    
+    if(isset($_GET['id'])) {
+        $id = $_GET['id'];
+    } else if (isset($_POST['ident'])) {
+        $id = $_POST['ident'];
+    } else {
+        $setquery = "SELECT set_id FROM word_sets_meta ORDER BY RAND() LIMIT 1";
+        //$setquery = "SELECT MAX(set_id) FROM word_sets_meta";
+        $setresult = mysqli_query($db, $setquery);
+        $data = mysqli_fetch_assoc($setresult);
+        $id = $data['set_id'];
+    }
 
-    $wordsquery = "SELECT * FROM word_sets_meta WHERE set_id = $max_id";
+    $wordsquery = "SELECT * FROM word_sets_meta WHERE set_id = $id";
     $wordsresult = mysqli_query($db, $wordsquery);
 
     $count = 0;
@@ -63,7 +69,7 @@
 
     $puzzleName = '';
 
-    switch($_SESSION['lastpage']) {
+    switch($type) {
         case 'dabble':
             $puzzleName = 'Dabble Puzzle';
             break;
@@ -79,14 +85,14 @@
         case 'lines':
             $puzzleName = 'Lines Puzzle';
             break;
-        case 'swim':
+        case 'swimlanes':
             $puzzleName = 'Swimlanes Puzzle';
             break;
         case 'shapes':
             $puzzleName = 'Shapes Puzzle';
             break;
         default:
-            $puzzleName = 'How did you get here?';
+            $puzzleName = 'This text should not appear';
     }
 
     $word_array = [];

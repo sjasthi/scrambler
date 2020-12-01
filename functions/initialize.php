@@ -23,11 +23,17 @@
   $public_end = strpos($_SERVER['SCRIPT_NAME'], '/public') + 7;
   $doc_root = substr($_SERVER['SCRIPT_NAME'], 0, $public_end);
   define("WWW_ROOT", $doc_root);
-
-  require_once('functions.php');
-  require_once(ROOT_PATH.'db/database.php');
-  require_once('query_functions.php');
-  require_once(ROOT_PATH.'validation_functions.php');
+  if(strcmp($nav_selected, 'HOME') == 0) {
+    require_once('functions.php');
+    require_once('./db/database.php');
+    require_once('query_functions.php');
+    require_once('./validation_functions.php');
+  } else {
+    require_once('functions.php');
+    require_once('../db/database.php');
+    require_once('query_functions.php');
+    require_once('../validation_functions.php');
+  }
 
   $db = db_connect();
   $errors = array();

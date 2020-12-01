@@ -1,6 +1,6 @@
 <?php
-  define("ROOT_PATH", $_SERVER['DOCUMENT_ROOT'].'\scrambler\\');
-  require_once(ROOT_PATH.'functions/initialize.php');
+  //define("ROOT_PATH", $_SERVER['DOCUMENT_ROOT'].'\scrambler\\');
+  require_once('../functions/initialize.php');
 ?>
 
 <!DOCTYPE html>
