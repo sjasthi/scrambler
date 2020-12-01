@@ -69,7 +69,8 @@
     <h3 style = "color: #01B0F1;">Wordsets</h3>
       <form method="post">
       <button type = "submit" formaction ="../db/modifyWordset.php">Modify</button>
-	    <button type = "submit" formaction ="../db/deleteWordset.php">Delete</button>
+      <button type = "submit" formaction ="../db/deleteWordset.php">Delete</button>
+      <button type = "submit" formaction ="../feelingLucky/feelingLucky.php">Play</button>
       <div id="customerTableView">
 	      <table class="display" id="ceremoniesTable" style="width:100%">
           <div class="table responsive">

@@ -233,7 +233,7 @@ for($i = 1; $i <= $numShapes; $i++){
     }
     // imagestring($image, 5, $currentX - ($radius/2)/4, $currentY, "circle number ".$i, $black);
     if(true){
-        $text_bound = imagettfbbox(60, 0, realpath('./Gidugu-Regular.ttf'), $string);
+        $text_bound = imagettfbbox(60, 0, realpath('./NTR-Regular.ttf'), $string);
 
         $lower_left_x =  $text_bound[0]; 
         $lower_left_y =  $text_bound[1];
@@ -251,7 +251,7 @@ for($i = 1; $i <= $numShapes; $i++){
         $x_offset = $currentX - $text_width/2;
         $y_offset = $currentY + $text_height/2;
 
-        imagettftext($image, 60, 0, $x_offset, $y_offset, $black, realpath('./Gidugu-Regular.ttf'), $string);
+        imagettftext($image, 60, 0, $x_offset, $y_offset, $black, realpath('./NTR-Regular.ttf'), $string);
     }
     $lastX = $currentX;
     $lastY = $currentY;
@@ -272,7 +272,7 @@ for($i = 1; $i <= $numShapes; $i++){
     //         imagefilledrectangle($image, $currentX1, $currentY1, $currentX2, $currentY2, $white);
     //         imagerectangle($image, $currentX1, $currentY1, $currentX2, $currentY2, $black);
             
-    //         $text_bound = imagettfbbox(60, 0, realpath('./Gidugu-Regular.ttf'), $puzzle[$i][$j]);
+    //         $text_bound = imagettfbbox(60, 0, realpath('./NTR-Regular.ttf'), $puzzle[$i][$j]);
 
     //         $lower_left_x =  $text_bound[0]; 
     //         $lower_left_y =  $text_bound[1];
@@ -290,7 +290,7 @@ for($i = 1; $i <= $numShapes; $i++){
     //         $x_offset = $currentX1 + ($currentX2 - $currentX1)/2 - $text_width/2;
     //         $y_offset = $currentY1 + ($currentY2 - $currentY1)/2 +10;
 
-    //         imagettftext($image, 60, 0, $x_offset, $y_offset, $black, realpath('./Gidugu-Regular.ttf'), $puzzle[$i][$j]);
+    //         imagettftext($image, 60, 0, $x_offset, $y_offset, $black, realpath('./NTR-Regular.ttf'), $puzzle[$i][$j]);
     //     }
     // }
 // }

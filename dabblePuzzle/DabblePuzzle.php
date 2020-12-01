@@ -28,7 +28,7 @@
 
 	include("../includes/innerNav.php");
 	require("Dabble.php");
-	require(ROOT_PATH."indic-wp/word_processor.php");
+	require("../indic-wp/word_processor.php");
 
 	if(isset($_GET["imageerror"])){
 		$error = $_GET["imageerror"];

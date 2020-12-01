@@ -29,7 +29,7 @@
 	include("../includes/innerNav.php");
 
 	require("Stacks.php");
-	require(ROOT_PATH."indic-wp/word_processor.php");
+	require("../indic-wp/word_processor.php");
 
 	if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		$title = $_POST["title"];
@@ -147,13 +147,6 @@
 		$_SESSION['stepdownletterpuzzle'] = $stepDownLetterPuzzle;
 		$_SESSION['pyramidletterpuzzle'] = $pyramidLetterPuzzle;
 		$_SESSION['letterlist'] = $letterList;
-		?>
-
-		<script>
-		var lettersPuzzleType = <?php echo json_encode($lettersPuzzleType) ?>;
-			
-		var puzzleType = <?php echo json_encode($puzzleType) ?>;
-		</script><?php
 		
 	} else{
 		redirect(" ");
@@ -302,7 +295,7 @@
 										echo'<tr>';
 										foreach($row as $letter){
 											if($letter != "0"){
-												echo'<td class="filled puzzleLetter" draggable="true">'.$letter.'</td>
+												echo'<td class="filled puzzleLetter">'.$letter.'</td>
 												';
 											}
 											else{
@@ -325,7 +318,7 @@
 													echo'<tr>';
 													foreach($row as $letter){
 														if($letter != "0"){
-															echo'<td class="filled puzzleLetter" draggable="true">'.$letter.'</td>';
+															echo'<td class="filled puzzleLetter">'.$letter.'</td>';
 														}
 														else{
 															echo'<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>
@@ -348,7 +341,7 @@
 													echo'<tr>';
 													foreach($row as $letter){
 														if($letter != "0"){
-															echo'<td class="filled puzzleLetter" draggable="true">'.$letter.'</td>';
+															echo'<td class="filled puzzleLetter">'.$letter.'</td>';
 														}
 														else{
 															echo'<td class="empty"> &nbsp;&nbsp;&nbsp;&nbsp; </td>';
@@ -381,32 +374,32 @@
 												for($j = 0; $j < $length; $j++){
 													if($i == 0){
 														if($j < $length - 1){
-															echo'<div id="row'.$i.'column'.$j.'" class="top puzzleLetter" draggable="true">'.$characterListNoSpaces[$count++].'</div>';
+															echo'<div id="row'.$i.'column'.$j.'" class="top puzzleLetter">'.$characterListNoSpaces[$count++].'</div>';
 														}
 														else{
-															echo'<div id="row'.$i.'column'.$j.'" class="topRight puzzleLetter" draggable="true">'.$characterListNoSpaces[$count++].'</div>';
+															echo'<div id="row'.$i.'column'.$j.'" class="topRight puzzleLetter">'.$characterListNoSpaces[$count++].'</div>';
 														}
 													}
 													else if($i < $wordCount - 1){
 														if($j == 0){
-															echo'<div id="row'.$i.'column'.$j.'" class="left puzzleLetter" draggable="true">'.$characterListNoSpaces[$count++].'</div>';
+															echo'<div id="row'.$i.'column'.$j.'" class="left puzzleLetter">'.$characterListNoSpaces[$count++].'</div>';
 														}
 														else if($j < ($length - 1)){
-															echo'<div id="row'.$i.'column'.$j.'" class="inside puzzleLetter" draggable="true">'.$characterListNoSpaces[$count++].'</div>';
+															echo'<div id="row'.$i.'column'.$j.'" class="inside puzzleLetter">'.$characterListNoSpaces[$count++].'</div>';
 
 														}
 														else{
-															echo'<div id="row'.$i.'column'.$j.'" class="right puzzleLetter" draggable="true">'.$characterListNoSpaces[$count++].'</div>';
+															echo'<div id="row'.$i.'column'.$j.'" class="right puzzleLetter">'.$characterListNoSpaces[$count++].'</div>';
 
 														}
 													}
 													else{
 														if($j < ($length - 1)){
-															echo'<div id="row'.$i.'column'.$j.'" class="bottom puzzleLetter" draggable="true">'.$characterListNoSpaces[$count++].'</div>';
+															echo'<div id="row'.$i.'column'.$j.'" class="bottom puzzleLetter">'.$characterListNoSpaces[$count++].'</div>';
 
 														}
 														else{
-															echo'<div id="row'.$i.'column'.$j.'" class="bottomRight puzzleLetter" draggable="true">'.$characterListNoSpaces[$count++].'</div>';
+															echo'<div id="row'.$i.'column'.$j.'" class="bottomRight puzzleLetter">'.$characterListNoSpaces[$count++].'</div>';
 
 														}
 													}
@@ -430,7 +423,7 @@
 													echo'<tr>';
 													foreach($row as $letter){
 														if($letter != "0"){
-															echo'<td class="filled guess" draggable="true">&nbsp;&nbsp;&nbsp;&nbsp;</td>
+															echo'<td class="filled guess">&nbsp;&nbsp;&nbsp;&nbsp;</td>
 															';
 														}
 														else{
@@ -455,7 +448,7 @@
 													echo'<tr>';
 													foreach($row as $letter){
 														if($letter != "0"){
-															echo'<td class="filled guess" draggable="true">&nbsp;&nbsp;&nbsp;&nbsp;</td>
+															echo'<td class="filled guess">&nbsp;&nbsp;&nbsp;&nbsp;</td>
 															';
 														}
 														else{
@@ -489,29 +482,29 @@
 												for($j = 0; $j < $length; $j++){
 													if($i == 0){
 														if($j < $length - 1){
-															echo'<div id="row'.$i.'column'.$j.'" class="top guess" draggable="true">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+															echo'<div id="row'.$i.'column'.$j.'" class="top guess">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
 														}
 														else{
-															echo'<div id="row'.$i.'column'.$j.'" class="topRight guess" draggable="true">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+															echo'<div id="row'.$i.'column'.$j.'" class="topRight guess">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
 														}
 													}
 													else if($i < $wordCount - 1){
 														if($j == 0){
-															echo'<div id="row'.$i.'column'.$j.'" class="left guess" draggable="true">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+															echo'<div id="row'.$i.'column'.$j.'" class="left guess">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
 														}
 														else if($j < ($length - 1)){
-															echo'<div id="row'.$i.'column'.$j.'" class="inside guess" draggable="true">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+															echo'<div id="row'.$i.'column'.$j.'" class="inside guess">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
 														}
 														else{
-															echo'<div id="row'.$i.'column'.$j.'" class="right guess" draggable="true">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+															echo'<div id="row'.$i.'column'.$j.'" class="right guess">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
 														}
 													}
 													else{
 														if($j < ($length - 1)){
-															echo'<div id="row'.$i.'column'.$j.'" class="bottom guess" draggable="true">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+															echo'<div id="row'.$i.'column'.$j.'" class="bottom guess">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
 														}
 														else{
-															echo'<div id="row'.$i.'column'.$j.'" class="bottomRight guess" draggable="true">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+															echo'<div id="row'.$i.'column'.$j.'" class="bottomRight guess">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
 														}
 													}
 												}
@@ -1230,51 +1223,5 @@ function lettersChange(){
 
 			}
 		}
-</script>
-
-
-<script type="text/javascript">
-		var pyramidArray = <?php echo json_encode($pyramidPuzzle) ?>;
-		
-		var pyramidPuzzleArray = <?php echo json_encode($pyramidLetterPuzzle) ?>;
-		
-		var stepUpArray = <?php echo json_encode($stepUpPuzzle) ?>;
-		
-		var stepUpPuzzleArray = <?php echo json_encode($stepUpLetterPuzzle) ?>;
-		
-		var stepDownArray = <?php echo json_encode($stepDownPuzzle) ?>;
-		
-		var stepDownPuzzleArray = <?php echo json_encode($stepDownLetterPuzzle) ?>;
-		
-		var characterList = <?php echo json_encode($characterList) ?>;
-		
-		var wordList = <?php echo json_encode($wordList) ?>;
-		
-		var letterList = <?php echo json_encode($letterList) ?>;
-
-	</script>
-
-	<script type="text/javascript" src="../js/stacks.js"></script>
-<script>
-	function dragStart(event) {
-		dropped = false;
-		event.preventDefault();
-		//event.dataTransfer.dropEffect("move");
-		event.dataTransfer.setData("text", event.target.innerHTML);
-	}
-
-	function dragEnter(event) {
-		event.preventDefault();
-	}
-
-	function dragLeave(event) {
-		event.preventDefault();
-	}
-
-	function dragDrop(event) {
-		event.preventDefault();
-		var setHTML = event.dataTransfer.getData("text");
-		event.target.innerHTML = setHTML;
-	}
 </script>
 </html>
