@@ -77,7 +77,7 @@
 			</div>
 		</div>
     <br>
-    <form action="LinesPuzzle.php" method="post" name="linesForm" class="form-horizontal">
+    <form action="linesPuzzle.php" method="post" name="linesForm" class="form-horizontal">
         <div class="container-fluid">
             <div class="panel">
                 <div class="panel-group">
