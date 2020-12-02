@@ -1,5 +1,3 @@
-
-
 <?php 
 
     if(session_id() == '' || !isset($_SESSION)){
@@ -46,5 +44,3 @@ if (isset($_POST['ident'])){
 ?>
 
 </div>
-
-
