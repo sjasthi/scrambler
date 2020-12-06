@@ -72,11 +72,6 @@
                         <h3><?php echo 'What do you want to play?';?></h3>
                         <br>
                     </div>
-<!-- <br>
-<h2 style = "text-align: center;">Welcome to the Scrambler world!</h3>
-<br>
-<p style = "text-align: center; font-size: 18px;">What do you want to play?
-<br> -->
 
 <!-- Hard code the preferences for now; TBD: 
 Eventually, these get fetches from a preferences table. -->
