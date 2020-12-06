@@ -1,3 +1,11 @@
+<?php
+  if(session_id() == '' || !isset($_SESSION)){
+    session_start();
+  }
+
+  if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] == false || !isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){}
+  else {
+?>
 <div id="menu-left">
 
 	<a href="admin_wordsets.php">
@@ -45,3 +53,4 @@
 
 
 </div>
+  <?php } ?>

@@ -7,16 +7,26 @@
   
   if(session_id() == '' || !isset($_SESSION)){
 		session_start();
-	}
+  }
+  
+  if($_POST['psw'] == 'abc123' && $_POST['uname'] == 'admin') {
+    $_SESSION['loggedin'] = true;
+    $_SESSION['role'] = 'admin';
+    $_SESSION['user'] = $_POST['uname'];
+    $_SESSION['email'] = 'placeholder@example.com';
+    header("location:login.php?status=loggedin");
+  } else {
+  header("location:login.php?status=notloggedin");
+  }
  ?>
 
- <div class="right-content">
+ <!-- <div class="right-content">
     <div class="container">
-      <?php if(!isset($_GET['status'])) {?>
-      <h3 style = "color: #01B0F1;">Login</h3>
+
+      <h3 style = "color: #01B0F1;">Login (TO BE DONE LATER)</h3>
       <br>
       <div class="container">
-        <form method='post' name="login" action="loggingin.php">
+        <form name="login" action="loggingin.php">
         <label for="uname"><b>Username</b></label>
         <input type="text" placeholder="Enter Username" value="admin" name="uname" required>
         <br><br>
@@ -27,15 +37,8 @@
         </form>
         
       </div>
-      <?php } else if (isset($_GET['status']) && $_GET['status'] == 'loggedin') {?>
-        
-      <h3 style = "color: red;">Logged in successfully</h3>
-      <?php header("refresh: 1; url=../index.php"); }
-       else if (isset($_GET['status']) && $_GET['status'] == 'notloggedin') {?>
-        
-        <h3 style = "color: red;">Incorrect username or password</h3>
-        <?php header("refresh: 1; url=../index.php"); }?>
+
     </div>
-</div>
+</div> -->
 
 <?php include("../includes/footer.php"); ?>
