@@ -118,7 +118,7 @@ if($result->num_rows > 0) {
       break;
     }
     if($count % $puzzles_per_row == 0) {echo '<tr>';}
-    echo  '<td class="filled"><a href="feelingLucky/feelinglucky.php?id='.$row['set_id'].'">
+    echo  '<td class="filled"><a href="feelingLucky/feelingLucky.php?id='.$row['set_id'].'">
           <img '.$imageString.' height="50" width="50">
           <br>'.$row['title'].'<br>'.$row['subtitle'].'</a></td>';
     $count++;
