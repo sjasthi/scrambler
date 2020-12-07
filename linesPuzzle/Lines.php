@@ -1,5 +1,5 @@
 <?php
-
+	
 	/* Created by Stephen Schneider
 	 * Class for creating the Stacks puzzle
 	 * Takes in at least two words that go in sequential length order to generate step up, step down, and pyramid puzzles
@@ -163,7 +163,7 @@ class Lines{
 		$count = 0;
 		
 		foreach($this->wordList as $word) {
-			$chars = splitWord($word);
+			$chars = $this->splitWord($word);
 			$this->shuffledWordList[$count] = $chars;
 			for($i = 0; $i < count($this->shuffledWordList[$count]); $i++){
 				if($this->shuffledWordList[$count][$i] == ' ') {

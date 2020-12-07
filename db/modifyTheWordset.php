@@ -10,33 +10,33 @@
 
     include("../includes/innerNav.php");
 
-    if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] == false) {
+    if(!is_logged_in()) {
       ?>
       
       
         <div class="right-content">
-          <div class="container">
-    
-          <h3 style = "color: red;">Please log in to view this page</h3>
-    
-          </div>
+        <div class="container">
+      
+        <h3 style = "color: red;">Please log in to view this page</h3>
+      
+        </div>
         </div>
       
       <?php
-    } else if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
+      } else if (!is_admin()) {
       ?>
       
       
         <div class="right-content">
-          <div class="container">
-    
-          <h3 style = "color: red;">Admin privileges are required to view this page</h3>
-    
-          </div>
+        <div class="container">
+      
+        <h3 style = "color: red;">Admin privileges are required to view this page</h3>
+      
+        </div>
         </div>
       
       <?php
-    } else {
+      } else {
 
     require("../indic-wp/word_processor.php");
 
@@ -45,23 +45,6 @@
       $wordProcessor->setWord($word, "telugu");
   
       return $wordProcessor->getLengthNoSpacesNoCommas($word);
-    }
-
-    function generateWordList($wordInput){
-      $wordList = [];
-  
-      $lines = explode("\n", $wordInput);
-  
-      foreach($lines as $line){
-  
-        $word = trim($line);
-  
-        if(!(empty($word))){
-          array_push($wordList, $word);
-        }
-      }
-  
-      return $wordList;
     }
 
     function insert_word($word, $set, $title, $subtitle, $type) {

@@ -35,4 +35,5 @@ The admin page currently provides only Wordset options, which allow an admin to 
 Login currently only handles one set of credentials, which are prepopulated and allow the user logging in admin rights. Without these, the only functionality available is to play games online
 
 ## License
-Need to discuss with Professor, Creative Commons I think?
+Created by Joseph Marden under the Creative Commons license
+j.marden@gmail.com

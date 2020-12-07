@@ -3,7 +3,7 @@
     session_start();
   }
 
-  if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] == false || !isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){}
+  if(!is_logged_in() || !is_admin()){}
   else {
 ?>
 <div id="menu-left">

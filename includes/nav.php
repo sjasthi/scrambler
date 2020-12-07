@@ -85,7 +85,7 @@
                 <br/>Shapes</li>
             </a>
             
-            <?php if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION['role'] == 'admin') {?>
+            <?php if(is_logged_in() && is_admin()) {?>
             <a href="otherPages/admin.php">
               <li <?php if($nav_selected == "ADMIN"){ echo 'class="current-page"'; } ?>>
                 <img src="./images/admin.png">
@@ -99,7 +99,7 @@
                 <br/>About</li>
             </a>
 
-            <?php if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {?>
+            <?php if(is_logged_in()) {?>
               <a href="otherPages/logout.php">
                 <li <?php if($nav_selected == "LOGOUT"){ echo 'class="current-page"'; } ?>>
                   <img src="./images/logout.png">

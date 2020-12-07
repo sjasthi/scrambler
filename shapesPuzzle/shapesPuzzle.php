@@ -27,33 +27,33 @@
 
 	include("../includes/innerNav.php");
 
-	if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] == false) {
-	  ?>
+    if(!is_logged_in()) {
+		?>
+		
+		
+		  <div class="right-content">
+			<div class="container">
 	  
+			<h3 style = "color: red;">Please log in to view this page</h3>
 	  
-		<div class="right-content">
-		  <div class="container">
-	
-		  <h3 style = "color: red;">Please log in to view this page</h3>
-	
+			</div>
 		  </div>
-		</div>
+		
+		<?php
+	  } else if (!is_admin()) {
+		?>
+		
+		
+		  <div class="right-content">
+			<div class="container">
 	  
-	  <?php
-	} else if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
-	  ?>
+			<h3 style = "color: red;">Admin privileges are required to view this page</h3>
 	  
-	  
-		<div class="right-content">
-		  <div class="container">
-	
-		  <h3 style = "color: red;">Admin privileges are required to view this page</h3>
-	
+			</div>
 		  </div>
-		</div>
-	  
-	  <?php
-	} else {
+		
+		<?php
+	  } else {
 	require("Shapes.php");
 	require("../indic-wp/word_processor.php");
 
@@ -176,27 +176,6 @@
 
 		header("Location: ".$url);
 		exit;
-	}
-
-	/*
-	 * Generates a word list based on input
-	 * Splits input by line breaks, trims each line, and then puts each line into an array
-	 */
-	function generateWordList($wordInput){
-		$wordList = [];
-
-		$lines = explode("\n", $wordInput);
-
-		foreach($lines as $line){
-
-			$word = trim($line);
-
-			if(!(empty($word))){
-				array_push($wordList, $word);
-			}
-		}
-
-		return $wordList;
 	}
 
 	/*** Word Processor Functions ***/

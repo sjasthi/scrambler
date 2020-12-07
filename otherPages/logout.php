@@ -9,8 +9,8 @@
 		session_start();
   }
   
-  if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-    unset($_SESSION['loggedin']);
+  if(is_logged_in()) {
+    unset($_SESSION['logged_in']);
     unset($_SESSION['role']);
     unset($_SESSION['user']);
     unset($_SESSION['email']);
