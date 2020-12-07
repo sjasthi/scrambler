@@ -200,4 +200,24 @@ function show_flash_message() {
   return NULL;
 }
 
+/*
+* Generates a word list based on input
+* Splits input by line breaks, trims each line, and then puts each line into an array
+*/
+function generateWordList($wordInput){
+	$wordList = [];
+
+	$lines = explode("\n", $wordInput);
+
+	foreach($lines as $line){
+
+		$word = trim($line);
+	
+		if(!(empty($word))){
+			array_push($wordList, $word);
+		}
+	}
+return $wordList;
+}
+
 ?>

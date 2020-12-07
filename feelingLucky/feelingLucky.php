@@ -958,27 +958,6 @@
         </script>
         <?php
     }
-
-
-
-
-    /*** Word Processor Functions ***/
-    function generateWordList($wordInput){
-		$wordList = [];
-
-		$lines = explode("\n", $wordInput);
-
-		foreach($lines as $line){
-
-			$word = trim($line);
-
-			if(!(empty($word))){
-				array_push($wordList, $word);
-			}
-		}
-
-		return $wordList;
-    }
     
 	function getWordLength($word){
 		$wordProcessor = new wordProcessor(" ", "telugu");

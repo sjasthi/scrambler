@@ -10,7 +10,7 @@
 
     include("../includes/innerNav.php");
 
-    if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] == false) {
+    if(!is_logged_in()) {
       ?>
       
       
@@ -23,7 +23,7 @@
         </div>
       
       <?php
-    } else if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
+    } else if (!is_admin()) {
       ?>
       
       
@@ -69,4 +69,4 @@ if (isset($_POST['ident'])){
     header('location: ../otherPages/admin_wordsets.php?edited=deleted');
 }
 
-?>
+}?>

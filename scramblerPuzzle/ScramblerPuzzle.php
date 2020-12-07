@@ -27,36 +27,36 @@
     }
 
 	include("../includes/innerNav.php");
-
-	if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] == false) {
-	  ?>
-	  
-	  
-		<div class="right-content">
-		  <div class="container">
-	
-		  <h3 style = "color: red;">Please log in to view this page</h3>
-	
-		  </div>
-		</div>
-	  
-	  <?php
-	} else if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
-	  ?>
-	  
-	  
-		<div class="right-content">
-		  <div class="container">
-	
-		  <h3 style = "color: red;">Admin privileges are required to view this page</h3>
-	
-		  </div>
-		</div>
-	  
-	  <?php
-	} else {
-	require("Scrambler.php");
 	require("../indic-wp/word_processor.php");
+	require("Scrambler.php");
+
+    if(!is_logged_in()) {
+		?>
+		
+		
+		  <div class="right-content">
+			<div class="container">
+	  
+			<h3 style = "color: red;">Please log in to view this page</h3>
+	  
+			</div>
+		  </div>
+		
+		<?php
+	  } else if (!is_admin()) {
+		?>
+		
+		
+		  <div class="right-content">
+			<div class="container">
+	  
+			<h3 style = "color: red;">Admin privileges are required to view this page</h3>
+	  
+			</div>
+		  </div>
+		
+		<?php
+	  } else {
 
 	if(isset($_GET["imageerror"])){
 		$error = $_GET["imageerror"];
@@ -190,27 +190,6 @@
 
 		header("Location: ".$url);
 		exit;
-	}
-
-	/*
-	 * Generates a word list based on input
-	 * Splits input by line breaks, trims each line, and then puts each line into an array
-	 */
-	function generateWordList($wordInput){
-		$wordList = [];
-
-		$lines = explode("\n", $wordInput);
-
-		foreach($lines as $line){
-
-			$word = trim($line);
-
-			if(!(empty($word))){
-				array_push($wordList, $word);
-			}
-		}
-
-		return $wordList;
 	}
 
 	/*** Word Processor Functions ***/

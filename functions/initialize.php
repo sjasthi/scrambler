@@ -26,12 +26,10 @@
   if(strcmp($nav_selected, 'HOME') == 0) {
     require_once('functions.php');
     require_once('./db/database.php');
-    require_once('query_functions.php');
     require_once('./validation_functions.php');
   } else {
     require_once('functions.php');
     require_once('../db/database.php');
-    require_once('query_functions.php');
     require_once('../validation_functions.php');
   }
 

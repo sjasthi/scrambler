@@ -46,33 +46,33 @@
 
     include("../includes/innerNav.php");
 
-    if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] == false) {
-      ?>
-      
-      
-        <div class="right-content">
-          <div class="container">
-    
-          <h3 style = "color: red;">Please log in to view this page</h3>
-    
-          </div>
-        </div>
-      
-      <?php
-    } else if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
-      ?>
-      
-      
-        <div class="right-content">
-          <div class="container">
-    
-          <h3 style = "color: red;">Admin privileges are required to view this page</h3>
-    
-          </div>
-        </div>
-      
-      <?php
-    } else {
+    if(!is_logged_in()) {
+		?>
+		
+		
+		  <div class="right-content">
+			<div class="container">
+	  
+			<h3 style = "color: red;">Please log in to view this page</h3>
+	  
+			</div>
+		  </div>
+		
+		<?php
+	  } else if (!is_admin()) {
+		?>
+		
+		
+		  <div class="right-content">
+			<div class="container">
+	  
+			<h3 style = "color: red;">Admin privileges are required to view this page</h3>
+	  
+			</div>
+		  </div>
+		
+		<?php
+	  } else {
 ?>
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN''http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
