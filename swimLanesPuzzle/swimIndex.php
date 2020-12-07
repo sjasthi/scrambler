@@ -104,7 +104,7 @@
 			</div>
 		</div>
     <br>
-    <form action="SwimPuzzle.php" method="post" name="swimForm" class="form-horizontal">
+    <form action="swimPuzzle.php" method="post" name="swimForm" class="form-horizontal">
         <div class="container-fluid">
             <div class="panel">
                 <div class="panel-group">
