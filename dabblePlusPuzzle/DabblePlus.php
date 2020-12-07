@@ -180,7 +180,6 @@ class DabblePlus{
 	private function generatePyramidPuzzle(){
 		$col = 0;
 		$row = 0;
-
 		foreach($this->wordList as $word){
 			$chars = $this->splitWord($word);
 			$col = 0;
@@ -224,25 +223,33 @@ class DabblePlus{
 		$col = 0;
 		$row = 0;
 		$count=0;
-		
 		foreach($this->wordList as $word){
 			$chars = $this->splitWord($word);
 			$col = 0;
 
 			foreach($chars as $char){
 				
-				if($char == ' '){}
+				if($char == ' ' || $char == ',') {} 
 				else {
-					$this->pyramidLetterPuzzle[$row][$col] = $this->characterListNoSpaces[$count++];
+				// 	while(true) {
+				// 		if($this->characterListNoSpaces[$count] == ','){
+				// 			$count++;
+				// 		} else {
+				// 			break;
+				// 		}
+				// 	}
+					$this->pyramidLetterPuzzle[$row][$col] = $this->characterListNoSpacesNoCommas[$count++];
 
 					$col++;
 				}
 			}
+			
 
 			for($i = 0; $i < count($this->pyramidLetterPuzzle[$row]); $i++){
 				if($this->pyramidLetterPuzzle[$row][$i] == ' ') {
 					array_splice($this->pyramidLetterPuzzle[$row], $i, 1);
 					array_push($this->pyramidLetterPuzzle[$row], '0');
+					$i--;
 				} else{
 					// $i++;
 				}

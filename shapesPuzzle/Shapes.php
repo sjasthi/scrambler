@@ -42,7 +42,7 @@ class Shapes{
 		if($this->validateInput()){
 		
 		
-			$this->maxLength = $this->getWordLength($this->wordList[(count($this->wordList) - 1)]);
+			$this->maxLength = $this->getWordLengthNoSpaces($this->wordList[(count($this->wordList) - 1)]);
 			$this->wordCount = count($wordList);
 
 			$this->maxColumns = $this->maxLength;

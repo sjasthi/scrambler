@@ -231,6 +231,7 @@ class Dabble{
 				if($this->pyramidLetterPuzzle[$row][$i] == ' ') {
 					array_splice($this->pyramidLetterPuzzle[$row], $i, 1);
 					array_push($this->pyramidLetterPuzzle[$row], '0');
+					$i--;
 				} else{
 					// $i++;
 				}

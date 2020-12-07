@@ -1,7 +1,7 @@
 for(i = 0; i < answerArray.length; i++) {
     for(j = 0; j < answerArray[i].length; j++) {
         if(answerArray[i][j] == ' ' || answerArray[i][j] == ',' || answerArray[i][j] == '0') {
-            console.log("removing " + answerArray[i][j] + " at index " + i +', ' + j + " from answer array");
+            // console.log("removing " + answerArray[i][j] + " at index " + i +', ' + j + " from answer array");
             answerArray[i].splice(j, 1);
             j--;
         }
@@ -35,8 +35,6 @@ for(i = 0; i < wordList.length; i++) {
     }
     wordList[i] = word;
 }
-
-var lettersPuzzleType = puzzleType;
 
 function printArrays() {
     console.log("answer array");
@@ -81,39 +79,31 @@ if(puzzleType != "lines") {
     }
 }
 
-
-
-// console.log("puzzles");
+// printArrays();
 
 const puzzles = document.getElementsByClassName('puzzleLetter');
 
-// console.log(puzzles.length);
-
-for(var i =0; i < puzzles.length; i++) {
-    console.log(puzzles[i].innerHTML);
-}
-
-// console.log("guesses");
-
+// if(puzzleType == 'shapes') {
+//     console.log('in shapes loop');
+//     for(i = 0; i < puzzles.length; i++) {
+//         console.log(puzzles[i].id);
+//     }
+// }
 
 const guesses = document.getElementsByClassName('guess');
-
-// console.log(guesses.length);
-
-for(var i =0; i < guesses.length; i++) {
-    console.log(guesses[i].innerHTML);
-}
 
 for(var i = 0; i < guesses.length; i++) {
     guesses[i].addEventListener('dragover', dragOver);
     guesses[i].addEventListener('drop', dragDrop);
     guesses[i].addEventListener('dragstart', dragStart);
+    guesses[i].addEventListener('dblclick', doubleClick);
 }
 
 for(var i = 0; i < puzzles.length; i++) {
     puzzles[i].addEventListener('dragover', dragOver);
     puzzles[i].addEventListener('drop', dragDrop);
     puzzles[i].addEventListener('dragstart', dragStart);
+    puzzles[i].addEventListener('dblclick', doubleClick);
 }
 
 var tdDragStart;
@@ -140,14 +130,168 @@ function dragDrop(ev) {
     target.innerHTML = setHTML;
     tdDragStart.innerHTML = placeholder;
     printArrays();
-    updateArrays(setHTML, placeholder, ev.target);
+    dragUpdateArrays(setHTML, placeholder, ev.target);
 }
 
 function dragOver(ev) {
     ev.preventDefault();
 }
 
-function updateArrays(setHTML, placeholder, target) {
+function doubleClick(ev) {
+    printArrays();
+    ev.preventDefault();
+    var placeholder = ev.target.innerHTML;
+    var swapped = false;
+    if(puzzleType != 'pyramid' && puzzleType != 'shapes') {
+        if(ev.target.getAttribute('class').includes('puzzleLetter')) {
+            var table = document.getElementById('wordsPuzzle');
+            for(var i = 0; i < table.rows.length; i++) {
+                for(var j = 0; j < table.rows[i].cells.length; j++) {
+                    if (table.rows[i].cells[j].innerHTML != '&nbsp;&nbsp;&nbsp;&nbsp;') {}
+                    else {
+                        ev.target.innerHTML = table.rows[i].cells[j].innerHTML;
+                        table.rows[i].cells[j].innerHTML = placeholder;
+                        swapped = true;
+                        dblClickUpdateArrays(ev.target.innerHTML, placeholder, i, j, ev.target);
+                        break;
+                    }
+                }
+                if(swapped) {break;}
+            }
+        } else if (ev.target.getAttribute('class').includes('guess')) {
+            var table = document.getElementById('lettersPuzzle');
+            for(var i = 0; i < table.rows.length; i++) {
+                for(var j = 0; j < table.rows[i].cells.length; j++) {
+                    if (table.rows[i].cells[j].innerHTML != '&nbsp;&nbsp;&nbsp;&nbsp;') {}
+                    else {
+                        ev.target.innerHTML = table.rows[i].cells[j].innerHTML;
+                        table.rows[i].cells[j].innerHTML = placeholder;
+                        swapped = true;
+                        dblClickUpdateArrays(ev.target.innerHTML, placeholder, i, j, ev.target);
+                        break;
+                    }
+                }
+                if(swapped) {break;}
+            }
+        }
+    } else if (puzzleType == 'pyramid') {
+        if(ev.target.getAttribute('class').includes('puzzleLetter')) {
+            for(var i = 0; i < lettersArray.length; i++) {
+                for(var j = 0; j < lettersArray[i].length; j++) {
+                    // console.log(" checking row " + i + " column " + j);
+                    if(pyramidGetCell(i, j, 'guess') == undefined) {}
+                    else {
+                        ev.target.innerHTML = pyramidGetCell(i, j, 'guess').innerHTML;
+                        // console.log("start changed to " + pyramidGetCell(i, j, 'guess').innerHTML);
+                        pyramidGetCell(i, j, 'guess').innerHTML = placeholder;
+                        swapped = true;
+                        dblClickUpdateArrays(ev.target.innerHTML, placeholder, i, j, ev.target);
+                        break;
+                    }
+                }
+                if(swapped) {break;}
+            }
+        } else if (ev.target.getAttribute('class').includes('guess')) {
+            for(var i = 0; i < lettersArray.length; i++) {
+                for(var j = 0; j < lettersArray[i].length; j++) {
+                    if(pyramidGetCell(i, j, 'puzzleLetter') == undefined) {}
+                    else {
+                        ev.target.innerHTML = pyramidGetCell(i, j, 'puzzleLetter').innerHTML;
+                        // console.log("start changed to " + pyramidGetCell(i, j, 'puzzleLetter').innerHTML);
+                        pyramidGetCell(i, j, 'puzzleLetter').innerHTML = placeholder;
+                        swapped = true;
+                        dblClickUpdateArrays(ev.target.innerHTML, placeholder, i, j, ev.target);
+                        break;
+                    }
+                }
+                if(swapped) {break;}
+            }
+        }
+    } else if (puzzleType == 'shapes') {
+        if(ev.target.getAttribute('class').includes('puzzleLetter')) {
+            var table = document.getElementById('wordsPuzzle');
+            for(var i = 0; i < lettersArray.length; i++) {
+                for(var j = 0; j < lettersArray[i].length; j++) {
+                    // console.log(" checking row " + i + " column " + j);
+                    if(table.rows[i].cells[j].innerHTML != '&nbsp;&nbsp;&nbsp;&nbsp;') {}
+                    else {
+                        // console.log('changing guess array row ' + i + ' column ' + j);
+                        ev.target.innerHTML = table.rows[i].cells[j].innerHTML;
+                        // console.log("start changed to " + table.rows[i].cells[j].innerHTML);
+                        table.rows[i].cells[j].innerHTML = placeholder;
+                        swapped = true;
+                        dblClickUpdateArrays(ev.target.innerHTML, placeholder, i, j, ev.target);
+                        break;
+                    }
+                }
+                if(swapped) {break;}
+            }
+        } else if(ev.target.getAttribute('class').includes('guess')) {
+            for(var i = 0; i < lettersArray.length; i++) {
+                for(var j = 0; j < lettersArray[i].length; j++) {
+                    if(pyramidGetCell(i, j, 'puzzleLetter') == undefined) {}
+                    else {
+                        ev.target.innerHTML = pyramidGetCell(i, j, 'puzzleLetter').innerHTML;
+                        // console.log("start changed to " + pyramidGetCell(i, j, 'puzzleLetter').innerHTML);
+                        pyramidGetCell(i, j, 'puzzleLetter').innerHTML = placeholder;
+                        swapped = true;
+                        dblClickUpdateArrays(ev.target.innerHTML, placeholder, i, j, ev.target);
+                        break;
+                    }
+                }
+                if(swapped) {break;}
+            }
+        }
+    }
+}
+
+function pyramidGetCell(row, cell, type) {
+    var cells = document.getElementsByClassName(type);
+    for(var i = 0; i < cells.length; i++) {
+        if(cells[i].id.includes('row' + row + 'column' + cell)) {
+            if(cells[i].innerHTML == '&nbsp;&nbsp;&nbsp;&nbsp;') {
+                // console.log(cells[i].id);
+                // console.log(cells[i].innerHTML);
+                return cells[i];
+            }
+        }
+    }
+}
+
+function dblClickUpdateArrays(setHTML, placeholder, row, cell, target) {
+    if(target.getAttribute('class').includes('puzzleLetter')) {
+        if(puzzleType == 'stepdown' || puzzleType == 'lines') {
+            updateAttemptIndex(row, cell, placeholder);
+            var indices = genericDetermineIndex(target);
+            updateStepDownPuzzleArrayIndex(indices[0], indices[1], setHTML);
+        } else if (puzzleType == 'pyramid') {
+            var update = pyramidDetermineIndex(target);
+            updateAttemptIndex(row, cell, placeholder);
+            updatePyramidPuzzleArrayIndex(update[0], update[1], setHTML);
+        } else if (puzzleType == 'shapes') {
+            var update = pyramidDetermineIndex(target);
+            updateAttemptIndex(row, cell, placeholder);
+            updatePyramidPuzzleArrayIndex(update[0], update[1], setHTML);
+            
+        }
+    } else if (target.getAttribute('class').includes('guess')) {
+        if(puzzleType == 'stepdown' || puzzleType == 'lines') {
+            var indices = genericDetermineIndex(target);
+            updateAttemptIndex(indices[0], indices[1], setHTML);
+            updateStepDownPuzzleArrayIndex(row, cell, placeholder);
+        } else if (puzzleType == 'pyramid') {
+            var update = pyramidDetermineIndex(target);
+            updateAttemptIndex(update[0], update[1], setHTML);
+            updatePyramidPuzzleArrayIndex(row, cell, placeholder);
+        } else if (puzzleType == 'shapes') {
+            var update = genericDetermineIndex(target);
+            updateAttemptIndex(update[0], update[1], setHTML);
+            updatePyramidPuzzleArrayIndex(row, cell, placeholder);
+        }
+    }
+}
+
+function dragUpdateArrays(setHTML, placeholder, target) {
     var update = new Array(2);
     
     if(target.getAttribute('class').includes('puzzleLetter')) {
@@ -157,41 +301,29 @@ function updateArrays(setHTML, placeholder, target) {
                 updateAttemptIndex(update[0], update[1], placeholder);
             } else {
                 update = genericDetermineIndex(tdDragStart);
-                if (puzzleType == "stepdown" || lettersPuzzleType == "lines") {
+                if (puzzleType == "stepdown" || puzzleType == "lines" || puzzleType == 'shapes') {
                     updateAttemptIndex(update[0], update[1], placeholder);
-                } else if (puzzleType == "stepup") {
-                    updateAttemptIndex(update[0], update[1] - (lettersArray[update[0]].length - wordList[update[0]].length), placeholder);
                 }
             }
         } else if (tdDragStart.getAttribute('class').includes('puzzleLetter')) {
-            if(lettersPuzzleType == "pyramid") {
+            if(puzzleType == "pyramid" || puzzleType == 'shapes') {
                 update = pyramidDetermineIndex(tdDragStart);
                 updatePyramidPuzzleArrayIndex(update[0], update[1], placeholder);
-                //updateLetterListIndexFromLetters(update[0], update[1], placeholder);
             } else {
                 update = genericDetermineIndex(tdDragStart);
-                if(lettersPuzzleType == "stepup") {
-                    updateStepUpPuzzleArrayIndex(update[0], update[1], placeholder);
-                    //updateLetterListIndexFromLetters(update[0], update[1] - (lettersArray[update[0]].length - wordList[update[0]].length), placeholder)
-                } else if (lettersPuzzleType == "stepdown" || lettersPuzzleType == "lines") {
+                if (puzzleType == "stepdown" || puzzleType == "lines") {
                     updateStepDownPuzzleArrayIndex(update[0], update[1], placeholder);
-                    //updateLetterListIndexFromLetters(update[0], update[1], placeholder);
                 }
             }
         }
 
-        if(puzzleType == "pyramid") {
+        if(puzzleType == "pyramid" || puzzleType == 'shapes') {
             update = pyramidDetermineIndex(target);
             updatePyramidPuzzleArrayIndex(update[0], update[1], setHTML);
-            //updateLetterListIndexFromLetters(update[0], update[1], setHTML);
         } else {
             update = genericDetermineIndex(target);
-            if(puzzleType == "stepup") {
-                updateStepUpPuzzleArrayIndex(update[0], update[1], setHTML);
-                //updateLetterListIndexFromLetters(update[0], update[1] - (lettersArray[update[0]].length - wordList[update[0]].length), setHTML)
-            } else if (puzzleType == "stepdown" || lettersPuzzleType == "lines") {
+            if (puzzleType == "stepdown" || puzzleType == "lines") {
                 updateStepDownPuzzleArrayIndex(update[0], update[1], setHTML);
-                //updateLetterListIndexFromLetters(update[0], update[1], setHTML);
             }
         }
 
@@ -202,25 +334,18 @@ function updateArrays(setHTML, placeholder, target) {
                 updateAttemptIndex(update[0], update[1], placeholder);
             } else {
                 update = genericDetermineIndex(tdDragStart);
-                if (puzzleType == "stepdown" || lettersPuzzleType == "lines") {
+                if (puzzleType == "stepdown" || puzzleType == "lines" || puzzleType == 'shapes') {
                     updateAttemptIndex(update[0], update[1], placeholder);
-                } else if (puzzleType == "stepup") {
-                    updateAttemptIndex(update[0], update[1] - (lettersArray[update[0]].length - wordList[update[0]].length), placeholder);
                 }
             }
         } else if (tdDragStart.getAttribute('class').includes('puzzleLetter')) {
-            if(puzzleType == "pyramid") {
+            if(puzzleType == "pyramid" || puzzleType == 'shapes') {
                 update = pyramidDetermineIndex(tdDragStart);
                 updatePyramidPuzzleArrayIndex(update[0], update[1], placeholder);
-                //updateLetterListIndexFromWords(update[0], update[1], placeholder);
             } else {
                 update = genericDetermineIndex(tdDragStart);
-                if(puzzleType == "stepup") {
-                    updateStepUpPuzzleArrayIndex(update[0], update[1], placeholder);
-                    //updateLetterListIndexFromWords(update[0], update[1] - (lettersArray[update[0]].length - wordList[update[0]].length), placeholder)
-                } else if (puzzleType == "stepdown" || lettersPuzzleType == "lines") {
+                if (puzzleType == "stepdown" || puzzleType == "lines") {
                     updateStepDownPuzzleArrayIndex(update[0], update[1], placeholder);
-                    //updateLetterListIndexFromWords(update[0], update[1], placeholder);
                 }
             }
         }
@@ -230,10 +355,8 @@ function updateArrays(setHTML, placeholder, target) {
             updateAttemptIndex(update[0], update[1], setHTML);
         } else {
             update = genericDetermineIndex(target);
-            if (puzzleType == "stepdown" || lettersPuzzleType == "lines") {
+            if (puzzleType == "stepdown" || puzzleType == "lines" || puzzleType == 'shapes') {
                 updateAttemptIndex(update[0], update[1], setHTML);
-            } else if (puzzleType == "stepup") {
-                updateAttemptIndex(update[0], update[1] - (lettersArray[update[0]].length - wordList[update[0]].length), setHTML);
             }
         }
     }
@@ -242,7 +365,8 @@ function updateArrays(setHTML, placeholder, target) {
 function pyramidDetermineIndex(targetCell) {
     for(var i=0; i < lettersArray.length; i++) {
         for(var j=0; j < lettersArray[i].length; j++) {
-            if (targetCell.getAttribute('id') == ("row" + i + "column" + j)) {
+            if (targetCell.id == ("row" + i + "column" + j)) {
+                // console.log("returning " + i + ", " + j);
                 return [i, j];
             }
         }
@@ -252,7 +376,7 @@ function pyramidDetermineIndex(targetCell) {
 function genericDetermineIndex(targetCell) {
     var cellColumn = targetCell.cellIndex;
     var cellRow = targetCell.parentNode.rowIndex;
-    console.log("cell row " + cellRow + " cell column " + cellColumn);
+    // console.log("cell row " + cellRow + " cell column " + cellColumn);
     return [cellRow, cellColumn];
 }
 
@@ -280,72 +404,33 @@ function updateLettersArrayIndex(row, column, letter) {
     lettersArray[row][column] = letter;
 }
 
-// function updateLetterListIndexFromLetters(row, column, letter) {
-//     var letterRow = 0;
-// 	var letterColumn = 0;
-// 	var count = 0;
-//     console.log("passing row " + row + " and column " + column);
-//     if (puzzleType != "rectangle") {
-//         if(row > 0) {
-//             for (var i = 0; i < row; i++) {
-//                 count = count + wordList[i].length;
-//             }
-//         }
-// 		count += column;
-// 		letterRow = Math.floor(count/letterList[0].length);
-//         letterColumn = count % letterList[0].length;   
-//     } else {
-//         letterRow = row;
-//         letterColumn = column;
-//     }
-//     console.log("row: " + letterRow + " column: " + letterColumn);
-//     letterList[letterRow][letterColumn] = letter;
-// }
-
-// function updateLetterListIndexFromWords(row, column, letter) {
-//     var letterRow;
-// 	var letterColumn;
-//     var count = 0;
-//     console.log("passing row " + row + " and column " + column);
-//     if(row > 0) {
-//         for (var i = 0; i < row; i++) {
-//             count = count + wordList[i].length;
-//         }
-//     }
-// 	count += column;
-// 	letterRow = Math.floor(count/letterList[0].length);
-//     letterColumn = count % letterList[0].length;
-//     console.log("row: " + letterRow + " column: " + letterColumn);
-//     letterList[letterRow][letterColumn] = letter;
-// }
-
 function updateAttemptIndex(row, column, letter) {
     attempt[row][column] = letter;
     if(checkAnswer()) {alert("Congratulations!!!");}
 }
 
 function checkAnswer() {
-    if (puzzleType != 'lines') {
-        for(var i=0; i < attempt.length; i++) {
-            for(var j=0; j < attempt[i].length; j++) {
-                if(attempt[i][j] != answerArray[i][j]) {
-                    return false;
-                }
+    var attemptWords = new Array(attempt.length);
+    var word = '';
+    var s
+
+    for(var i = 0; i < attempt.length; i++) {
+        for(var j = 0; j < attempt[i].length; j++) {
+            if(j == 0 && attempt[i][j] != '0') {
+                word = attempt[i][j]; 
+            } else if (attempt[i][j] != '0') {
+                word = word + attempt[i][j];
             }
         }
-    } else {
-        var k = 0;
-        for(var i=0; i < attempt.length; i++) {
-            if (i % 2 != 0) {}
-            else {
-                for(var j=0; j < attempt[i].length; j++) {
-                    if(attempt[i][j] != answerArray[k][j]) {
-                        return false;
-                    }
-                }
-                k++;
-            }
+        attemptWords[i] = word;
+    }
+
+    for(var i = 0; i < attemptWords.length; i++) {
+        // console.log(attemptWords[i]);
+        if(!wordList.includes(attemptWords[i])){
+            return false;
         }
     }
+
     return true;
 }

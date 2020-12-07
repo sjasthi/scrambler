@@ -235,6 +235,13 @@ for($i = 0; $i < count($puzzle); $i++){
     }
 }
 
+
+// imagettftext($image, 60, 0, 50, 2000, $black, realpath('./Gidugu-Regular.ttf'), "అమెరికా");
+//imagettftext($image, 0, 3000, $x_offset, $y_offset, $black, realpath('./.ttf'), "అమెరికా");
+// imagettftext($image, 60, 0, 1000, 2000, $black, realpath('./NTR-Regular.ttf'), "అమెరికా");
+//imagettftext($image, 60, 0, $x_offset, $y_offset, $black, realpath('./NTR-Regular.ttf'), "అమెరికా");
+
+
 imagepng($image);
 imagedestroy($image);
 

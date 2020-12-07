@@ -4,6 +4,40 @@
     session_start();
   }
 
+  $nav_selected = "ADMIN";
+  $left_buttons = "YES";
+  $left_selected = "WORDSETS";
+
+  include("../includes/innerNav.php");
+
+  if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] == false) {
+    ?>
+    
+    
+      <div class="right-content">
+        <div class="container">
+  
+        <h3 style = "color: red;">Please log in to view this page</h3>
+  
+        </div>
+      </div>
+    
+    <?php
+  } else if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
+    ?>
+    
+    
+      <div class="right-content">
+        <div class="container">
+  
+        <h3 style = "color: red;">Admin privileges are required to view this page</h3>
+  
+        </div>
+      </div>
+    
+    <?php
+  } else {
+
   if(isset($_GET['edited'])) {
     switch ($_GET['edited']){
       case 'modified':
@@ -19,12 +53,6 @@
         $editMessage = 'Unknown error editing word sets';
     }
   }
-
-  $nav_selected = "ADMIN";
-  $left_buttons = "YES";
-  $left_selected = "WORDSETS";
-
-  include("../includes/innerNav.php");
 
   $query = "SELECT * FROM word_sets_meta INNER JOIN word_sets WHERE word_sets_meta.word_id = word_sets.word_id";
 
@@ -209,4 +237,4 @@
   } );
 </script>
 
-<?php include("../includes/footer.php"); ?>
+<?php include("../includes/footer.php"); } ?>

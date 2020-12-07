@@ -1,5 +1,9 @@
 <?php
   //define("ROOT_PATH", $_SERVER['DOCUMENT_ROOT'].'\scrambler\\');
+  
+  if(session_id() == '' || !isset($_SESSION)){
+    session_start();
+  }
   require_once('../functions/initialize.php');
 ?>
 
@@ -82,11 +86,13 @@
                 <br/>Shapes</li>
             </a>
 
+            <?php if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true && $_SESSION['role'] == 'admin') {?>
             <a href="../otherPages/admin.php">
               <li <?php if($nav_selected == "ADMIN"){ echo 'class="current-page"'; } ?>>
                 <img src="../images/admin.png">
                 <br/>Admin</li>
             </a>
+            <?php } ?>
 
             <a href="../otherPages/about.php">
               <li <?php if($nav_selected == "ABOUT"){ echo 'class="current-page"'; } ?>>
@@ -94,11 +100,19 @@
                 <br/>About</li>
             </a>
 
-            <a href="../otherPages/login.php">
-              <li <?php if($nav_selected == "LOGIN"){ echo 'class="current-page"'; } ?>>
-                <img src="../images/login.png">
-                <br/>Login</li>
-            </a>
+            <?php if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {?>
+              <a href="../otherPages/logout.php">
+                <li <?php if($nav_selected == "LOGOUT"){ echo 'class="current-page"'; } ?>>
+                  <img src="../images/logout.png">
+                  <br/>Logout</li>
+              </a>
+            <?php } else {?>
+              <a href="../otherPages/login.php">
+                <li <?php if($nav_selected == "LOGIN"){ echo 'class="current-page"'; } ?>>
+                  <img src="../images/login.png">
+                  <br/>Login</li>
+              </a>
+            <?php } ?>
 
             <a href="../feelingLucky/feelingLucky.php">
               <li <?php if($nav_selected == "LUCKY"){ echo 'class="current-page"'; } ?>>

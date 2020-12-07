@@ -157,7 +157,13 @@
                 var puzzleType = 'lines';
                 </script>
                 <?php
-            } else /*if (strcmp($type, 'scrambler') == 0 || strcmp($type, 'stacks') == 0)*/ {
+            } else if (strcmp($type, 'shapes') == 0) {
+                ?>
+                <script type="text/javascript">
+                var puzzleType = 'shapes';
+                </script>
+                <?php
+            } else {
                 ?>
                 <script type="text/javascript">
                 var puzzleType = 'stepdown';
@@ -402,7 +408,6 @@
                         // Cells must be printed with correct styling
                         // Top cell, then final top right cell, left cells, inside cells, right cells,
                         // bottom cells, then final right cell
-                            // print_r($pyramidPuzzle);
                             // echo '<br>';
                         $wordCount = count($wordList);
 
@@ -524,7 +529,7 @@
             <div class="letters stepdownLettersPuzzle">
                 <div class="row"> <h3>Letters</h3> </div>
                 <div class="row">
-                    <table class="puzzle">
+                    <table class="puzzle" id="lettersPuzzle">
                         <?php
                             // Prints blank step down puzzle
                             foreach($stepDownLetterPuzzle as $row){
@@ -548,7 +553,7 @@
             <div class="stepdownPuzzle word">
                 <div class="row"> <h3> Words </h3> </div>
                     <div class="row">
-                        <table class="puzzle">
+                        <table class="puzzle" id="wordsPuzzle">
                             <?php
                                 // Prints blank step down puzzle
                                 foreach($stepDownPuzzle as $row){
@@ -601,7 +606,7 @@
         ?>
         <div class="col-sm-6">
             <div class="row letters rectangleLettersPuzzle"> <h3>Letters</h3>
-				<table class="puzzle">
+				<table class="puzzle" id="lettersPuzzle">
                     <?php
 						// Prints a grid with 5 square width with puzzle letters
 						foreach($letterList as $row){
@@ -628,7 +633,7 @@
 			<div class="stepupPuzzle word">
 				<div class="row"> <h3>Words</h3></div>
 				<div class="row">
-					<table class="puzzle">
+					<table class="puzzle" id="wordsPuzzle">
 						<?php
 							// Prints blank step up puzzle
 
@@ -681,7 +686,7 @@
         ?>
         <div class="col-sm-6">
             <div class="row letters fullLetterPuzzle"> <h3>Letters</h3>
-                <table class="puzzle">
+                <table class="puzzle" id="lettersPuzzle">
                 <?php
                     // THIS PRINTS THE FIXED FULL LETTERS FOR THE SWIMLANES PUZZLE
                     foreach($fullWords as $row){
@@ -706,7 +711,7 @@
             <div class="stepupPuzzle word">
                 <div class="row"> <h3>Words</h3></div>
                 <div class="row">
-                    <table class="puzzle">
+                    <table class="puzzle" id="wordsPuzzle">
                         <?php
                             // THIS WILL PRINT THE BLANK SQUARES FOR THE USER FILL
                             foreach($swimPuzzle as $row){
@@ -761,9 +766,8 @@
                     
                         <?php
                             // Prints blank lines puzzle
-                            echo'<table class="puzzle">';
+                            echo'<table class="puzzle" id="lettersPuzzle">';
                             foreach($linesLetterPuzzle as $row){
-                                //echo'<table class="puzzle">
                                 echo '<tr>';
                                 foreach($row as $letter){
                                     if($letter != "0"){
@@ -791,9 +795,8 @@
                     <div class="row">
                     
                         <?php
-                                echo'<table class="puzzle">';
+                                echo'<table class="puzzle" id="wordsPuzzle">';
                             foreach($linesPuzzle as $row){
-                                //echo'<table class="puzzle">
                                 echo '<tr>';
                                 foreach($row as $letter){
                                     if($letter != "0"){
@@ -901,10 +904,9 @@
             <div class="wordPuzzle word">
                 <div class="row"> <h3></h3> </div>
                 <div class="row">
-                    <table class="puzzle">
+                    <table class="puzzle" id="wordsPuzzle">
                         <?php
                             // Prints blank step down puzzle
-
                             foreach($wordPuzzle as $row){
                                 echo'<tr>';
                                 foreach($row as $letter){
@@ -931,28 +933,28 @@
         <script type="text/javascript">
             
             var wordList = <?php echo json_encode($wordList) ?>;
-            console.log(wordList);
+            // console.log(wordList);
 
             var answerArray = <?php echo json_encode($wordList) ?>;
-            console.log(answerArray);
+            // console.log(answerArray);
 
             var lettersArray = <?php echo json_encode($shapesPuzzle) ?>;
-            console.log(lettersArray);
+            // console.log(lettersArray);
 
             var letterList = <?php echo json_encode($shapesPuzzle) ?>;
-            console.log(letterList);
+            // console.log(letterList);
 
             var xyCoords = <?php echo json_encode($xyCoords) ?>;
-            console.log(xyCoords);
+            // console.log(xyCoords);
             
             var wordPuzzle = <?php echo json_encode($wordList) ?>;
-            console.log(wordPuzzle);
+            // console.log(wordPuzzle);
             
             var letterPuzzle = <?php echo json_encode($shapesPuzzle) ?>;
-            console.log(letterPuzzle);
+            // console.log(letterPuzzle);
             
             var shapesPuzzle = <?php echo json_encode($shapesPuzzle) ?>;
-            console.log(shapesPuzzle);
+            // console.log(shapesPuzzle);
         </script>
         <?php
     }

@@ -1,7 +1,9 @@
             var stringArray = new Array(wordList.length);
+            var row = 0;
             generateTableStrings();
             for(var i = 0; i < xyCoords.length; i++) {
                 drawShape(xyCoords[i][0], xyCoords[i][1], stringArray[i]);
+                
             }
 
             function drawLine(currentX, currentY, lastX, lastY) {
@@ -20,7 +22,6 @@
                 
                 circleChild.className = 'circleShape';
                 var circleCanvas = document.getElementsByClassName('circlesPuzzle');
-                
                
                 circleChild.style.position = 'absolute';
                 circleChild.style.left = (currentX/7.5) +'%';
@@ -29,17 +30,21 @@
                 circleCanvas[0].appendChild(circleChild);
             }
 
-                function generateTableStrings(){
-                    for(i = 0; i < wordList[0].length; i++){
-                        var tableString = '<table class="puzzle">';
-                        tableString = tableString + '<tr>';
-                        for(j = 0; j < wordList.length; j++){
-                            tableString = tableString + '<td class="empty puzzleLetter" draggable="true">' + shapesPuzzle[j][i] + '</td>';
-                        }
-                        tableString = tableString + '</tr>';
-                        tableString = tableString + '</table>';
-                        stringArray[i] = tableString;
+            function generateTableStrings(){
+                for(i = 0; i < wordList[0].length; i++){
+                    var tableString = '<table class="puzzle">';
+                    tableString = tableString + '<tr>';
+                    for(j = 0; j < wordList.length; j++){
+                        tableString = tableString + '<td class="empty puzzleLetter" draggable="true"';
+                        tableString = tableString + 'id="row' + j + 'column' + i + '">' + shapesPuzzle[j][i] + '</td>';
                     }
+                    tableString = tableString + '</tr>';
                     tableString = tableString + '</table>';
                     stringArray[i] = tableString;
+
                 }
+                row++;
+                tableString = tableString + '</table>';
+                stringArray[i] = tableString;
+
+            }

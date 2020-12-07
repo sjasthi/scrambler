@@ -9,6 +9,34 @@
   $left_selected = "";
 
   include("../includes/innerNav.php");
+
+  if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] == false) {
+    ?>
+    
+    
+      <div class="right-content">
+        <div class="container">
+  
+        <h3 style = "color: red;">Please log in to view this page</h3>
+  
+        </div>
+      </div>
+    
+    <?php
+  } else if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
+    ?>
+    
+    
+      <div class="right-content">
+        <div class="container">
+  
+        <h3 style = "color: red;">Admin privileges are required to view this page</h3>
+  
+        </div>
+      </div>
+    
+    <?php
+  } else {
 ?>
 <html>
 <div class="right-content">
@@ -82,4 +110,4 @@
   } );
 </script>
 
-<?php include("../includes/footer.php"); ?>
+<?php include("../includes/footer.php"); }?>
