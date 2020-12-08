@@ -33,8 +33,8 @@
         <ul>
             <a href="index.php">
               <li class="horozontal-li-logo">
-              <img src ="./images/silcLogo.png">
-              <br/></li>
+              <img src ="./images/app_logo.png">
+              <br/>Scrambler</li>
             </a>
 
             <a href="index.php">

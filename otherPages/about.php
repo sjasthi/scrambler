@@ -45,6 +45,84 @@
   and improve language skills
 </p>
 
+<h3>Home</h3>
+	<p>
+		"Home" button displays all the puzzles available in the system.
+    <br> You can play the puzzle by clicking any puzzle.
+    <br> You can drag and drop any character from left to right to solve the puzzle.
+    <br> You can also double click on any character on the right to push the character to the first available space on the top right.
+  </p>
+
+<h3>Lines</h3>
+	<p>
+		"Lines" scrambles each word separately. 
+    Words can be of any length.
+  </p>
+  
+
+  <h3>Dabble</h3>
+	<p>
+		"Dabble" combines all the words and scrambles all the characters.
+   <br> Words should be of sequential length (2,3,4,5.. and so on).
+   <br> You can start the word at any length. And you can stop the word at any length.
+
+    <br> <br> Once the puzzle is generated, you can select different styles (pyramic, step up, step down) to display the puzzle.
+
+  </p>
+
+  <h3>Dabble+</h3>
+	<p>
+		"Dabble+" is similar to "Dabble". 
+    <br>However, if you can't find the words of required length, you can input smaller words separated by comma. 
+    <br>For example, a 10 character word can be - 4 character word and 6 character word separated by comma. 
+    <br>Words should be of sequential length (2,3,4,5.. and so on).
+    <br>You can start the word at any length. And you can stop the word at any length.
+  </p>
+
+
+  <h3>Squares</h3>
+	<p>
+   "Squares" combines all the words and scrambles all the characters.
+   <br>Words should be of the same length.
+   <br>Characters are picked up from anywhere to form the words.
+  </p>
+
+  <h3>SwimLanes</h3>
+	<p>
+   In "SwimLanes", all words should be of the same length. There are two flavors of this puzzle.
+   <br> <br> <h4> Fixed: </h4>
+
+   In fixed mode, the position of the character in the word and the position of the character in the generated word are same.
+   <br> For example, all the characters in the 1st position of each word are taken. These are scrambled and are placed in the 1st column of the puzzle.
+   <br> Similarly, all the characters in 2nd position of each word are scrambled and are placed in 2nd column of the puzzle.
+   <br> So, characters are picked up from each column and are arranged in the same order to find the words.
+
+   <br> <br> <h4> Scrambled: </h4>
+
+   In scrambled mode, the characters can appear in any column in the generated puzzle. However, two characters of the word will not appear in the same column.
+   <br> So, characters are picked up from each column and the selected characters need to be arranged in the correct order to find the words.
+   </p>
+
+  <h3>Stacks</h3>
+	<p>
+   "Stacks" is similar to "Dabble". However, there are no length restrictions.
+   <br>The input words can be of any length.
+   <br>And the generated puzzle honors the order of the words given.
+   </p>
+
+  <h3>Shapes</h3>
+	<p>
+   "Shapes" removes one random character from each word and places it in a shape (circle or square).
+   <br> Words must be the same length (with a maximum length of 5 letters).
+   <br> The input words are restricted to a maximum of 5 words.
+   <br> Puzzle is solved by selecting a letter from each shape and arranging those letters in the correct order.
+   </p>
+
+   <h3>Random</h3>
+	<p>
+   You can play a random puzzle by clicking "Random".
+   </p>
+
 	<h3>Team</h3>
 	<p>
 		<ul>
