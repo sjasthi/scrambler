@@ -9,7 +9,7 @@
 		session_start();
   }
   
-  if($_POST['psw'] == 'abc123' && $_POST['uname'] == 'admin') {
+  if($_POST['psw'] == 'ilp123' && $_POST['uname'] == 'admin') {
     $_SESSION['logged_in'] = true;
     $_SESSION['role'] = 'ADMIN';
     $_SESSION['user'] = $_POST['uname'];

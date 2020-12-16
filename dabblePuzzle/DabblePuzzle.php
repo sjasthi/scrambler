@@ -75,7 +75,24 @@
 				$errorMessage = "Unknown error - try again";
 		}
 		
-    }
+	}
+	
+	/*
+	 * Redirects user to index page with Get error code if there is an issue with input
+	 */
+	function redirect($error){
+		$_SESSION['lastpage'] = 'dabble';
+		if($error != " "){
+			$url = "dabbleIndex.php?error=".$error;
+		}
+		else{
+			$url = "dabbleIndex.php";
+		}
+
+		header("Location: ".$url);
+		exit;
+	}
+	
 
 	if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		$title = $_POST["title"];
@@ -176,21 +193,7 @@
 		redirect(" ");
 	}
 
-	/*
-	 * Redirects user to index page with Get error code if there is an issue with input
-	 */
-	function redirect($error){
-		$_SESSION['lastpage'] = 'dabble';
-		if($error != " "){
-			$url = "dabbleIndex.php?error=".$error;
-		}
-		else{
-			$url = "dabbleIndex.php";
-		}
-
-		header("Location: ".$url);
-		exit;
-	}
+	
 
 	/*** Word Processor Functions ***/
 	function getWordLength($word){
