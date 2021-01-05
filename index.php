@@ -1,7 +1,13 @@
 <?php
 	if(session_id() == '' || !isset($_SESSION)){
 		session_start();
-	}
+  }
+  
+  if (isset($_GET['session_id'])) {
+    include_once('./db/user_sessions.php');
+    create_session($_GET['session_id']);
+    header('location: index.php');
+  }
 
   $_SESSION['lastpage'] = 'index';
 
