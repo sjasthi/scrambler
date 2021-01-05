@@ -30,6 +30,27 @@
 	require("../indic-wp/word_processor.php");
 	require("Scrambler.php");
 
+
+	/*
+	 * Redirects user to index page with Get error code if there is an issue with input
+	 */
+	function redirect($error){
+	
+		$_SESSION['lastpage'] = 'scrambler';
+
+		if($error != " "){
+			$url = "scramblerIndex.php?error=".$error;
+		}
+		else{
+			$url = "scramblerIndex.php?error=unknown";
+		}
+
+		header("Location: ".$url);
+		exit;
+	}
+
+
+
     if(!is_logged_in()) {
 		?>
 		
@@ -174,23 +195,7 @@
 		redirect(" ");
 	}
 
-	/*
-	 * Redirects user to index page with Get error code if there is an issue with input
-	 */
-	function redirect($error){
 	
-		$_SESSION['lastpage'] = 'scrambler';
-
-		if($error != " "){
-			$url = "scramblerIndex.php?error=".$error;
-		}
-		else{
-			$url = "scramblerIndex.php?error=unknown";
-		}
-
-		header("Location: ".$url);
-		exit;
-	}
 
 	/*** Word Processor Functions ***/
 	function getWordLength($word){
