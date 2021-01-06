@@ -24,7 +24,24 @@
 				$saveMessage = "Failed to save words to database";
 		}
 		
-    }
+	}
+	
+	/*
+	 * Redirects user to index page with Get error code if there is an issue with input
+	 */
+	function redirect($error){
+		
+		$_SESSION['lastpage'] = 'lines';
+		if($error != " "){
+			$url = "linesIndex.php?error=".$error;
+		}
+		else{
+			$url = "linesIndex.php";
+		}
+
+		header("Location: ".$url);
+		exit;
+	}
 
 	include("../includes/innerNav.php");
 	require("../indic-wp/word_processor.php");
@@ -133,22 +150,7 @@
 		redirect(" ");
 	}
 
-	/*
-	 * Redirects user to index page with Get error code if there is an issue with input
-	 */
-	function redirect($error){
-		
-		$_SESSION['lastpage'] = 'lines';
-		if($error != " "){
-			$url = "linesIndex.php?error=".$error;
-		}
-		else{
-			$url = "linesIndex.php";
-		}
-
-		header("Location: ".$url);
-		exit;
-	}
+	
 
 	/*** Word Processor Functions ***/
 	function getWordLength($word){
