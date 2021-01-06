@@ -163,7 +163,7 @@ function countitems($item) {
     // - Its value tells which admin for looking up their record.
 	if (!isset($_SESSION['logged_in'])) {return false;}
 	if (!isset($_SESSION['role'])) {return false;}
-    return ($_SESSION['logged_in'] == true and $_SESSION['role'] == 'SUPER-ADMIN');
+    return ($_SESSION['logged_in'] == true and $_SESSION['role'] == 'SUPER_ADMIN');
   }  
   
   function is_admin() {
