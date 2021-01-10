@@ -5,6 +5,7 @@
     session_start();
   }
   require_once('../functions/initialize.php');
+  require_once('../db/user_sessions.php');
 ?>
 
 <!DOCTYPE html>
@@ -107,7 +108,7 @@
                   <br/>Logout</li>
               </a>
             <?php } else {?>
-              <a href="../otherPages/login.php">
+              <a href="<?php echo LOGIN_LINK; ?>">
                 <li <?php if($nav_selected == "LOGIN"){ echo 'class="current-page"'; } ?>>
                   <img src="../images/login.png">
                   <br/>Login</li>
