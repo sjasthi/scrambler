@@ -1,9 +1,5 @@
 <?php
-
-
-if(session_id() == '' || !isset($_SESSION)){
-    session_start();
-}
+require_once '../functions/session_start.php';
 
 $stepUpLetterPuzzle = $_SESSION['stepupletterpuzzle'];
 $stepDownLetterPuzzle = $_SESSION['stepdownletterpuzzle'];

@@ -1,8 +1,5 @@
 <?php
-	
-    if(session_id() == '' || !isset($_SESSION)){
-        session_start();
-    }
+require_once '../functions/session_start.php';
 
 	if(isset($_GET["error"])){
 		$error = $_GET["error"];

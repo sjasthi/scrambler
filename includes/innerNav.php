@@ -1,9 +1,5 @@
 <?php
   //define("ROOT_PATH", $_SERVER['DOCUMENT_ROOT'].'\scrambler\\');
-  
-  if(session_id() == '' || !isset($_SESSION)){
-    session_start();
-  }
   require_once('../functions/initialize.php');
   require_once('../db/user_sessions.php');
 ?>

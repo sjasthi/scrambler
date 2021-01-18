@@ -1,8 +1,6 @@
 <?php
   ob_start(); // output buffering is turned on
-  if(session_id() == '' || !isset($_SESSION)){
-    session_start();
-  }
+  require_once 'session_start.php';
   
   
   // Assign file paths to PHP constants
@@ -38,5 +36,3 @@
   $config = array();
   
   define("DEBUG_MODE", "ON");
-  
-?>
