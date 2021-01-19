@@ -1,9 +1,5 @@
 <?php
-
-
-if(session_id() == '' || !isset($_SESSION)){
-    session_start();
-}
+require_once '../functions/session_start.php';
 
 $puzzle = $_SESSION['puzzle'];
 $title = $_SESSION['title'];

@@ -1,7 +1,5 @@
 <?php
-  if(session_id() == '' || !isset($_SESSION)){
-    session_start();
-  }
+require_once '../functions/session_start.php';
 
   if(!is_logged_in() || !is_admin()){}
   else {

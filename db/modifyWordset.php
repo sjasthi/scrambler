@@ -1,7 +1,5 @@
 <?php 
-  if(session_id() == '' || !isset($_SESSION)){
-      session_start();
-  }
+require_once '../functions/session_start.php';
   $nav_selected = "ADMIN";
   $left_buttons = "NO";
   $left_selected = "WORDSETS";
