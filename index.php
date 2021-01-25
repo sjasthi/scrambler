@@ -1,12 +1,6 @@
 <?php
   require_once './functions/session_start.php';
   
-  if (isset($_GET['session_id'])) {
-    include_once('./db/user_sessions.php');
-    create_session($_GET['session_id']);
-    header('location: index.php');
-  }
-
   $_SESSION['lastpage'] = 'index';
 
   // set the current page to one of the main buttons
