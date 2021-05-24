@@ -18,6 +18,7 @@ require_once '../functions/session_start.php';
 	require("../swimLanesPuzzle/Swim.php");
     require("../dabblePuzzle/Dabble.php");
     require("../dabblePlusPuzzle/DabblePlus.php");
+    require("../indic-wp/word_processor.php");
     
     $words = [];
     $wordInput = '';
@@ -957,21 +958,21 @@ require_once '../functions/session_start.php';
     }
     
 	function getWordLength($word){
-		$wordProcessor = new wordProcessor(" ", "Telugu");
-		$wordProcessor->setWord($word);
+		$wordProcessor = new wordProcessor(" ", "telugu");
+		$wordProcessor->setWord($word, "telugu");
 
 		return $wordProcessor->getLength();
 	}
 
 	function getLengthNoSpaces($word){
-		$wordProcessor = new wordProcessor(" ", "Telugu");
-		$wordProcessor->setWord($word);
+		$wordProcessor = new wordProcessor(" ", "telugu");
+		$wordProcessor->setWord($word, "telugu");
 
 		return $wordProcessor->getLengthNoSpacesNoCommas($word);
 	}
 	function splitWord($word){
-		$wordProcessor = new wordProcessor(" ", "Telugu");
-		$wordProcessor->setWord($word);
+		$wordProcessor = new wordProcessor(" ", "telugu");
+		$wordProcessor->setWord($word, "telugu");
 
 		return $wordProcessor->getLogicalChars();
 	}

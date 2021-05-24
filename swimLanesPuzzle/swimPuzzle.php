@@ -1,37 +1,5 @@
 <?php
 require_once '../functions/session_start.php';
-ob_start();
-
-/*
-* Redirects user to index page with Get error code if there is an issue with input
-*/
-function redirect($error){
-	$_SESSION['lastpage'] = 'swim';
-	if($error != " "){
-		$url = "swimIndex.php?error=".$error;
-	}
-	else{
-		$url = "swimIndex.php";
-	}
-
-	header("Location: ".$url);
-	exit;
-}
-
-/*** Word Processor Functions ***/
-function getWordLength($word){
-	$wordProcessor = new wordProcessor(" ", "Telugu");
-	$wordProcessor->setWord($word);
-
-	return $wordProcessor->getLength();
-}
-
-function splitWord($word){
-	$wordProcessor = new wordProcessor(" ", "Telugu");
-	$wordProcessor->setWord($word);
-
-	return $wordProcessor->getLogicalChars();
-}
 
 	// set the current page to one of the main buttons
 	$nav_selected = "SWIMPUZZLE";
@@ -56,8 +24,6 @@ function splitWord($word){
     }
 
 	include("../includes/innerNav.php");
-
-	echo $_SESSION['logged_in'];
 
     if(!is_logged_in()) {
 		?>
@@ -87,6 +53,7 @@ function splitWord($word){
 		<?php
 	  } else {
 	require("Swim.php");
+	require("../indic-wp/word_processor.php");
 
 	if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		$title = $_POST["title"];
@@ -203,7 +170,37 @@ function splitWord($word){
 	} else{
 		redirect(" ");
 	}
-	
+
+	/*
+	 * Redirects user to index page with Get error code if there is an issue with input
+	 */
+	function redirect($error){
+		$_SESSION['lastpage'] = 'swim';
+		if($error != " "){
+			$url = "swimIndex.php?error=".$error;
+		}
+		else{
+			$url = "swimIndex.php";
+		}
+
+		header("Location: ".$url);
+		exit;
+	}
+
+	/*** Word Processor Functions ***/
+	function getWordLength($word){
+		$wordProcessor = new wordProcessor(" ", "telugu");
+		$wordProcessor->setWord($word, "telugu");
+
+		return $wordProcessor->getLength();
+	}
+
+	function splitWord($word){
+		$wordProcessor = new wordProcessor(" ", "telugu");
+		$wordProcessor->setWord($word, "telugu");
+
+		return $wordProcessor->getLogicalChars();
+	}
 	$_SESSION['lastpage'] = 'swim';
 ?>
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN''http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>

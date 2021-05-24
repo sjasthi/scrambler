@@ -1,6 +1,5 @@
 <?php
   //define("ROOT_PATH", $_SERVER['DOCUMENT_ROOT'].'\scrambler\\');
-  require_once '../includes/indic-wp.php';
   require_once('../functions/initialize.php');
   require_once('../db/user_sessions.php');
 ?>

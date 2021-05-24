@@ -40,7 +40,7 @@ class Stacks{
 
 
 	public function __construct($wordList){
-		$this->wordProcessor = new wordProcessor(" ", "Telugu");
+		$this->wordProcessor = new wordProcessor(" ", "telugu");
 		$this->wordList = $wordList;
 
 
@@ -551,19 +551,19 @@ class Stacks{
 
 	/*** Word Processor Functions ***/
 	private function getWordLength($word){
-		$this->wordProcessor->setWord($word);
+		$this->wordProcessor->setWord($word, "telugu");
 
 		return $this->wordProcessor->getLength();
 	}
 
 	private function getWordLengthNoSpaces($word){
-		$this->wordProcessor->setWord($word);
+		$this->wordProcessor->setWord($word, "telugu");
 
 		return $this->wordProcessor->getLengthNoSpaces($word);
 	}
 
 	private function splitWord($word){
-		$this->wordProcessor->setWord($word);
+		$this->wordProcessor->setWord($word, "telugu");
 
 		return $this->wordProcessor->getLogicalChars();
 	}

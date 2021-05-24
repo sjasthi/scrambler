@@ -1,39 +1,5 @@
 <?php
 require_once '../functions/session_start.php';
-ob_start();
-
-/*
-* Redirects user to index page with Get error code if there is an issue with input
-*/
-function redirect($error){
-
-	$_SESSION['lastpage'] = 'scrambler';
-
-	if($error != " "){
-		$url = "scramblerIndex.php?error=".$error;
-	}
-	else{
-		$url = "scramblerIndex.php?error=unknown";
-	}
-
-	header("Location: ".$url);
-	exit;
-}
-
-/*** Word Processor Functions ***/
-function getWordLength($word){
-	$wordProcessor = new wordProcessor(" ", "Telugu");
-	$wordProcessor->setWord($word);
-
-	return $wordProcessor->getLength();
-}
-
-function splitWord($word){
-	$wordProcessor = new wordProcessor(" ", "Telugu");
-	$wordProcessor->setWord($word);
-
-	return $wordProcessor->getLogicalChars();
-}
 
 	// set the current page to one of the main buttons
 	$nav_selected = "SCRAMBLERPUZZLE";
@@ -58,7 +24,29 @@ function splitWord($word){
     }
 
 	include("../includes/innerNav.php");
+	require("../indic-wp/word_processor.php");
 	require("Scrambler.php");
+
+
+	/*
+	 * Redirects user to index page with Get error code if there is an issue with input
+	 */
+	function redirect($error){
+	
+		$_SESSION['lastpage'] = 'scrambler';
+
+		if($error != " "){
+			$url = "scramblerIndex.php?error=".$error;
+		}
+		else{
+			$url = "scramblerIndex.php?error=unknown";
+		}
+
+		header("Location: ".$url);
+		exit;
+	}
+
+
 
     if(!is_logged_in()) {
 		?>
@@ -202,6 +190,23 @@ function splitWord($word){
 		
 	} else{
 		redirect(" ");
+	}
+
+	
+
+	/*** Word Processor Functions ***/
+	function getWordLength($word){
+		$wordProcessor = new wordProcessor(" ", "telugu");
+		$wordProcessor->setWord($word, "telugu");
+
+		return $wordProcessor->getLength();
+	}
+
+	function splitWord($word){
+		$wordProcessor = new wordProcessor(" ", "telugu");
+		$wordProcessor->setWord($word, "telugu");
+
+		return $wordProcessor->getLogicalChars();
 	}
 	
 	$_SESSION['lastpage'] = 'scrambler';

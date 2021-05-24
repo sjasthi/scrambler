@@ -1,44 +1,5 @@
 <?php
 require_once '../functions/session_start.php';
-ob_start();
-
-/*
-* Redirects user to index page with Get error code if there is an issue with input
-*/
-function redirect($error){
-	$_SESSION['lastpage'] = 'stacks';
-	if($error != " "){
-		$url = "stacksIndex.php?error=".$error;
-	}
-	else{
-		$url = "stacksIndex.php";
-	}
-
-	header("Location: ".$url);
-	exit;
-}
-
-/*** Word Processor Functions ***/
-function getWordLength($word){
-	$wordProcessor = new wordProcessor(" ", "Telugu");
-	$wordProcessor->setWord($word);
-
-	return $wordProcessor->getLength();
-}
-
-function getLengthNoSpaces($word){
-	$wordProcessor = new wordProcessor(" ", "Telugu");
-	$wordProcessor->setWord($word);
-
-	return $wordProcessor->getLengthNoSpaces($word);
-}
-
-function splitWord($word){
-	$wordProcessor = new wordProcessor(" ", "Telugu");
-	$wordProcessor->setWord($word);
-
-	return $wordProcessor->getLogicalChars();
-}
 
 	// set the current page to one of the main buttons
 	$nav_selected = "STACKSPUZZLE";
@@ -93,6 +54,7 @@ function splitWord($word){
 	  } else {
 
 	require("Stacks.php");
+	require("../indic-wp/word_processor.php");
 
 	if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		$title = $_POST["title"];
@@ -215,6 +177,43 @@ function splitWord($word){
 		redirect(" ");
 	}
 
+	/*
+	 * Redirects user to index page with Get error code if there is an issue with input
+	 */
+	function redirect($error){
+		$_SESSION['lastpage'] = 'stacks';
+		if($error != " "){
+			$url = "stacksIndex.php?error=".$error;
+		}
+		else{
+			$url = "stacksIndex.php";
+		}
+
+		header("Location: ".$url);
+		exit;
+	}
+
+	/*** Word Processor Functions ***/
+	function getWordLength($word){
+		$wordProcessor = new wordProcessor(" ", "telugu");
+		$wordProcessor->setWord($word, "telugu");
+
+		return $wordProcessor->getLength();
+	}
+
+	function getLengthNoSpaces($word){
+		$wordProcessor = new wordProcessor(" ", "telugu");
+		$wordProcessor->setWord($word, "telugu");
+
+		return $wordProcessor->getLengthNoSpaces($word);
+	}
+
+	function splitWord($word){
+		$wordProcessor = new wordProcessor(" ", "telugu");
+		$wordProcessor->setWord($word, "telugu");
+
+		return $wordProcessor->getLogicalChars();
+	}
 	$_SESSION['lastpage'] = 'stacks';
 ?>
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN''http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
