@@ -1,5 +1,6 @@
 <?php
 require_once '../functions/session_start.php';
+ob_start();
 
 	// set the current page to one of the main buttons
 	$nav_selected = "DABBLE";
@@ -53,7 +54,6 @@ require_once '../functions/session_start.php';
 		<?php
 	  } else {
 	require("Dabble.php");
-	require("../indic-wp/word_processor.php");
 
 	if(isset($_GET["imageerror"])){
 		$error = $_GET["imageerror"];
@@ -194,22 +194,22 @@ require_once '../functions/session_start.php';
 
 	/*** Word Processor Functions ***/
 	function getWordLength($word){
-		$wordProcessor = new wordProcessor(" ", "telugu");
-		$wordProcessor->setWord($word, "telugu");
+		$wordProcessor = new wordProcessor(" ", "Telugu");
+		$wordProcessor->setWord($word);
 
 		return $wordProcessor->getLength();
 	}
 
 	function getLengthNoSpaces($word){
-		$wordProcessor = new wordProcessor(" ", "telugu");
-		$wordProcessor->setWord($word, "telugu");
+		$wordProcessor = new wordProcessor(" ", "Telugu");
+		$wordProcessor->setWord($word);
 
 		return $wordProcessor->getLengthNoSpaces($word);
 	}
 
 	function splitWord($word){
-		$wordProcessor = new wordProcessor(" ", "telugu");
-		$wordProcessor->setWord($word, "telugu");
+		$wordProcessor = new wordProcessor(" ", "Telugu");
+		$wordProcessor->setWord($word);
 
 		return $wordProcessor->getLogicalChars();
 	}
