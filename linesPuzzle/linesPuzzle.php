@@ -1,5 +1,45 @@
 <?php
 require_once '../functions/session_start.php';
+ob_start();
+
+/*
+* Redirects user to index page with Get error code if there is an issue with input
+*/
+function redirect($error){
+	
+	$_SESSION['lastpage'] = 'lines';
+	if($error != " "){
+		$url = "linesIndex.php?error=".$error;
+	}
+	else{
+		$url = "linesIndex.php";
+	}
+
+	header("Location: ".$url);
+	exit;
+}
+
+/*** Word Processor Functions ***/
+function getWordLength($word){
+	$wordProcessor = new wordProcessor(" ", "Telugu");
+	$wordProcessor->setWord($word);
+
+	return $wordProcessor->getLength();
+}
+
+function getLengthNoSpaces($word){
+	$wordProcessor = new wordProcessor(" ", "Telugu");
+	$wordProcessor->setWord($word);
+
+	return $wordProcessor->getLengthNoSpaces($word);
+}
+
+function splitWord($word){
+	$wordProcessor = new wordProcessor(" ", "Telugu");
+	$wordProcessor->setWord($word);
+
+	return $wordProcessor->getLogicalChars();
+}
 	
 	// set the current page to one of the main buttons
 	$nav_selected = "LINESPUZZLE";
@@ -24,7 +64,6 @@ require_once '../functions/session_start.php';
     }
 
 	include("../includes/innerNav.php");
-	require("../indic-wp/word_processor.php");
 	require("Lines.php");
 
     if(!is_logged_in()) {
@@ -128,45 +167,6 @@ require_once '../functions/session_start.php';
 		
 	} else {
 		redirect(" ");
-	}
-
-	/*
-	 * Redirects user to index page with Get error code if there is an issue with input
-	 */
-	function redirect($error){
-		
-		$_SESSION['lastpage'] = 'lines';
-		if($error != " "){
-			$url = "linesIndex.php?error=".$error;
-		}
-		else{
-			$url = "linesIndex.php";
-		}
-
-		header("Location: ".$url);
-		exit;
-	}
-
-	/*** Word Processor Functions ***/
-	function getWordLength($word){
-		$wordProcessor = new wordProcessor(" ", "telugu");
-		$wordProcessor->setWord($word, "telugu");
-
-		return $wordProcessor->getLength();
-	}
-
-	function getLengthNoSpaces($word){
-		$wordProcessor = new wordProcessor(" ", "telugu");
-		$wordProcessor->setWord($word, "telugu");
-
-		return $wordProcessor->getLengthNoSpaces($word);
-	}
-
-	function splitWord($word){
-		$wordProcessor = new wordProcessor(" ", "telugu");
-		$wordProcessor->setWord($word, "telugu");
-
-		return $wordProcessor->getLogicalChars();
 	}
 	
 	$_SESSION['lastpage'] = 'lines';

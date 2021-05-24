@@ -38,7 +38,7 @@ class DabblePlus{
 
 
 	public function __construct($wordList){
-		$this->wordProcessor = new wordProcessor(" ", "telugu");
+		$this->wordProcessor = new wordProcessor(" ", "Telugu");
 		$this->wordList = $wordList;
 
 		$this->orderWords();
@@ -493,19 +493,19 @@ class DabblePlus{
 
 	/*** Word Processor Functions ***/
 	private function getWordLength($word){
-		$this->wordProcessor->setWord($word, "telugu");
+		$this->wordProcessor->setWord($word);
 
 		return $this->wordProcessor->getLength();
 	}
 
 	private function getWordLengthNoSpaces($word){
-		$this->wordProcessor->setWord($word, "telugu");
+		$this->wordProcessor->setWord($word);
 
 		return $this->wordProcessor->getLengthNoSpacesNoCommas($word);
 	}
 
 	private function splitWord($word){
-		$this->wordProcessor->setWord($word, "telugu");
+		$this->wordProcessor->setWord($word);
 
 		return $this->wordProcessor->getLogicalChars();
 	}

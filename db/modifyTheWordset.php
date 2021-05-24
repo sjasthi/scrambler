@@ -35,11 +35,9 @@ require_once '../functions/session_start.php';
       <?php
       } else {
 
-    require("../indic-wp/word_processor.php");
-
     function getLengthNoSpaces($word){
-      $wordProcessor = new wordProcessor(" ", "telugu");
-      $wordProcessor->setWord($word, "telugu");
+      $wordProcessor = new wordProcessor(" ", "Telugu");
+      $wordProcessor->setWord($word);
   
       return $wordProcessor->getLengthNoSpacesNoCommas($word);
     }
