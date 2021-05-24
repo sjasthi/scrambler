@@ -1,5 +1,39 @@
 <?php
 require_once '../functions/session_start.php';
+ob_start();
+
+/*
+* Redirects user to index page with Get error code if there is an issue with input
+*/
+function redirect($error){
+
+	$_SESSION['lastpage'] = 'shapes';
+
+	if($error != " "){
+		$url = "shapesIndex.php?error=".$error;
+	}
+	else{
+		$url = "shapesIndex.php?error=unknown";
+	}
+
+	header("Location: ".$url);
+	exit;
+}
+
+/*** Word Processor Functions ***/
+function getWordLength($word){
+	$wordProcessor = new wordProcessor(" ", "Telugu");
+	$wordProcessor->setWord($word);
+
+	return $wordProcessor->getLength();
+}
+
+function splitWord($word){
+	$wordProcessor = new wordProcessor(" ", "Telugu");
+	$wordProcessor->setWord($word);
+
+	return $wordProcessor->getLogicalChars();
+}
 
 	// set the current page to one of the main buttons
 	$nav_selected = "SHAPESPUZZLE";
@@ -52,7 +86,6 @@ require_once '../functions/session_start.php';
 		<?php
 	  } else {
 	require("Shapes.php");
-	require("../indic-wp/word_processor.php");
 
 	if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		$title = $_POST["title"];
@@ -155,39 +188,6 @@ require_once '../functions/session_start.php';
 		
 	} else{
 		redirect(" ");
-	}
-
-	/*
-	 * Redirects user to index page with Get error code if there is an issue with input
-	 */
-	function redirect($error){
-
-		$_SESSION['lastpage'] = 'shapes';
-
-		if($error != " "){
-			$url = "shapesIndex.php?error=".$error;
-		}
-		else{
-			$url = "shapesIndex.php?error=unknown";
-		}
-
-		header("Location: ".$url);
-		exit;
-	}
-
-	/*** Word Processor Functions ***/
-	function getWordLength($word){
-		$wordProcessor = new wordProcessor(" ", "telugu");
-		$wordProcessor->setWord($word, "telugu");
-
-		return $wordProcessor->getLength();
-	}
-
-	function splitWord($word){
-		$wordProcessor = new wordProcessor(" ", "telugu");
-		$wordProcessor->setWord($word, "telugu");
-
-		return $wordProcessor->getLogicalChars();
 	}
 
 	$_SESSION['lastpage'] = 'shapes';
