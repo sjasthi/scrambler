@@ -12,7 +12,7 @@ if (file_exists($file)) {
     If you are developing on localhost:<br>
     - Please download the latest version of sjasthi/indic-wp from GitHub and place it in the folder where the Scrambler app is located.<br>
     - This folder must be titled <b>indic-wp</b>.<br>
-    - For example, if wordfind is in <b>htdocs/scrambler/</b> then indic-wp should be in <b>htdocs/indic-wp/</b>";
+    - For example, if scrambler is in <b>htdocs/scrambler/</b> then indic-wp should be in <b>htdocs/indic-wp/</b>";
     exit; // don't load page
 }
 //*/
