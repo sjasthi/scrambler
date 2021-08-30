@@ -44,19 +44,6 @@ function splitWord($word){
 	// set the left menu button selected; options will change based on the main selection
 	$left_selected = "";
 
-	if(isset($_GET["saveResult"])){
-		$saveResult = $_GET["saveResult"];
-		
-		switch($saveResult){
-			case "success":
-				$saveMessage = "Successfully saved words to database";
-				break;
-			default:
-				$saveMessage = "Failed to save words to database";
-		}
-		
-    }
-
 	include("../includes/innerNav.php");
 	require("Scrambler.php");
 
@@ -176,31 +163,7 @@ function splitWord($word){
 		$_SESSION['wordList'] = $wordList;
 		$_SESSION['puzzle'] = $stepUpLetterPuzzle;
 
-	} else if ($_SESSION['lastpage'] == 'saveWords') {
-			
-		$title = $_SESSION['title'];
-		$subtitle = $_SESSION['subtitle'];
-		$wordInput = $_SESSION['userInput'];
-		$wordList = $_SESSION['wordList'];
-
-		$scrambler = new Scrambler($wordList);
-
-		$letterList = $scrambler->getLetterList();
-		$wordList = $scrambler->getWordList();
-
-		$pyramidPuzzle = $scrambler->getPyramidPuzzle();
-		$stepUpPuzzle = $scrambler->getStepUpPuzzle();
-		$stepDownPuzzle = $scrambler->getStepDownPuzzle();
-
-		$pyramidLetterPuzzle = $scrambler->getPyramidLetterPuzzle();
-		$stepUpLetterPuzzle = $scrambler->getStepUpLetterPuzzle();
-		$stepDownLetterPuzzle = $scrambler->getStepDownLetterPuzzle();
-
-		$characterList = $scrambler->getCharacterList();
-
-		$_SESSION['letterPuzzle'] = $stepUpLetterPuzzle;
-		
-	} else{
+	} else {
 		redirect(" ");
 	}
 	
@@ -250,20 +213,6 @@ function splitWord($word){
 		</div>
     <br>
 	<?php } ?>
-	<br>
-        <div class="form-group">
-			<div class="col-sm-1"></div>
-			<div class="col-sm-10">
-				<label class="charLabel" style="color:red;font-size:14px;" name="charName" value="">
-				<?php
-					if(isset($saveMessage)){
-						echo($saveMessage);
-					}
-				?>
-				</label>
-			</div>
-		</div>
-    <br>
     <div class="container-fluid">
 		<form method="post" action="../imageGeneration/puzzleImageGenerator.php"  onsubmit="return checkInput()">
 			<button type="submit" value="Submit">Generate Image</button>

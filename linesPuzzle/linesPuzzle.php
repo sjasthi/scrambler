@@ -50,19 +50,6 @@ function splitWord($word){
 	// set the left menu button selected; options will change based on the main selection
 	$left_selected = "";
 
-	if(isset($_GET["saveResult"])){
-		$saveResult = $_GET["saveResult"];
-		
-		switch($saveResult){
-			case "success":
-				$saveMessage = "Successfully saved words to database";
-				break;
-			default:
-				$saveMessage = "Failed to save words to database";
-		}
-		
-    }
-
 	include("../includes/innerNav.php");
 	require("Lines.php");
 
@@ -149,22 +136,6 @@ function splitWord($word){
 		$_SESSION['wordList'] = $wordList;
 		$_SESSION['puzzle'] = $linesLetterPuzzle;
 
-	} else if ($_SESSION['lastpage'] == 'saveWords') {
-			
-		$title = $_SESSION['title'];
-		$subtitle = $_SESSION['subtitle'];
-		$wordInput = $_SESSION['userInput'];
-		$wordList = $_SESSION['wordList'];
-
-		$lines = new Lines($wordList);
-
-		$letterList = $lines->getLetterList();
-		$wordList = $lines->getWordList();
-		$linesPuzzle = $lines->getLinesPuzzle();
-		$linesLetterPuzzle = $lines->getLinesLetterPuzzle();
-		$shuffledWordList = $lines->getShuffledWordList();
-		$characterList = $lines->getCharacterList();	
-		
 	} else {
 		redirect(" ");
 	}
@@ -202,20 +173,6 @@ function splitWord($word){
 	</style>
 </head>
 <body>
-	<br>
-        <div class="form-group">
-			<div class="col-sm-1"></div>
-			<div class="col-sm-10">
-				<label class="charLabel" style="color:red;font-size:14px;" name="charName" value="">
-				<?php
-					if(isset($saveMessage)){
-						echo($saveMessage);
-					}
-				?>
-				</label>
-			</div>
-		</div>
-    <br>
     <div class="container-fluid">
 		<form method="post" action="../imageGeneration/puzzleImageGenerator.php" onsubmit="return checkInput()">
 			<button type="submit" value="Submit">Generate Image</button>
