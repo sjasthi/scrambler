@@ -53,6 +53,29 @@
 </head>
 
 <body>
+<?php
+// save words message
+if(isset($_GET["saveResult"])){
+  $saveResult = $_GET["saveResult"];
+
+  switch($saveResult){
+    case "success":
+      $saveMessage = "Successfully saved words to database";
+      break;
+    default:
+      $saveMessage = "Failed to save words to database";
+  }
+}
+if (isset($saveMessage)) {
+  // display saved sowrds message
+  echo
+  '<br><div align="center">
+    <label class="charLabel" style="color:red;font-size:large;" name="charName" value="">' 
+      . $saveMessage . 
+    '</label>
+  </div><br>';
+}
+?>
 
 <div class="container-fluid">
     <div class="panel">

@@ -49,19 +49,6 @@ function splitWord($word){
 	// set the left menu button selected; options will change based on the main selection
 	$left_selected = "";
 
-	if(isset($_GET["saveResult"])){
-		$saveResult = $_GET["saveResult"];
-		
-		switch($saveResult){
-			case "success":
-				$saveMessage = "Successfully saved words to database";
-				break;
-			default:
-				$saveMessage = "Failed to save words to database";
-		}
-		
-    }
-
 	include("../includes/innerNav.php");
 
     if(!is_logged_in()) {
@@ -180,38 +167,7 @@ function splitWord($word){
 			</script><?php
 		//}
 
-	} else if ($_SESSION['lastpage'] == 'saveWords') {
-			
-		$title = $_SESSION['title'];
-		$subtitle = $_SESSION['subtitle'];
-		$wordInput = $_SESSION['userInput'];
-		$wordList = $_SESSION['wordList'];
-		$puzzleType = $_SESSION['puzzletype'];
-
-		$stacks = new Stacks($wordList);
-
-		$letterList = $stacks->getLetterList();
-		$wordList = $stacks->getWordList();
-
-		$pyramidPuzzle = $stacks->getStacksPyramidPuzzle();
-		$stepUpPuzzle = $stacks->getStacksStepUpPuzzle();
-		$stepDownPuzzle = $stacks->getStacksStepDownPuzzle();
-
-		$pyramidLetterPuzzle = $stacks->getStacksPyramidLetterPuzzle();
-		$stepUpLetterPuzzle = $stacks->getStacksStepUpLetterPuzzle();
-		$stepDownLetterPuzzle = $stacks->getStacksStepDownLetterPuzzle();
-
-		$characterList = $stacks->getCharacterList();
-		$characterListNoSpaces = $stacks->getCharacterListNoSpaces();
-
-		$lettersPuzzleType = 'rectangle';
-
-		$_SESSION['stepupletterpuzzle'] = $stepUpLetterPuzzle;
-		$_SESSION['stepdownletterpuzzle'] = $stepDownLetterPuzzle;
-		$_SESSION['pyramidletterpuzzle'] = $pyramidLetterPuzzle;
-		$_SESSION['letterlist'] = $letterList;
-		
-	} else{
+	} else {
 		redirect(" ");
 	}
 
@@ -251,20 +207,6 @@ function splitWord($word){
 	.guess{}
 </style>
 <body>
-	<br>
-        <div class="form-group">
-			<div class="col-sm-1"></div>
-			<div class="col-sm-10">
-				<label class="charLabel" style="color:red;font-size:14px;" name="charName" value="">
-				<?php
-					if(isset($saveMessage)){
-						echo($saveMessage);
-					}
-				?>
-				</label>
-			</div>
-		</div>
-    <br>
     <div class="container-fluid">
 		<button type="submit" value="Submit" form="options" >Generate Image</button>
 		<form method="post" action="../db/saveWords.php">

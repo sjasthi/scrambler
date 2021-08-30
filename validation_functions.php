@@ -111,4 +111,3 @@
     return $user_count === 0;
   }
 
-?>

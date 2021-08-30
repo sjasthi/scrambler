@@ -32,4 +32,3 @@ function confirm_result_set($result_set) {
         exit("The Database query failed.");
     }
 }
-?>

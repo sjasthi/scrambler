@@ -221,5 +221,3 @@ function generateWordList($wordInput){
 	}
 return $wordList;
 }
-
-?>

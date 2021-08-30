@@ -10,9 +10,9 @@ require_once '../functions/session_start.php';
 	// set the left menu button selected; options will change based on the main selection
 	$left_selected = "";
 
-	include("../includes/innerNav.php");
+	//include("../includes/innerNav.php"); Don't send data to html page before using the header function
 
-    //require_once('../includes/initialize.php');
+    require_once('../functions/initialize.php');
 
     $wordList = $_SESSION['wordList'];
     // $puzzle = $_SESSION['letterPuzzle'];
@@ -32,41 +32,8 @@ require_once '../functions/session_start.php';
         }
     }
 
-    switch($_SESSION['lastpage']) {
-        case 'dabble':
-            $_SESSION['lastpage'] = 'saveWords';
-            header("refresh:0; url=../dabblePuzzle/DabblePuzzle.php?saveResult=".$saveResult);
-            break;
-        case 'dabbleplus':
-            $_SESSION['lastpage'] = 'saveWords';
-            header("refresh:0; url=../dabblePlusPuzzle/DabblePlusPuzzle.php?saveResult=".$saveResult);
-            break;
-        case 'stacks':
-            $_SESSION['lastpage'] = 'saveWords';
-            header("refresh:0; url=../stackPuzzle/stacksPuzzle.php?saveResult=".$saveResult);
-            break;
-        case 'scrambler':
-            $_SESSION['lastpage'] = 'saveWords';
-            header("refresh:0; url=../scramblerPuzzle/ScramblerPuzzle.php?saveResult=".$saveResult);
-            break;
-        case 'lines':
-            $_SESSION['lastpage'] = 'saveWords';
-            header("refresh:0; url=../linesPuzzle/linesPuzzle.php?saveResult=".$saveResult);
-            break;
-        case 'swim':
-            $_SESSION['lastpage'] = 'saveWords';
-            header("refresh:0; url=../swimLanesPuzzle/swimPuzzle.php?saveResult=".$saveResult);
-            break;
-        case 'shapes':
-            $_SESSION['lastpage'] = 'saveWords';
-            header("refresh:0; url=../shapesPuzzle/shapesPuzzle.php?saveResult=".$saveResult);
-            break;
-        default:
-            echo "<h1 style='color:red; align:center'><b>How did you get here? Going home.</h1>";
-            header("refresh:3; url=../index.php");
-    }
-
-    
+    // redirect to index and show words saved message
+    header("Location: ../index.php?saveResult=".$saveResult);
 
     function get_next_set_id() {
         global $db;
@@ -130,4 +97,3 @@ require_once '../functions/session_start.php';
             exit;
         }
     }
-?>
